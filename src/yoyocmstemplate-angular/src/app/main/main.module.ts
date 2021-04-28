@@ -13,10 +13,12 @@ import { AdvertisingComponent } from './advertising/advertising.component';
 
 import { CustomNgZorroModule } from '@shared/ng-zorro';
 
+import { KtdGridModule } from '@katoid/angular-grid-layout';
+
 @NgModule({
-  imports: [CommonModule, HttpClientModule, SharedModule, AbpModule, CustomNgZorroModule, MainRoutingModule],
+  imports: [CommonModule, HttpClientModule, SharedModule, AbpModule, CustomNgZorroModule, MainRoutingModule, KtdGridModule],
   declarations: [DashboardComponent, AboutComponent, AdvertisingComponent],
   entryComponents: [AdvertisingComponent],
   providers: [],
 })
-export class MainModule {}
+export class MainModule { }

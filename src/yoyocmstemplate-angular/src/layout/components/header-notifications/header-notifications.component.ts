@@ -33,17 +33,17 @@ export class HeaderNotificationsComponent extends AppComponentBase implements On
 
   loadNotifications(): void {
     this.loading = true;
-    this._notificationService.getPagedUserNotifications(undefined, AppConsts.notificationCount, 0)
-      .pipe(finalize(() => {
-        this.loading = false;
-      }))
-      .subscribe(result => {
-        this.unreadNotificationCount = result.unreadCount;
-        this.notifications = [];
-        result.items.forEach((item) => {
-          this.notifications.push(this._userNotificationHelper.format(item as any));
-        });
-      });
+    // this._notificationService.getPagedUserNotifications(undefined, AppConsts.notificationCount, 0)
+    //   .pipe(finalize(() => {
+    //     this.loading = false;
+    //   }))
+    //   .subscribe(result => {
+    //     this.unreadNotificationCount = result.unreadCount;
+    //     this.notifications = [];
+    //     result.items.forEach((item) => {
+    //       this.notifications.push(this._userNotificationHelper.format(item as any));
+    //     });
+    //   });
   }
 
   registerToEvents() {

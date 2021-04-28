@@ -33,16 +33,21 @@
     "@angular/platform-browser": "~9.1.0",
     "@angular/platform-browser-dynamic": "~9.1.0",
     "@angular/router": "~9.1.0",
-
     "@aspnet/signalr": "1.1.4",
     "@delon/abc": "^9.5.3",
     "@delon/acl": "^9.5.3",
     "@delon/auth": "^9.5.3",
     "@delon/cache": "^9.5.3",
-     "@delon/form": "^9.5.3",
+    "@delon/form": "^9.5.3",
     "@delon/mock": "^9.5.3",
     "@delon/theme": "^9.5.3",
     "@delon/util": "^9.5.3",
+    "@fullcalendar/core": "^5.3.0",
+    "@fullcalendar/daygrid": "^5.3.0",
+    "@fullcalendar/interaction": "^5.3.0",
+    "@fullcalendar/list": "^5.3.0",
+    "@fullcalendar/timegrid": "^5.3.0",
+    "@katoid/angular-grid-layout": "^0.1.3",
     "abp-ng2-module": "^6.0.0",
     "abp-web-resources": "^5.1.1",
     "ajv": "^6.12.0",
@@ -58,22 +63,16 @@
     "ngx-simplemde": "9.0.0",
     "ngx-tinymce": "9.1.0",
     "ngx-ueditor": "9.0.0",
+    "nz-tslint-rules": "^0.901.2",
+    "perfect-scrollbar": "^1.5.0",
     "push.js": "1.0.9",
     "qrious": "^4.0.2",
     "quill-image-resize-module": "^3.0.0",
-    "nz-tslint-rules": "^0.901.2",
     "rxjs": "~6.5.4",
     "rxjs-compat": "^6.2.1",
     "screenfull": "^5.0.2",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2",
-        "perfect-scrollbar": "^1.5.0",
-
-    "@fullcalendar/core": "^5.3.0",
-    "@fullcalendar/interaction": "^5.3.0",
-    "@fullcalendar/daygrid": "^5.3.0",
-    "@fullcalendar/timegrid": "^5.3.0",
-    "@fullcalendar/list": "^5.3.0"
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^9.2.0",
@@ -115,7 +114,6 @@
     "tslint": "~6.1.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "~3.8.3"
-
   },
   "private": true
 }

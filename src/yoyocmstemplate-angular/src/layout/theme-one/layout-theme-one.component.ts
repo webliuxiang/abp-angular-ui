@@ -4,7 +4,6 @@ import { NzIconService } from 'ng-zorro-antd/icon';
 import { Router } from '@angular/router';
 import { MenuService, ScrollService, SettingsService } from '@delon/theme';
 import { DOCUMENT } from '@angular/common';
-import { AbpSignalrService } from '@shared/auth/abp-signalr.service';
 
 @Component({
   selector: 'layout-theme-one',
@@ -24,9 +23,8 @@ export class LayoutThemeOneComponent extends LayoutDefaultComponent {
     public renderer: Renderer2,
     @Inject(DOCUMENT) public doc: any,
     public _zone: NgZone,
-    public abpSignal: AbpSignalrService,
   ) {
-    super(injector, iconSrv, router, scroll, menuSrv, settings, el, renderer, doc, _zone, abpSignal);
+    super(injector, iconSrv, router, scroll, menuSrv, settings, el, renderer, doc, _zone);
   }
 
 }

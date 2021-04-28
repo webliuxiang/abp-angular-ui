@@ -34,9 +34,7 @@ import { ImgShowComponent } from './components/img-show/img-show.component';
 import { FileManagerComponent } from './components/file-manager/file-manager.component';
 import { ImgDirective } from './components/img/img.directive';
 import { ProLangsComponent } from './components/pro-langs/pro-langs.component';
-import { QuickChatComponent } from './components/quick-chat/quick-chat.component';
 import { ScrollbarDirective } from './components/scrollbar/scrollbar.directive';
-import { AbpSignalrService } from './auth/abp-signalr.service';
 import { PageGridComponent } from './components/page-grid/page-grid.component';
 import { LookupComponent } from './components/lookup/lookup.component';
 import { FriendProfilePictureComponent } from './components/friend-profile-picture/friend-profile-picture.component';
@@ -76,7 +74,6 @@ const COMPONENTS = [
   UploadUserPortraitComponent,
   FileManagerComponent,
   ProLangsComponent,
-  QuickChatComponent,
   PageGridComponent,
   TableCheckboxPanelComponent,
   ...COMPONENTS_ENTRY,
@@ -152,7 +149,6 @@ export class SharedModule {
         TreeDataHelperService,
         ArrayToTreeConverterService,
         PermissionService,
-        AbpSignalrService,
         { provide: SimplemdeConfig, useValue: SAMPLE_MD_CONFIG },
       ],
     };

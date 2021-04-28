@@ -14,7 +14,6 @@ import { VERSION as VERSION_ZORRO } from 'ng-zorro-antd/version';
 import { TitleService, VERSION as VERSION_ALAIN } from '@delon/theme';
 
 import { preloaderFinished } from '@delon/theme';
-import { SignalRAspNetCoreHelper } from '@shared/helpers/SignalRAspNetCoreHelper';
 preloaderFinished();
 
 @Component({

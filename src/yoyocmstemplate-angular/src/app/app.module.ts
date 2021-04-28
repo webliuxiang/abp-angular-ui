@@ -8,13 +8,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AbpModule } from 'abp-ng2-module';
 import { LayoutModule } from '@layout/layout.module';
 import { ImpersonationService } from '@shared/auth';
-import { NotificationsComponent } from './notifications/notifications.component';
 import { UserNotificationHelper } from '@shared/helpers/UserNotificationHelper';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { registerLocaleData } from '@angular/common';
 import { AppSessionService } from '@shared/session/app-session.service';
 import zh from '@angular/common/locales/zh';
-import { AbpSignalrService } from '@shared/auth/abp-signalr.service';
 import { AppComponent } from '@app/app.component';
 import { SimplemdeModule } from 'ngx-simplemde';
 
@@ -36,7 +34,6 @@ registerLocaleData(zh);
     }),
   ],
   declarations: [
-    NotificationsComponent,
     AppComponent,
   ],
   entryComponents: [],

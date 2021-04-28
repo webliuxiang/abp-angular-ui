@@ -68,12 +68,10 @@ const ICONS = [
 import { environment } from '@env/environment';
 import { AppComponentBase } from '@shared/component-base';
 
-import { SignalRAspNetCoreHelper } from '@shared/helpers/SignalRAspNetCoreHelper';
 import { AppMenus } from 'abpPro/AppMenus';
 import { AppMainMenus } from 'abpPro/AppMainMenus';
 import { AbpProMenusHelper } from '@shared/helpers/AbpProMenusHelper';
 import { AppSessionService } from '@shared/session/app-session.service';
-import { AbpSignalrService } from '@shared/auth/abp-signalr.service';
 
 @Component({
   selector: 'layout-default',
@@ -100,7 +98,6 @@ export class LayoutDefaultComponent extends AppComponentBase implements OnInit, 
     public renderer: Renderer2,
     @Inject(DOCUMENT) public doc: any,
     public _zone: NgZone,
-    public abpSignal: AbpSignalrService,
   ) {
     super(injector);
     iconSrv.addIcon(...ICONS);
@@ -134,7 +131,7 @@ export class LayoutDefaultComponent extends AppComponentBase implements OnInit, 
   }
 
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   ngOnInit() {
     this.notify$ = this.settings.notify.subscribe(_ => this.setClass());
@@ -145,7 +142,6 @@ export class LayoutDefaultComponent extends AppComponentBase implements OnInit, 
 
     if (this.appSession.user) {
       console.log('11111111111111111');
-      this.abpSignal.init();
     }
   }
 
@@ -155,7 +151,6 @@ export class LayoutDefaultComponent extends AppComponentBase implements OnInit, 
 
   initiSignalR() {
     // 连接到signalR
-    SignalRAspNetCoreHelper.initSignalR(() => {});
   }
 
 

@@ -1,21 +1,20 @@
 <div class="alain-pro__progress-bar" *ngIf="isFetching"></div>
 
 <div class="ant-layout ant-layout-has-sider">
-    <nz-sider class="alain-pro__sider alain-pro__sider-fixed" [nzCollapsed]="collapsed" [nzWidth]="256">
-        <layout-sidebar class="alain-pro__aside"></layout-sidebar>
-    </nz-sider>
-    <div class="ant-layout ant-pro-content">
-        <layout-header class="ant-layout-header alain-pro__header"></layout-header>
-        <nz-content class="layout-window">
-            <reuse-tab #reuseTabRef class="layout-tab"></reuse-tab>
-            <nz-content class="layout-content">
-                <router-outlet (activate)="reuseTabRef.activate($event)"></router-outlet>
-            </nz-content>
-        </nz-content>
-    </div>
+  <nz-sider class="alain-pro__sider alain-pro__sider-fixed" [nzCollapsed]="collapsed" [nzWidth]="256">
+    <layout-sidebar class="alain-pro__aside"></layout-sidebar>
+  </nz-sider>
+  <div class="ant-layout ant-pro-content">
+    <layout-header class="ant-layout-header alain-pro__header"></layout-header>
+    <nz-content class="layout-window">
+      <reuse-tab #reuseTabRef class="layout-tab"></reuse-tab>
+      <nz-content class="layout-content">
+        <router-outlet (activate)="reuseTabRef.activate($event)"></router-outlet>
+      </nz-content>
+    </nz-content>
+  </div>
 </div>
 
 <ng-template #settingHost></ng-template>
 
 <nz-back-top></nz-back-top>
-<app-quick-chat (closed)="quickChatVisible = false" *ngIf="quickChatVisible"></app-quick-chat>
