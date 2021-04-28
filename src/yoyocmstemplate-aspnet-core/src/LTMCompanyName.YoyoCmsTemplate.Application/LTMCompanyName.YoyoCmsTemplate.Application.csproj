@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\abpversion.props"></Import>
+  
+  <PropertyGroup>
+    <VersionPrefix>1.0.0.0</VersionPrefix>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AssemblyName>LTMCompanyName.YoyoCmsTemplate.Application</AssemblyName>
+    <PackageId>LTMCompanyName.YoyoCmsTemplate.Application</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RootNamespace>LTMCompanyName.YoyoCmsTemplate</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\LTMCompanyName.YoyoCmsTemplate.Application.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\LTMCompanyName.YoyoCmsTemplate.Application.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Auditing\Background\**" />
+    <Compile Remove="Configuration\Content\**" />
+    <EmbeddedResource Remove="Auditing\Background\**" />
+    <EmbeddedResource Remove="Configuration\Content\**" />
+    <None Remove="Auditing\Background\**" />
+    <None Remove="Configuration\Content\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp.Web.Common" Version="$(AbpVersion)" />
+    <PackageReference Include="Markdig.Signed" Version="0.20.0" />
+    <PackageReference Include="EPPlus" Version="4.5.3.3" />
+    <PackageReference Include="Hangfire" Version="1.7.11" />
+    <PackageReference Include="Hangfire.Console" Version="1.4.2" />
+    <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.6" />
+    <PackageReference Include="Otp.NET" Version="1.2.2" />
+    <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
+    <PackageReference Include="HtmlSanitizer" Version="5.0.310" />
+    <PackageReference Include="GitLabApiClient" Version="1.5.0" />
+    <PackageReference Include="L.52ABP.Application" Version="$(L52abpVersion)" />
+
+  </ItemGroup>
+  <ItemGroup>
+     <!--<ProjectReference Include="..\..\..\..\..\L.52ABP\src\L.52ABP.Application\L.52ABP.Application.csproj" />-->
+    
+    
+    <ProjectReference Include="..\LTMCompanyName.YoyoCmsTemplate.EntityFrameworkCore\LTMCompanyName.YoyoCmsTemplate.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Backgrounds\BackgroundJobs\" />
+  </ItemGroup>
+</Project>

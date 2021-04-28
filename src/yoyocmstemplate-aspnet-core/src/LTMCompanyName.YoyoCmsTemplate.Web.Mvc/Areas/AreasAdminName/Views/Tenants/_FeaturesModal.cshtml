@@ -1,0 +1,17 @@
+﻿@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.Common.Modals
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Models.Common.Modals
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.Tenants.TenantFeaturesEditViewModel
+
+
+@await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("Features") + " - " + Model.Tenant.Name))
+
+<div class="modal-body">
+    @await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/_FeaturesTree.cshtml", Model)
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default pull-left reset-features-button" data-toggle="tooltip" title="@L("ResetFeaturesTooltip")" data-placement="left"><span>@L("ResetSpecialFeatures")</span></button>
+    <button type="button" class="btn default close-button" data-dismiss="modal">@L("Cancel")</button>
+    <button type="button" class="btn btn-primary save-button"><i class="fa fa-save"></i> <span>@L("Save")</span></button>
+</div>
+

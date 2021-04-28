@@ -1,0 +1,51 @@
+{
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  // 确保代码片断优先级高于内置
+  // https://github.com/cipchk/ng-zorro-vscode
+  // "editor.snippetSuggestions": "top",
+  // 保存时自动格式化，需要安装：https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false
+  },
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "[json]": {
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.formatOnSave": false
+  },
+  "files.watcherExclude": {
+    "**/.git/*/**": true,
+    "**/node_modules/*/**": true,
+    "**/dist/*/**": true,
+    "**/coverage/*/**": true
+  },
+  "tslint.autoFixOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.singleQuote": true,
+  "html.format.indentInnerHtml": true,
+  "html.suggest.angular1": false,
+  "vsicons.presets.angular": true,
+  "vsicons.dontShowNewVersionMessage": true,
+  "workbench.iconTheme": "vscode-icons",
+  "vsicons.projectDetection.autoReload": true,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "team.showWelcomeMessage": false,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "gitlens.views.fileHistory.enabled": true,
+  "gitlens.views.lineHistory.enabled": true,
+  "bookmarks.useWorkaroundForFormatters": true,
+  "explorer.compactFolders": false,
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "tslint.packageManager": "yarn",
+   "tslint.suppressWhileTypeErrorsPresent": true
+}

@@ -1,0 +1,32 @@
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# mcr.microsoft.com/dotnet/core/aspnet:3.1
+# mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
+# mcr.microsoft.com/dotnet/core/sdk:3.1
+FROM registry.cn-hangzhou.aliyuncs.com/yoyosoft/dotnet/core/aspnet:3.1 AS base
+RUN sed -i 's/TLSv1.2/TLSv1.0/g' /etc/ssl/openssl.cnf
+WORKDIR /app
+EXPOSE 80
+
+FROM registry.cn-hangzhou.aliyuncs.com/yoyosoft/dotnet/core/sdk:3.1 AS build
+
+WORKDIR /src
+
+COPY ["src/yoyocmstemplate-aspnet-core/src/LTMCompanyName.YoyoCmsTemplate.Web.Host/LTMCompanyName.YoyoCmsTemplate.Web.Host.csproj", "src/LTMCompanyName.YoyoCmsTemplate.Web.Host/"]
+
+COPY ["src/yoyocmstemplate-aspnet-core/src/LTMCompanyName.YoyoCmsTemplate.Web.Core/LTMCompanyName.YoyoCmsTemplate.Web.Core.csproj", "src/LTMCompanyName.YoyoCmsTemplate.Web.Core/"]
+
+COPY ["src/yoyocmstemplate-aspnet-core/src/LTMCompanyName.YoyoCmsTemplate.Application/LTMCompanyName.YoyoCmsTemplate.Application.csproj", "src/LTMCompanyName.YoyoCmsTemplate.Application/"]
+
+COPY ["src/yoyocmstemplate-aspnet-core/src/LTMCompanyName.YoyoCmsTemplate.EntityFrameworkCore/LTMCompanyName.YoyoCmsTemplate.EntityFrameworkCore.csproj", "src/LTMCompanyName.YoyoCmsTemplate.EntityFrameworkCore/"]
+
+COPY ["src/yoyocmstemplate-aspnet-core/src/LTMCompanyName.YoyoCmsTemplate.Core/LTMCompanyName.YoyoCmsTemplate.Core.csproj", "src/LTMCompanyName.YoyoCmsTemplate.Core/"]
+COPY . .
+WORKDIR "/src/src/yoyocmstemplate-aspnet-core/src/LTMCompanyName.YoyoCmsTemplate.Web.Host"
+ 
+FROM build AS publish
+RUN dotnet publish "LTMCompanyName.YoyoCmsTemplate.Web.Host.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "LTMCompanyName.YoyoCmsTemplate.Web.Host.dll"]

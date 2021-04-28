@@ -1,0 +1,30 @@
+<page-header [title]="l('Course')"
+             [action]="actionTemplate">
+    <ng-template #actionTemplate>
+        <button nz-button (click)="create()" *ngIf="isGranted('Pages.Course.Create')">
+            {{l('新增')}}
+        </button>
+        <button nz-button (click)="refresh()">
+            {{l('刷新')}}
+        </button>
+    </ng-template>
+</page-header>
+
+<nz-card [nzBordered]="false">
+
+    <page-filter [pageFilters]="pageInfo.pageFilters"
+                 [displayLabel]="true"
+                 (readyChange)="onFilterReady($event)"
+                 (valueChange)="onFilterChange($event)">
+
+    </page-filter>
+
+    <sample-table [loading]="loading" [page]="pageInfo" [columns]="pageInfo.columns" [data]="pageInfo.viewRecord"
+                  [virtual]="pageInfo.virtual" [virtualItemSize]="pageInfo.virtualItemSize" [scroll]="pageInfo.scroll"
+                  [pageIndex]="pageInfo.index" [pageSize]="pageInfo.size" [total]="pageInfo.totalRecord"
+                  (action)="onAction($event)" (check)="onCheckChange($event)" (sort)="onSortChange($event)"
+                  (pageIndexChange)="onPageIndexChange($event)" (pageSizeChange)="onPageSizeChange($event)">
+
+    </sample-table>
+
+</nz-card>

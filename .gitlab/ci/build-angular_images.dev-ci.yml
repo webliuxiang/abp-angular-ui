@@ -1,0 +1,29 @@
+# 编译angular
+angular-build:
+  image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/node:13.2-alpine
+  stage: build
+  before_script:
+    - cd src/yoyocmstemplate-angular/
+    - echo $(pwd)
+    - ls -lh
+    # - tar -cvf  node_modules.tar node_modules/
+    # - ls -lh
+    # - rm node_modules.tar
+    - npm set progress=false && npm config set depth 0 && npm cache clean --force
+  script:
+    - npm i
+    - npm run build
+  after_script:
+    - echo "删除dist文件夹"
+    - rm -rf dist
+  artifacts:
+    paths:
+      - node_modules/
+  tags:
+    - "angular"
+  only:
+    refs:
+      - develop
+      - develop-mooc
+    changes:
+      - src/yoyocmstemplate-angular/**/**

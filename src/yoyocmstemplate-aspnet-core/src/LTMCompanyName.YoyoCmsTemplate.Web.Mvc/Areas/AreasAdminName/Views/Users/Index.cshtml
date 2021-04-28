@@ -1,0 +1,156 @@
+﻿@using Abp.Application.Services.Dto
+@using LTMCompanyName.YoyoCmsTemplate.Authorization
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Startup
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.Users.UsersViewModel
+@{
+    ViewBag.CurrentPageName = AppAdminPageNames.Common.Users;
+}
+@section Styles
+    {
+    <link rel="stylesheet" href="~/view-resources/Areas/AreasAdminName/Views/Users/index.css" asp-append-version="true" />
+}
+@section Scripts
+    {
+     <script src="~/view-resources/Areas/AreasAdminName/Views/Users/Index.js" asp-append-version="true"></script>
+    <script src="~/view-resources/Areas/AreasAdminName/Views/Common/_OrganizationTree.js"asp-append-version="true"></script>
+}
+
+
+						<div class="subheader py-6 py-lg-8 subheader-transparent" id="kt_subheader">
+   
+        <div class="kt-subheader__main">
+            <h3 class="text-dark font-weight-bold my-1 mr-5">
+              <span>@L("Users")</span>
+            </h3>
+            <span class="kt-subheader__separator kt-hidden"></span>
+            <div class="kt-subheader__breadcrumbs">
+                <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                <span class="kt-subheader__breadcrumbs-separator"></span>
+                <a class="kt-subheader__breadcrumbs-link" href="javascript:void(0)">
+                       @L("UsersHeaderInfo")
+                </a>
+            </div>
+        </div>
+        <div class="kt-subheader__toolbar">
+							<div class="kt-subheader__wrapper">
+                                
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="far fa-file-excel"></i> @L("ExcelOperations")
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" id="ExportUsersToExcelButton" href="#"> @L("ExportToExcel")</a>
+                    <a class="dropdown-item" href="#">
+                        <span class="fileinput-button">
+                            <span>@L("ImportFromExcel")</span>
+                            <input id="ImportUsersFromExcelButton" type="file" name="files" accept=".xlsx, .xls, .csv">
+                        </span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <span class="dropdown-item-text text-muted pl-3" href="#">
+                        <small class="pl-2"> @Html.Raw(L("ImportToExcelSampleFileDownloadInfo", "<a href='" + (ApplicationPath) + "yoyosoft/SampleFiles/ImportUsersSampleFile.xlsx" + "'>" + L("ClickHere") + "</a>"))</small>
+                    </span>
+                
+            </div>
+            @if (IsGranted(YoyoSoftPermissionNames.Pages_Administration_Users_Create))
+            {
+                <button id="CreateNewUserButton" class="btn btn-primary"><i class="fa fa-plus"></i> @L("CreateNewUser")</button>
+            }
+        
+							 
+							</div>
+						</div>
+    </div>
+</div>
+
+
+<div class="kt-content  kt-grid__item kt-grid__item--fluid">
+    <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__body">
+            <div class="kt-form kt-form--label-align-right">
+                <div class="row align-items-center kt-margin-b-10">
+
+                    <div class="col-xl-12">
+                        <div class="form-group kt-form__group align-items-center">
+                            <div class="input-group">
+                                <input type="text" id="UsersTableFilter" class="form-control kt-input" placeholder="@L("SearchWithThreeDot")" value="@Model.FilterText">
+                                <span class="input-group-btn">
+                                    <button id="GetUsersButton" class="btn btn-primary btn-icon" type="submit"><i class="flaticon-search-1" aria-label="@L("Search")"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="AdvacedAuditFiltersArea" style="display: none" class="row kt-margin-b-10">
+                    <div class="@(IsGranted(YoyoSoftPermissionNames.Pages_Administration_Roles) ? "col-xl-6" : "col-xl-12")">
+                        <div class="form-group">
+                            @Html.DropDownList(
+                                    "PermissionSelectionCombobox", Model.Permissions.Select(i => i.ToSelectListItem()),
+                                    new
+                                    {
+                                        @class = "form-control yoyo_select2",
+                                        data_live_search = "true",
+                                        data_none_selected_text = L("FilterByPermission"),
+                                        id = "PermissionSelectionCombo"
+                                    })
+                        </div>
+                    </div>
+                    @if (IsGranted(YoyoSoftPermissionNames.Pages_Administration_Roles))
+                    {
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                @Html.DropDownList(
+                                        "RoleSelectionCombobox", Model.Roles.Select(i => i.ToSelectListItem()),
+                                        new
+                                        {
+                                            @class = "form-control yoyo_select2",
+                                            data_live_search = "true",
+                                            data_none_selected_text = L("FilterByRole"),
+                                            id = "RoleSelectionCombo"
+                                        })
+                            </div>
+                        </div>
+                    }
+                    <div class="col-xl-6">
+                        <div class="kt-checkbox-list">
+                            <label class="kt-checkbox">
+                                <input type="checkbox"
+                                       id="UsersTable_OnlyLockedUsers"
+                                       name="OnlyLockedUsersCheckbox"
+                                       value="true">
+                                @L("OnlyLockedUsers")
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 text-right">
+                        <button id="RefreshUserListButton" class="btn btn-metal "><i class="fa fa-sync"></i> @L("Refresh")</button>
+                    </div>
+                </div>
+                <div class="row kt-margin-b-10">
+                    <div class="col-xl-12">
+                        <span id="ShowAdvancedFiltersSpan" class="text-muted clickable-item"><i class="fa fa-angle-down"></i> @L("ShowAdvancedFilters")</span>
+                        <span id="HideAdvancedFiltersSpan" class="text-muted clickable-item" style="display: none"><i class="fa fa-angle-up"></i> @L("HideAdvancedFilters")</span>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <table id="UsersTable" class="display table table-striped- table-bordered table-hover table-checkable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@L("Actions")</th>
+                            <th>@L("UserName")</th>
+                           
+                            <th>@L("Roles")</th>
+                            <th>@L("EmailAddress")</th>
+                            <th>@L("EmailConfirm")</th>
+                            <th>@L("Active")</th>
+                            <th>@L("CreationTime")</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

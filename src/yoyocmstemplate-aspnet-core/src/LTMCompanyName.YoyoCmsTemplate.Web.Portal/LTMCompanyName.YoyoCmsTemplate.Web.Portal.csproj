@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <Import Project="..\..\abpversion.props"></Import>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <TypeScriptToolsVersion>3.3</TypeScriptToolsVersion>
+    <UserSecretsId>07308f5c-6c1f-4b72-a360-faff1fab107f</UserSecretsId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;TS6053</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Models\Blog\**" />
+    <Content Remove="Models\Blog\**" />
+    <EmbeddedResource Remove="Models\Blog\**" />
+    <None Remove="Models\Blog\**" />
+    <TypeScriptCompile Remove="Models\Blog\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\Common\Scripts\_empty.js" />
+    <None Include="wwwroot\Common\Styles\core.less" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.QQ" Version="3.1.6" />
+
+
+    <PackageReference Include="Abp.Castle.Log4Net" Version="$(AbpVersion)" />
+    
+  
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    
+  
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.8.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\L.52ABP.Web.FrontView\L.52ABP.Web.FrontView.csproj" />
+    <ProjectReference Include="..\LTMCompanyName.YoyoCmsTemplate.Web.Core\LTMCompanyName.YoyoCmsTemplate.Web.Core.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Common\Images\SampleProfilePics\" />
+    <Folder Include="wwwroot\view-resources\Views\" />
+  </ItemGroup>
+
+
+  <ProjectExtensions><VisualStudio><UserProperties bundles_1json__JsonSchema="http://json.schemastore.org/coffeelint" /></VisualStudio></ProjectExtensions>
+
+</Project>

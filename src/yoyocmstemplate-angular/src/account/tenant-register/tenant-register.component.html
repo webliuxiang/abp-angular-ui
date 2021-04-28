@@ -1,0 +1,121 @@
+<!-- 表单输入错误模板 -->
+<ng-template #errorTpl let-control>
+    <validation-messages [formCtrl]="control"></validation-messages>
+</ng-template>
+
+<div [@routerTransition]>
+    <nz-spin [nzTip]="l('Registering')" [nzSpinning]="saving">
+
+        <nz-alert nzType="info" [nzMessage]="this.l('请注意，租户编码具备唯一性，不可重复')"></nz-alert>
+
+        <form nz-form #validateForm="ngForm" (ngSubmit)="save()" autocomplete="off">
+            <!-- 租户名称 /Code-->
+            <nz-form-item>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                    <nz-input-group [nzPrefix]="nzPrefixIconCloud">
+                        <input nz-input type="text" name="tenancyName" #tenancyName="ngModel"
+                               [(ngModel)]="model.tenancyName"
+                               [placeholder]="l('TenancyCodeName')" required
+                               expression="^[a-zA-Z][a-zA-Z0-9_-]{1,}$"/>
+                    </nz-input-group>
+                    <ng-template #nzPrefixIconCloud>
+                                 <span class="iconfont icon-cloud"
+                                       style="color: rgba(0, 0, 0, 0.25);"></span>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 租户名称 -->
+            <nz-form-item>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                    <nz-input-group [nzPrefix]="nzPrefixIconUser">
+                        <input nz-input name="displayTenancyName" #displayTenancyNameInput="ngModel"
+                               [(ngModel)]="model.name"
+                               [placeholder]="l('DisplayTenancyName')" required maxlength="32"/>
+                    </nz-input-group>
+                    <ng-template #nzPrefixIconUser>
+                            <span class="iconfont icon-user"
+                                  style="color: rgba(0, 0, 0, 0.25);"></span>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 管理员账号（可空） -->
+            <nz-form-item>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                    <nz-input-group [nzPrefix]="nzPrefixIconUser">
+                        <input nz-input name="adminUserName" #adminUserNameInput="ngModel"
+                               [(ngModel)]="model.userName"
+                               [placeholder]="l('AdminUserName')" required maxlength="32"/>
+                    </nz-input-group>
+                    <ng-template #nzPrefixIconUser>
+                              <span class="iconfont icon-user"
+                                    style="color: rgba(0, 0, 0, 0.25);"></span>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 管理员邮箱 -->
+            <nz-form-item>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                    <nz-input-group [nzPrefix]="nzPrefixIconMail">
+                        <input nz-input type="email" name="adminEmailAddress" #adminEmailAddress="ngModel"
+                               [(ngModel)]="model.adminEmailAddress" [placeholder]="l('AdminEmailAddress')" required
+                               email/>
+                    </nz-input-group>
+                    <ng-template #nzPrefixIconMail><span class="iconfont icon-mail"
+                                                         style="color: rgba(0, 0, 0, 0.25);"></span>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 管理员密码 -->
+            <nz-form-item>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                    <nz-input-group [nzPrefix]="nzPrefixIconLock">
+                        <input nz-input type="password" name="tenantAdminPassword" #tenantAdminPassword="ngModel"
+                               [(ngModel)]="model.tenantAdminPassword" [placeholder]="l('Password')" required
+                               maxlength="32"
+                               minlength="6"/>
+                    </nz-input-group>
+                    <ng-template #nzPrefixIconLock>
+                            <span class="iconfont icon-lock"
+                                  style="color: rgba(0, 0, 0, 0.25);"></span>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 验证码 -->
+            <nz-form-item *ngIf="useCaptcha">
+                <nz-form-control>
+                    <yoyo-captcha #captcha name="verificationCode" #verificationCodeInput="ngModel"
+                                  [(ngModel)]="model.verificationCode"
+                                  [key]="model.tenancyName"
+                                  [captchaType]="captchaType"
+                                  [timestamp]="captchaTimestamp"
+                                  required>
+                    </yoyo-captcha>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 功能按钮 -->
+            <button nz-button [nzType]="'primary'" [nzLoading]="saving" class="yoyo__block" type="submit"
+                    [disabled]="!validateForm.valid || saving">
+                <i class="iconfont icon-login"></i>
+                <span>{{ l('Register') }}</span>
+            </button>
+        </form>
+
+        <div nz-row>
+            <div nz-col [nzSpan]="12"></div>
+            <div nz-col  [nzSpan]="12" class="text-right">
+                <a (click)="back()">{{ l('Back') }}</a>
+            </div>
+        </div>
+
+        <p class="register-protocal">
+            点击“注册”，即代表你同意<a href="/" target="_blank">《服务协议》</a>
+        </p>
+
+    </nz-spin>
+</div>

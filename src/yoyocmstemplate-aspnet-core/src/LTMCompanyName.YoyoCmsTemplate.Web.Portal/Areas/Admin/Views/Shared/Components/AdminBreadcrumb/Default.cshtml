@@ -1,0 +1,96 @@
+@using Abp.Timing
+<!-- Breadcrumb Section -->
+<div class="bg-primary">
+    <div class="container space-top-1 pb-3">
+        <div class="row">
+            <div class="col-lg-5 order-lg-2 text-lg-right mb-4 mb-lg-0">
+                <div class="d-flex d-lg-inline-block justify-content-between justify-content-lg-end align-items-center align-items-lg-start">
+                    <!-- Breadcrumb -->
+                    <ol class="breadcrumb breadcrumb-white breadcrumb-no-gutter mb-0">
+                        <li class="breadcrumb-item">
+                            <a class="breadcrumb-link" href="/">@L("Home")</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a class="breadcrumb-link" href="@($"{Context.Request.Scheme}://{Context.Request.Host}/{Model.AreaName}/")">我的账户</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+                    </ol>
+                    <!-- End Breadcrumb -->
+                    <!-- Breadcrumb Nav Toggle Button -->
+                    <div class="d-lg-none">
+                        <button type="button" class="navbar-toggler btn u-hamburger u-hamburger--white"
+                                aria-label="Toggle navigation"
+                                aria-expanded="false"
+                                aria-controls="breadcrumbNavBar"
+                                data-toggle="collapse"
+                                data-target="#breadcrumbNavBar">
+                            <span id="breadcrumbHamburgerTrigger" class="u-hamburger__box">
+                                <span class="u-hamburger__inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                    <!-- End Breadcrumb Nav Toggle Button -->
+                </div>
+            </div>
+
+            <div class="col-lg-7 order-lg-1">
+                <!-- User Info -->
+                <div class="media d-block d-sm-flex align-items-sm-center">
+                    <div class="u-lg-avatar position-relative mb-3 mb-sm-0 mr-3">
+
+                        <img class="img-fluid rounded-circle" src="@Url.Action("GetProfilePicture", "Profile", new {area = string.Empty})?t=@Clock.Now.Ticks.ToString()" alt="个人头像">
+
+                        <span class="badge badge-md badge-outline-success badge-pos badge-pos--bottom-right rounded-circle">
+                            <span class="fas fa-check"></span>
+                        </span>
+                    </div>
+                    <div class="media-body">
+                        <h1 class="h3 text-white font-weight-medium mb-1">@AbpSession.GetUserName()</h1>
+                        <span class="d-block text-white">@AbpSession.GetUserEmail()</span>
+                    </div>
+                </div>
+                <!-- End User Info -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container space-bottom-1 space-bottom-lg-0">
+        <div class="d-lg-flex justify-content-lg-between align-items-lg-center">
+            <!-- Navbar -->
+            <div class="u-header u-header-left-aligned-nav u-header--bg-transparent-lg u-header--white-nav-links z-index-4">
+                <div class="u-header__section bg-transparent">
+                    <nav class="js-breadcrumb-menu navbar navbar-expand-lg u-header__navbar u-header__navbar--no-space hs-menu-initialized hs-menu-horizontal">
+                        <div id="breadcrumbNavBar" class="collapse navbar-collapse u-header__navbar-collapse">
+                            <ul class="navbar-nav u-header__navbar-nav">
+
+                                <!-- Others -->
+                                <li class="nav-item u-header__nav-item">
+                                    <a class="nav-link u-header__nav-link" href="@Url.Action("Index", "Home")">工作台</a>
+                                </li>
+                                <li class="nav-item u-header__nav-item">
+                                    <a class="nav-link u-header__nav-link" href="@Url.Action("MyVip", "Home")">我的订阅</a>
+                                </li>
+                                <li class="nav-item u-header__nav-item">
+                                    <a class="nav-link u-header__nav-link" href="@Url.Action("OrderList", "Home")">我的订单</a>
+                                </li>
+                                <li class="nav-item u-header__nav-item">
+                                    <a class="nav-link u-header__nav-link" href="@Url.Action("Settings", "Home")">我的设置</a>
+                                </li>
+                                <!-- Others -->
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- End Navbar -->
+
+            <div class="ml-lg-auto">
+                <!-- Button -->
+
+                <!-- End Button -->
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- End Breadcrumb Section -->

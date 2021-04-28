@@ -1,0 +1,61 @@
+<div class='modal-header'>
+  <div class='modal-title'>{{l('Statistics')}}</div>
+</div>
+
+<nz-spin [nzSpinning]="!entitys">
+
+  <nz-table #ajaxTable *ngIf="entitys" [nzData]="entitys">
+    <thead>
+      <tr>
+        <th>{{l('CourseName')}}</th>
+        <th>{{l('SaleCount')}}</th>
+        <th>{{l('TotalTransactions')}}</th>
+        <th>{{l('ServiceCharge')}}</th>
+        <th>{{l('RealityAmount')}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of ajaxTable.data">
+        <td>
+          {{item.key}}
+        </td>
+        <td>
+          {{item.buyCount}}
+        </td>
+        <td>
+          {{item.sum}}
+        </td>
+        <td>
+          {{item.serviceCharge}}
+        </td>
+        <td>
+          {{item.value}}
+        </td>
+      </tr>
+      <tr style="font-weight:600;">
+        <td>
+          合计
+        </td>
+        <td>
+
+        </td>
+        <td>
+          {{getAllSum()}}
+        </td>
+        <td>
+          {{getAllServiceCharge()}}
+        </td>
+        <td>
+          {{getAllValue()}}
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-spin>
+
+<!-- 功能按钮 -->
+<div class='modal-footer'>
+  <button nz-button type="button" (click)="close()">
+    {{l("Cancel")}}
+  </button>
+</div>

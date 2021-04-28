@@ -1,0 +1,49 @@
+﻿@import '~@delon/theme/index';
+
+:host {
+  ::ng-deep {
+
+    .account-left {
+      align-items: center;
+      padding: 48px;
+      height: 100vh;
+
+      .text {
+        position: relative;
+        padding: 0 64px;
+        color: #fff;
+
+        h1 {
+          margin-bottom: 24px;
+          color: #fff;
+          font-weight: 900;
+          font-size: 56px;
+        }
+
+        p {
+          font-size: 22px;
+          line-height: 32px;
+        }
+      }
+    }
+
+    .account-right {
+      margin: auto;
+
+      app-tenant-register,
+      app-register,
+      app-forgot-password,
+      app-reset-password,
+      app-login,
+      app-login-callback,
+      app-activation {
+        display: block;
+        margin: 20px 20px 0px 20px;
+      }
+
+      nz-alert {
+        margin-bottom: 24px;
+      }
+    }
+  }
+}

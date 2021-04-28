@@ -1,0 +1,21 @@
+@using System.Text.Encodings.Web
+@using Abp.Extensions
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Models.Common.Modals
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Views.Shared.Components.AccountLanguages.LanguageSelectionViewModel
+
+@if (Model.Languages.Count > 1)
+{
+    <div class="language-switch-area ml-1 mx-auto">
+        @foreach (var languageInfo in Model.Languages)
+        {
+            <a href="~/AbpLocalization/ChangeCulture?cultureName=@(languageInfo.Name)&returnUrl=@(UrlEncoder.Default.Encode(Context.Request.Path + Context.Request.QueryString))">
+
+                <span class="language-icon @(languageInfo == Model.CurrentLanguage ? "language-icon-current" : "")" title="@languageInfo.DisplayName">
+                    <i class="@languageInfo.Icon"></i>
+                </span>
+            </a>
+
+        }
+    </div>
+
+}

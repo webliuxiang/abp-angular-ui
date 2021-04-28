@@ -1,0 +1,17 @@
+<div class="alain-pro__progress-bar" *ngIf="isFetching"></div>
+
+<div class="ant-layout">
+    <theme-one-header class="ant-layout-header alain-pro__header"></theme-one-header>
+    <!--    <theme-one-sidebar class="alain-pro__aside"></theme-one-sidebar>-->
+    <nz-content class="layout-window">
+        <reuse-tab #reuseTabRef class="layout-tab"></reuse-tab>
+        <nz-content class="layout-content yoyo-layout-content-theme-one">
+            <router-outlet (activate)="reuseTabRef.activate($event)"></router-outlet>
+        </nz-content>
+    </nz-content>
+</div>
+
+<ng-template #settingHost></ng-template>
+
+<nz-back-top></nz-back-top>
+<app-quick-chat (closed)="quickChatVisible = false" *ngIf="quickChatVisible"></app-quick-chat>

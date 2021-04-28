@@ -1,0 +1,110 @@
+# 定义stages
+stages:
+  - devModule
+  - build
+  - deploy
+
+before_script:
+  - $buildFolder = (Get-Item -Path "./" -Verbose).FullName
+  - $slnFolder = Join-Path $buildFolder "src/yoyocmstemplate-aspnet-core"
+  - $webHostFolder = Join-Path $slnFolder "src/LTMCompanyName.YoyoCmsTemplate.Web.Host"
+  - $MigrationFolder =Join-Path $slnFolder "tools/LTMCompanyName.YoyoCmsTemplate.Migrator"
+  - $ngFolder = Join-Path $buildFolder "src/yoyocmstemplate-angular"
+  - $nodeModuleFolder = Join-Path $ngFolder "node_modules"
+  - Set-Location / # 回到盘符根目录
+  - $rootFolder = (Get-Item -Path "./" -Verbose).FullName ##获取当前盘符目录
+  - $outputFolder = Join-Path $rootFolder "publish" ## 设置publish 文件夹
+  - $endOutputFolder = Join-Path $outputFolder "Host"
+  - $fontOutputFolder = (Join-Path $outputFolder "ng")
+  - Set-Location $buildFolder
+  - chcp 65001
+  - echo "开始执行命令"
+
+after_script: # 步骤执行完成后，无论成功还是失败都会执行
+  - echo "命令执行完成"
+
+## 开发阶段：编译后端与前端
+
+## 拆成两个脚本的目的，是可以分配给多个流水线，让他们进行同时编译项目可以快速提升速度。
+
+构建前端_Build_Angular:
+  stage: devModule
+  only:
+    refs:
+      - develop ## 仅在develop分支触发
+      - merge_requests ##仅合并时触发
+    changes:
+      - src/yoyocmstemplate-angular/**/**
+  tags:
+    - nuget ## 国外的服务器
+  script:
+    - echo "start build Angular"
+      - .\build\dev\build_Angular.ps1
+    - echo "build Angular project finished"
+
+构建后端_Build_Dotnet:
+  stage: devModule
+  only:
+    refs:
+      - merge_requests
+      - develop ## 仅在develop分支触发
+    changes:
+      - src/yoyocmstemplate-aspnet-core/**/**
+  tags:
+    - nuget ## 百度云服务器==
+  script:
+    - echo "start build DotnetCore"
+    - .\build\dev\build_DotnetCore.ps1
+    - echo "build DotnetCore project finished"
+
+## 正式发布到系统中的时候
+
+Build_Migration:
+  stage: deploy
+  only:
+    - develop-mooc
+  tags:
+    - pro
+  script:
+    - echo "start build build_migration"
+    - .\build\dev\build_migration.ps1
+    - dotnet run -q
+    - echo "build build_migration project finished"
+
+##  仅在master分支发生变化时 进行deploy 部署
+
+deploy_Host:
+  stage: deploy
+  script:
+    - echo "start build_api.ps1"
+    - .\build\build_api.ps1
+    - echo "build_api.ps1 finsh"
+  only:
+    - master
+  tags:
+    - pro ## Prod服务器
+
+deploy_Angular:
+  stage: deploy
+  script:
+    - echo "start build_web.ps1"
+    - .\build\build_web.ps1
+    - echo "build_web.ps1 finsh"
+  only:
+    - master
+  tags:
+    - pro ## Prod服务器
+
+solo_deploy_prod:
+  stage: deploy
+  script:
+    - .\build\build_api.ps1
+    - echo "build_api.ps1 finsh"
+    - echo "start build_web.ps1"
+    - .\build\build_web.ps1
+    - echo "Deploy to production server"
+  when: manual
+  only:
+    - master
+  tags:
+    - pro ## Prod服务器

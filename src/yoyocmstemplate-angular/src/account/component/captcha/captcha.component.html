@@ -1,0 +1,25 @@
+<div nz-row>
+    <div nz-col [nzSpan]="12">
+        <nz-input-group [nzPrefix]="nzPrefixIconPicture">
+            <input nz-input
+                   name="captcha"
+                   [(ngModel)]="value"
+                   [placeholder]="placeholder"
+                   type="text"
+                   (focus)="onInputFocusChange(true)"
+                   (blur)="onInputFocusChange(false)"
+                   (ngModelChange)="emitValueChange($event)"
+            >
+        </nz-input-group>
+
+        <ng-template #nzPrefixIconPicture><span class="iconfont icon-image" style="color: rgba(0, 0, 0, 0.25);"></span>
+        </ng-template>
+
+
+    </div>
+    <div nz-col [nzSpan]="12" class="text-right">
+        <img (click)="onImageClick()" [src]="captchaUrl" *ngIf="captchaUrl">
+    </div>
+</div>
+
+

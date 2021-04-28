@@ -1,0 +1,84 @@
+#angular镜像开发版本
+docker-angular-dev:
+  image: docker:19.03.12
+  stage: build_images_dev
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-ng:dev  -f ./src/yoyocmstemplate-angular/Dockerfile.ng.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-ng:dev
+  tags:
+    - angular
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_COMMIT_BRANCH == "develop-mooc"'
+  dependencies:
+    - angular-build
+
+# 开发环境的docker镜像制作
+docker-host-dev:
+  image: docker:19.03.12
+  stage: build_images_dev
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-host:dev  -f ./src/yoyocmstemplate-aspnet-core/src/LTMCompanyName.YoyoCmsTemplate.Web.Host/Dockerfile.host.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-host:dev
+  tags:
+    - dotnet
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_COMMIT_BRANCH == "develop-mooc"'
+  dependencies:
+    - dotnet-build
+## 迁移工具镜像
+docker-migrator-dev:
+  image: docker:19.03.12
+  stage: build_images_dev
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-migrator:dev  -f ./src/yoyocmstemplate-aspnet-core/tools/LTMCompanyName.YoyoCmsTemplate.Migrator/Dockerfile.migrator.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-migrator:dev
+  tags:
+    - dotnet
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_COMMIT_BRANCH == "develop-mooc"'
+  dependencies:
+    - dotnet-build
+#vue 镜像开发版本
+docker-vue-dev:
+  image: docker:19.03.12
+  stage: build_images_dev
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-vue:dev  -f ./src/yoyocmstemplate-vue/Dockerfile.vue.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-vue:dev
+  after_script:
+    - echo "删除dist文件夹"
+    - rm -rf src/yoyocmstemplate-vue/dist
+  tags:
+    - "vue"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_COMMIT_BRANCH == "develop-mooc"'
+  dependencies:
+    - vue-build

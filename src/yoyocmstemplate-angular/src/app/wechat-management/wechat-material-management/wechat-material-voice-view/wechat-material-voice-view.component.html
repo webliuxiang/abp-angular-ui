@@ -1,0 +1,88 @@
+<nz-card [nzBordered]="false">
+  <div class="mb-md">
+    <!-- 操作常规按钮部分 如： 添加、批量删除、导出Excel表 -->
+    <nz-row nzGutter="8">
+      <nz-col nzMd="20" nzSm="12" class="btn-gutter">
+        <button nz-button [nzType]="'primary'" (click)="create()">
+          <i class="iconfont icon-plus"></i>
+          <span>
+            {{ l('Create') }}
+          </span>
+        </button>
+        <button nz-button [nzType]="'danger'" (click)="batchDelete()">
+          <i class="iconfont icon-delete"></i>
+          <span>
+            {{ l('BatchDelete') }}
+          </span>
+        </button>
+      </nz-col>
+    </nz-row>
+  </div>
+
+  <div class="my-md">
+    <nz-alert [nzType]="'info'" [nzShowIcon]="true" [nzMessage]="message">
+      <ng-template #message>
+        <!-- <span [innerHTML]="l('GridSelectedXItemsTips',selectedDataItems.length)"></span>
+          <a (click)="restCheckStatus(dataList)" class="ml-md">
+            {{l('ClearEmpty')}}
+          </a> -->
+        <nz-divider nzType="vertical"></nz-divider>
+        <a (click)="refreshGoFirstPage()">
+          {{ l('Refresh') }}
+        </a>
+      </ng-template>
+    </nz-alert>
+  </div>
+</nz-card>
+
+<nz-card [nzBordered]="false" style="margin-top: -52px;">
+  <nz-list
+    [nzDataSource]="dataList"
+    [nzRenderItem]="itemTemplate"
+    [nzGrid]="{ gutter: 16, xs: 24, sm: 12, md: 5, lg: 5, xl: 4 }"
+  >
+    <ng-template #itemTemplate let-item>
+      <nz-list-item>
+        <nz-card nzHoverable style="width:100%;" [nzActions]="[deleteTemplate]">
+          <nz-card-meta
+            nz-tooltip
+            [nzTitle]="item.name"
+            [nzTooltipTitle]="item.name"
+            [nzDescription]="item.update_time | _moment"
+          >
+          </nz-card-meta>
+
+          <ng-template #deleteTemplate>
+            <a
+              nz-popconfirm
+              [nzPopconfirmTitle]="l('ConfirmDeleteWarningMessage')"
+              (nzOnConfirm)="delete(item)"
+              [nzOkText]="l('Ok')"
+              [nzCancelText]="l('Cancel')"
+            >
+              <i class="iconfont icon-delete mr-sm"></i>
+              <span>{{ l('Delete') }}</span>
+            </a>
+          </ng-template>
+        </nz-card>
+      </nz-list-item>
+    </ng-template>
+  </nz-list>
+
+  <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+  <div style="float: right;">
+    <ng-template #showTotalTemplate let-total let-range="range">
+      {{ l('GridFooterDisplayText', pageNumber, totalPages, total, range[0], range[1]) }}
+    </ng-template>
+    <nz-pagination
+      [(nzPageIndex)]="pageNumber"
+      [nzTotal]="totalItems"
+      [nzShowTotal]="showTotalTemplate"
+      [nzPageSizeOptions]="[5, 10, 15, 20]"
+      nzShowQuickJumper
+      nzShowSizeChanger
+      (nzPageIndexChange)="pageNumberChange()"
+      (nzPageSizeChange)="refresh()"
+    ></nz-pagination>
+  </div>
+</nz-card>

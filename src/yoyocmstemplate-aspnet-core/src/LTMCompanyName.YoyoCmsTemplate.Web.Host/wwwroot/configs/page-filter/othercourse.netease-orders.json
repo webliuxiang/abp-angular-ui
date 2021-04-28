@@ -1,0 +1,63 @@
+[
+  {
+    "field": "productName",
+    "operator": "Contains",
+    "skipValueIsNull": true,
+    "order": 0,
+    "label": "产品名称",
+    "componentName": "sample-input",
+    "args": {
+      "type": "text"
+    },
+    "valueChange": [],
+    "enabled": true,
+    "width": 6,
+    "xsWidth": null,
+    "smWidth": null,
+    "mdWidth": null,
+    "lgWidth": null,
+    "xlWidth": null,
+    "xxlWidth": null
+  },
+  {
+    "field": "orderNo",
+    "operator": "Contains",
+    "skipValueIsNull": true,
+    "order": 0,
+    "label": "订单编号",
+    "componentName": "sample-input",
+    "args": {
+      "type": "text"
+    },
+    "valueChange": [],
+    "enabled": true,
+    "width": 6,
+    "xsWidth": null,
+    "smWidth": null,
+    "mdWidth": null,
+    "lgWidth": null,
+    "xlWidth": null,
+    "xxlWidth": null
+  },
+  {
+    "field": "orderDate",
+    "operator": "BetweenEqualStartAndEnd",
+    "skipValueIsNull": true,
+    "order": 0,
+    "label": "付款时间",
+    "componentName": "sample-date",
+    "args": {
+      "defaultRanges": [ 3, 7,30 ]
+    },
+    "valueChange": [],
+    "enabled": true,
+    "width": 8,
+    "xsWidth": null,
+    "smWidth": null,
+    "mdWidth": null,
+    "lgWidth": null,
+    "xlWidth": null,
+    "xxlWidth": null
+  }
+ 
+]

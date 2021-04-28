@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "LTMCompanyName.YoyoCmsTemplate.Migrator": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

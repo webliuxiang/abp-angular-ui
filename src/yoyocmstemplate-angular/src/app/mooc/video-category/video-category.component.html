@@ -1,0 +1,46 @@
+<page-header [title]="l('VideoCategory')"></page-header>
+
+<div nz-row [nzGutter]="32">
+  <div nz-col nzMd="24" nzLg="12">
+    <nz-card [nzTitle]="l('VideoCategory')" [nzExtra]="extraTpl">
+      <ng-template #extraTpl>
+        <button (click)="add(null)" nz-button nzSize="small">添加媒体资源分类</button>
+        <button (click)="fetchData()" nz-button nzSize="small">刷新</button>
+      </ng-template>
+      <div *ngIf="data.length > 0" scrollbar class="position-relative">
+        <nz-tree
+          [nzData]="data"
+          [nzDraggable]="true"
+          (nzClick)="show($event)"
+          (nzContextMenu)="showContextMenu($event, contextMenu)"
+        >
+        </nz-tree>
+      </div>
+    </nz-card>
+  </div>
+
+  <div nz-col nzMd="24" nzLg="12" *ngIf="op">
+    <nz-card
+      [nzTitle]="op === 'view' ? '查看分类：' + item.cateName : item.cateId > 0 ? '编辑 #' + item.cateName : '新增'"
+    >
+      <sv-container *ngIf="op === 'view'" col="2">
+        <sv label="名称">{{ item.cateName }}</sv>
+        <sv label="真实分类Id">{{ item.cateId }}</sv>
+      </sv-container>
+      <sf *ngIf="op === 'edit'" [schema]="schema" [formData]="item" (formSubmit)="save($event)"></sf>
+    </nz-card>
+  </div>
+</div>
+
+<ng-template #contextMenu>
+  <ul nz-menu nzInDropDown style="position: fixed; ">
+    <li nz-menu-item (click)="edit()">修改</li>
+    <li nz-menu-item [nzDisabled]="delDisabled">
+      <div *ngIf="!delDisabled" nz-popconfirm [nzPopconfirmTitle]="delMsg" (nzOnConfirm)="del()">
+        删除
+      </div>
+      <div *ngIf="delDisabled">删除</div>
+    </li>
+    <li nz-menu-item (click)="add(item)">添加子项</li>
+  </ul>
+</ng-template>

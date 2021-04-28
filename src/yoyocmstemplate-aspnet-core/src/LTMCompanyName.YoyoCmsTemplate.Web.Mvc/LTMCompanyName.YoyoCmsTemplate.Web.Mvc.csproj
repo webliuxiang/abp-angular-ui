@@ -1,0 +1,327 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <Import Project="..\..\abpversion.props"></Import>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <TypeScriptToolsVersion>3.3</TypeScriptToolsVersion>
+    <LangVersion>7.3</LangVersion> 
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\AreasAdminName\Pages\**" />
+    <Compile Remove="wwwroot\keen\dist\**" />
+    <Content Remove="Areas\AreasAdminName\Pages\**" />
+    <Content Remove="wwwroot\keen\dist\**" />
+    <EmbeddedResource Remove="Areas\AreasAdminName\Pages\**" />
+    <EmbeddedResource Remove="wwwroot\keen\dist\**" />
+    <None Remove="Areas\AreasAdminName\Pages\**" />
+    <None Remove="wwwroot\keen\dist\**" />
+    <TypeScriptCompile Remove="wwwroot\keen\dist\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+    <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\view-resources\Views\Account\Login.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\view-resources\Areas\AreasAdminName\Views\Common\_FeaturesTree.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\view-resources\Areas\AreasAdminName\Views\Maintenance\Index.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\view-resources\Areas\AreasAdminName\Views\OrganizationUnits\Index.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\view-resources\Views\Account\Login.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Abp.Castle.Log4Net" Version="$(AbpVersion)" />
+    <PackageReference Include="AspNetCore.Authentication.QQ" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.8.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    
+   
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LTMCompanyName.YoyoCmsTemplate.Web.Core\LTMCompanyName.YoyoCmsTemplate.Web.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\AreasAdminName\ViewModels\Layout\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Error\Error.cshtml" />
+    <None Include="Views\Error\Error403.cshtml" />
+    <None Include="Views\Error\Error404.cshtml" />
+    <None Include="Views\Error\_Layout.cshtml" />
+    <None Include="Views\Error\_ViewStart.cshtml" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\inbox\inbox.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\inbox\inbox.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\login\login-3.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\login\login-3.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\login\login.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\login\login.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\profile\profile.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\profile\profile.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\user\add-user.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\user\add-user.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\user\edit-user.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\user\edit-user.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\user\list-datatable.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\user\list-datatable.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\wizard\wizard-1.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\wizard\wizard-1.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\wizard\wizard-2.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\wizard\wizard-2.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\wizard\wizard-3.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\wizard\wizard-3.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\wizard\wizard-4.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\wizard\wizard-4.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\wizard\wizard-5.js" />
+    <None Include="wwwroot\keen\assets\js\pages\custom\wizard\wizard-5.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\base\dropdown.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\base\dropdown.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\calendar\background-events.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\calendar\background-events.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\calendar\basic.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\calendar\basic.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\calendar\external-events.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\calendar\external-events.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\calendar\google.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\calendar\google.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\calendar\list-view.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\calendar\list-view.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\cards\draggable.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\cards\draggable.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\cards\tools.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\cards\tools.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\amcharts\charts.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\amcharts\charts.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\amcharts\maps.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\amcharts\maps.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\amcharts\stock-charts.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\amcharts\stock-charts.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\apexcharts.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\apexcharts.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\flotcharts.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\flotcharts.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\google-charts.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\charts\google-charts.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\custom\spinners.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\custom\spinners.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\column-rendering.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\column-rendering.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\column-visibility.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\column-visibility.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\footer-callback.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\footer-callback.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\multiple-controls.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\multiple-controls.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\row-callback.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\row-callback.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\row-grouping.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\advanced\row-grouping.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\basic\basic.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\basic\basic.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\basic\headers.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\basic\headers.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\basic\paginations.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\basic\paginations.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\basic\scrollable.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\basic\scrollable.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\data-sources\ajax-client-side.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\data-sources\ajax-client-side.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\data-sources\ajax-server-side.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\data-sources\ajax-server-side.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\data-sources\html.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\data-sources\html.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\data-sources\javascript.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\data-sources\javascript.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\buttons.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\buttons.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\colreorder.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\colreorder.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\fixedcolumns.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\fixedcolumns.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\fixedheader.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\fixedheader.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\keytable.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\keytable.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\responsive.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\responsive.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\rowgroup.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\rowgroup.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\rowreorder.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\rowreorder.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\scroller.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\scroller.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\select.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\extensions\select.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\search-options\advanced-search.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\search-options\advanced-search.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\search-options\column-search.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\datatables\search-options\column-search.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\file-upload\dropzonejs.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\file-upload\dropzonejs.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\file-upload\image-input.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\file-upload\image-input.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\file-upload\uppy.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\file-upload\uppy.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\bootstrap-markdown.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\bootstrap-markdown.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\ckeditor-balloon-block.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\ckeditor-balloon-block.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\ckeditor-balloon.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\ckeditor-balloon.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\ckeditor-classic.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\ckeditor-classic.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\ckeditor-document.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\ckeditor-document.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\ckeditor-inline.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\ckeditor-inline.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\quill.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\quill.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\summernote.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\summernote.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\tinymce.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\editors\tinymce.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\validation\form-controls.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\validation\form-controls.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\validation\form-widgets.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\validation\form-widgets.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\autosize.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\autosize.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-datepicker.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-datepicker.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-daterangepicker.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-daterangepicker.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-datetimepicker.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-datetimepicker.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-maxlength.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-maxlength.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-multipleselectsplitter.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-multipleselectsplitter.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-select.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-select.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-switch.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-switch.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-timepicker.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-timepicker.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-touchspin.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\bootstrap-touchspin.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\clipboard.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\clipboard.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\form-repeater.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\form-repeater.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\google-recaptcha.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\google-recaptcha.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\input-mask.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\input-mask.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\ion-range-slider.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\ion-range-slider.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\nouislider.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\nouislider.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\select2.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\select2.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\tagify.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\tagify.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\typeahead.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\forms\widgets\typeahead.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\column-rendering.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\column-rendering.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\column-width.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\column-width.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\horizontal.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\horizontal.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\modal.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\modal.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\record-selection.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\record-selection.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\row-details.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\row-details.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\vertical.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\advanced\vertical.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\api\events.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\api\events.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\api\methods.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\api\methods.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\data-ajax.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\data-ajax.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\data-json.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\data-json.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\data-local.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\data-local.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\html-table.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\html-table.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\local-sort.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\local-sort.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\translation.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\base\translation.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\child\data-ajax.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\child\data-ajax.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\child\data-local.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\ktdatatable\child\data-local.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\maps\google-maps.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\maps\google-maps.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\maps\jqvmap.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\maps\jqvmap.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\maps\jvectormap.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\maps\jvectormap.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\maps\leaflet.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\maps\leaflet.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\blockui.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\blockui.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\bootstrap-notify.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\bootstrap-notify.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\cropper.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\cropper.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\dual-listbox.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\dual-listbox.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\idle-timer.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\idle-timer.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\kanban-board.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\kanban-board.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\perfect-scrollbar.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\perfect-scrollbar.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\session-timeout.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\session-timeout.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\sticky-panels.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\sticky-panels.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\sweetalert2.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\sweetalert2.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\toastr.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\toastr.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\treeview.js" />
+    <None Include="wwwroot\keen\assets\js\pages\features\miscellaneous\treeview.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\my-script.js" />
+    <None Include="wwwroot\keen\assets\js\pages\my-script.min.js" />
+    <None Include="wwwroot\keen\assets\js\pages\widgets.js" />
+    <None Include="wwwroot\keen\assets\js\pages\widgets.min.js" />
+    <None Include="wwwroot\keen\assets\js\scripts.bundle.js" />
+    <None Include="wwwroot\keen\assets\js\scripts.bundle.min.js" />
+  </ItemGroup>
+
+   
+
+  <ItemGroup>
+    <Content Update="Areas\AreasAdminName\Views\Layout\_Layout.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="log4net.config">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+   
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
+</Project>

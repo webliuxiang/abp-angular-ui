@@ -1,0 +1,160 @@
+<page-header [title]="l('LanguageTexts')"></page-header>
+
+<!-- 表格部分 -->
+<nz-card [nzBordered]="false" [nzExtra]="extra" [nzTitle]="l('LanguagesHeaderInfo')">
+  <ng-template #extra>
+    <button nz-button (click)="refresh()">
+      <!-- <i class="iconfont icon-reload"></i> -->
+      <i class="iconfont icon-reload"></i>
+      <span>{{ l('Refresh') }}</span>
+    </button>
+    <button nz-button (click)="backLanguageList()" [nzType]="'primary'">
+      <!-- <i class="iconfont icon-rollback"></i> -->
+      <i class="iconfont icon-rollback"></i>
+      <span>{{ l('BackLanguageList') }}</span>
+    </button>
+  </ng-template>
+  <!-- 检索表单 -->
+  <form nz-form (ngSubmit)="onSearch()" class="mb-md">
+    <!-- 搜索框 -->
+    <nz-form-item nz-row>
+      <nz-form-control>
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixSearchButton">
+          <input type="text" nz-input (keyup.enter)="onSearch()" [(ngModel)]="filterText" name="filterText"
+            [placeholder]="l('SearchWithThreeDot')" />
+          <ng-template #suffixSearchButton>
+            <button nz-button nzType="primary" nzSearch type="submit">
+              <!-- <i class="iconfont icon-search"></i> -->
+              <i class="iconfont icon-search"></i>
+            </button>
+          </ng-template>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="2" nzFor="BaseLanguage">
+        {{ l('BaseLanguage') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="4">
+        <nz-select name="BaseLanguage" [(ngModel)]="baseLanguageName" [nzPlaceHolder]="l('BaseLanguage')"
+          (ngModelChange)="onSearch()" [nzShowSearch]="true">
+          <nz-option nzCustomContent *ngFor="let language of languages" [nzValue]="language.name"
+            [nzLabel]="language.displayName">
+            <!-- <i class="anticon mr-sm" [ngClass]="language.icon"></i> -->
+            <i class="iconfont mr-sm" [ngClass]="language.icon"></i>
+            <span>
+              {{ language.displayName }}
+            </span>
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+
+      <nz-form-label nz-col [nzSm]="2" nzFor="TargetLanguage">
+        {{ l('TargetLanguage') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="4">
+        <nz-select name="TargetLanguage" [(ngModel)]="targetLanguageName" [nzPlaceHolder]="l('TargetLanguage')"
+          (ngModelChange)="onSearch()" [nzShowSearch]="true">
+          <nz-option nzCustomContent *ngFor="let language of languages" [nzValue]="language.name"
+            [nzLabel]="language.displayName">
+            <!-- <i class="anticon mr-sm" [ngClass]="language.icon"></i> -->
+            <i class="iconfont mr-sm" [ngClass]="language.icon"></i>
+            <span>
+              {{ language.displayName }}
+            </span>
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+
+      <nz-form-label nz-col [nzSm]="2" nzFor="sourceName">
+        {{ l('Source') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="4">
+        <nz-select name="sourceName" [(ngModel)]="sourceName" [nzPlaceHolder]="l('Source')" (ngModelChange)="onSearch()"
+          [nzShowSearch]="true">
+          <nz-option *ngFor="let sourceName of sourceNames" [nzValue]="sourceName" [nzLabel]="sourceName"></nz-option>
+        </nz-select>
+      </nz-form-control>
+
+      <nz-form-label nz-col [nzSm]="2" nzFor="TargetValue">
+        {{ l('TargetValue') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="4">
+        <nz-select name="TargetValue" [(ngModel)]="targetValueFilter" [nzPlaceHolder]="l('TargetValue')"
+          (ngModelChange)="onSearch()" [nzShowSearch]="true">
+          <nz-option nzValue="ALL" [nzLabel]="l('All')"></nz-option>
+          <nz-option nzValue="EMPTY" [nzLabel]="l('EmptyOnes')"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <!-- 数据部分 -->
+
+  <nz-table #ajaxTable nzShowSizeChanger [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber"
+    [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()"
+    (nzPageSizeChange)="refresh()" [nzFrontPagination]="false">
+    <!-- 暂无数据 -->
+    <ng-template #noDataTemplate>
+      <no-data></no-data>
+    </ng-template>
+    <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+    <ng-template #showTotalTemplate let-total let-range="range">
+      {{ l('GridFooterDisplayText', pageNumber, totalPages, total, range[0], range[1]) }}
+    </ng-template>
+    <!-- 表头 -->
+    <thead (nzSortChange)="gridSort($event)">
+      <tr>
+        <th nzShowSort nzSortKey="key">
+          <span>{{ l('Key') }}</span>
+        </th>
+        <th nzShowSort nzSortKey="baseValue">
+          <span>{{ l('BaseValue') }}</span>
+        </th>
+        <th nzShowSort nzSortKey="targetValue">
+          <span> {{ l('TargetValue') }}</span>
+        </th>
+
+        <th nzWidth="150px" class="text-center">
+          <span>{{ l('Actions') }}</span>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let item of ajaxTable.data">
+        <td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.key">
+              {{ item.key }}
+            </span>
+          </ellipsis>
+        </td>
+        <td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.baseValue">
+              {{ item.baseValue }}
+            </span>
+          </ellipsis>
+        </td>
+        <td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.targetValue">
+              {{ item.targetValue }}
+            </span>
+          </ellipsis>
+        </td>
+        <td class="text-center">
+          <!-- 编辑 -->
+          <a (click)="edit(item)">
+            class="iconfont icon-edit
+            <i class="iconfont icon-edit mr-sm"></i>
+            <span>{{ l('Edit') }}</span>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+</nz-card>

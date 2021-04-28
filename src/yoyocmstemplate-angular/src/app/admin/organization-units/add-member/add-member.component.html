@@ -1,0 +1,107 @@
+<div>
+  <div class="modal-header">
+    <div class="modal-title">
+      <i class="iconfont icon-team"></i>
+      {{ l('SelectUsers') }}
+    </div>
+  </div>
+
+  <!-- 内容 -->
+  <fieldset>
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixSearchButton">
+      <input
+        type="text"
+        nz-input
+        [(ngModel)]="filterText"
+        (keyup.enter)="refresh()"
+        name="filterText"
+        [placeholder]="l('SearchWithThreeDot')"
+      />
+      <ng-template #suffixSearchButton>
+        <button nz-button nzType="primary" nzSearch (click)="refresh()">
+          <i class="iconfont icon-search "></i>
+        </button>
+      </ng-template>
+    </nz-input-group>
+
+    <!-- 复选框提示的内容数据部分 -->
+    <table-checkbox-panel
+      [selectLength]="selectedDataItems.length"
+      (onClear)="restCheckStatus(dataList)"
+      (onRefresh)="refreshGoFirstPage()"
+    ></table-checkbox-panel>
+
+    <nz-row nzGutter="8">
+      <nz-col nzSm="24">
+        <!-- 表格内容 -->
+        <nz-table
+          #nzDataTable
+          [nzFrontPagination]="false"
+          [nzShowQuickJumper]="true"
+          [nzShowSizeChanger]="true"
+          [nzData]="dataList"
+          [nzTotal]="totalItems"
+          [nzLoading]="isTableLoading"
+          [(nzPageIndex)]="pageNumber"
+          [(nzPageSize)]="pageSize"
+          (nzPageIndexChange)="refresh()"
+          (nzPageSizeChange)="refresh()"
+          [nzNoResult]="noDataTemplate"
+          [nzShowTotal]="showTotalTemplate"
+        >
+          <!-- 暂无数据 -->
+          <ng-template #noDataTemplate>
+            <no-data></no-data>
+          </ng-template>
+          <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+          <ng-template #showTotalTemplate let-total let-range="range">
+            {{ l('GridFooterDisplayText', pageNumber, totalPages, total, range[0], range[1]) }}
+          </ng-template>
+          <!-- 表头 -->
+          <thead>
+            <tr>
+              <th
+                nzShowCheckbox
+                [(nzChecked)]="allChecked"
+                [nzDisabled]="allCheckboxDisabled"
+                [nzIndeterminate]="checkboxIndeterminate"
+                (nzCheckedChange)="checkAll($event)"
+              ></th>
+              <th>
+                <span>{{ l('Name') }}</span>
+              </th>
+            </tr>
+          </thead>
+          <!-- 表格内容 -->
+          <tbody>
+            <tr *ngFor="let item of nzDataTable.data">
+              <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+              <td>
+                {{ item.name }}
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-col>
+
+      <div class="modal-footer">
+        <button nz-button [nzType]="'default'" type="button" (click)="close($event)" [disabled]="saving">
+          <!-- <i class="iconfont icon-close-circle-o"></i>  -->
+          <i class="iconfont icon-close-circle "></i>
+          {{ l('Cancel') }}
+        </button>
+        <button
+          nz-button
+          [nzType]="'primary'"
+          [disabled]="saving"
+          [nzLoading]="saving"
+          (click)="addUsersToOrganizationUnit()"
+        >
+          <!-- <i class="iconfont icon-save" *ngIf="!saving"></i>  -->
+          <i class="iconfont icon-save " *ngIf="!saving"></i>
+          {{ l('Save') }}
+        </button>
+      </div>
+    </nz-row>
+  </fieldset>
+</div>

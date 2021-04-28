@@ -1,0 +1,74 @@
+<page-header [title]="l('WechatAppConfig')"></page-header>
+
+<nz-spin [nzSpinning]="loading">
+
+  <nz-row nzGutter="8">
+    <!-- 左边微信菜单 -->
+    <nz-col nzSpan="8">
+      <ng-template #refresh>
+        <a nz-button (click)="getMenuData(true)">
+          <!-- <i nz-icon type="cloud-download" theme="outline"></i> -->
+          <i class="iconfont icon-cloud-download"></i>
+          {{l('PullWechatMenus')}}
+        </a>
+        <a nz-button (click)="save()">
+          <!-- <i nz-icon type="cloud-upload" theme="outline"></i> -->
+          <i class="iconfont icon-cloud-upload"></i>
+          {{l('PushWechatMenus')}}
+        </a>
+      </ng-template>
+      <nz-card [nzBordered]="false" [nzExtra]="refresh" [nzTitle]="appName">
+        <app-edit-menu-view [(menuList)]="menuList" (menuClicked)="menuSelectChanged($event)">
+        </app-edit-menu-view>
+      </nz-card>
+
+    </nz-col>
+
+
+    <!-- 右边配置项 -->
+    <nz-col nzSpan="16">
+      <ng-template #removeMenu>
+        <!-- 上移、下移 -->
+        <span *ngIf="!currentMenuItem.component.isHorizontal">
+          <a nz-button (click)="moveMenuItem('up')">
+            <!-- <i nz-icon type="caret-up" theme="outline"></i> -->
+            <i class="iconfont icon-caret-up"></i>
+            <span>{{l('WechatMenuMoveUp')}}</span>
+          </a>
+          <a nz-button (click)="moveMenuItem('down')">
+            <!-- <i nz-icon type="caret-down" theme="outline"></i> -->
+            <i class="iconfont icon-caret-down"></i>
+            <span>{{l('WechatMenuMoveDown')}}</span>
+          </a>
+        </span>
+        <!-- 左移、右移 -->
+        <span *ngIf="currentMenuItem.component.isHorizontal">
+          <a nz-button (click)="moveMenuItem('left')">
+            <!-- <i nz-icon type="caret-left" theme="outline"></i> -->
+            <i class="iconfont icon-caret-left"></i>
+            <span>{{l('WechatMenuMoveLeft')}}</span>
+          </a>
+          <a nz-button (click)="moveMenuItem('right')">
+            <!-- <i nz-icon type="caret-right" theme="outline"></i> -->
+
+            <i class="iconfont icon-caret-right"></i>
+            <span>{{l('WechatMenuMoveRight')}}</span>
+          </a>
+        </span>
+        <!-- 删除 -->
+        <span>
+          <a nz-button (click)="removeCurrentMenuItem()">
+            <!-- <i nz-icon type="delete" theme="outline"></i> -->
+            <i class="iconfont icon-delete"></i>
+            {{l('RemoveWechatMenuItem')}}
+          </a>
+        </span>
+      </ng-template>
+      <nz-card *ngIf="currentMenuItem" [nzBordered]="false" [nzExtra]="removeMenu" [nzTitle]="l('WechatMenuConfig')">
+        <app-edit-menu-config [menuItem]="currentMenuItem" [menuTypeList]="allMemu.menuTypeList">
+        </app-edit-menu-config>
+      </nz-card>
+    </nz-col>
+  </nz-row>
+
+</nz-spin>

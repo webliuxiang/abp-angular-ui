@@ -1,0 +1,31 @@
+<nz-spin [nzTip]="l('LoadingWithThreeDot')" [nzSpinning]="profileLoading">
+  <nz-upload
+    nzName="profilePictureFile"
+    [nzBeforeUpload]="beforeUpload"
+    [nzAction]="uploadPictureUrl"
+    (nzChange)="uploadPictureChange($event)"
+    [nzHeaders]="uploadHeaders"
+    [nzRemove]="removeProfilePicture"
+    nzWithCredentials="false"
+    nzAccept="image/*"
+    nzFileType="image/png,image/jpeg,image/gif"
+    nzListType="picture-card"
+    [(nzFileList)]="profileList"
+    [nzShowButton]="profileList.length < 1"
+    [nzPreview]="handleProfilePreview"
+  >
+    <!-- <i class="iconfont icon-picture"></i> -->
+    <i class="iconfont icon-picture"></i>
+    <div class="ant-upload-text">{{ l('UploadProfilePicture') }}</div>
+  </nz-upload>
+  <nz-modal
+    [nzVisible]="profilePreviewVisible"
+    [nzContent]="profilePreviewModalContent"
+    [nzFooter]="null"
+    (nzOnCancel)="profilePreviewVisible = false"
+  >
+    <ng-template #profilePreviewModalContent>
+      <img [src]="profilePreviewImage" [ngStyle]="{ width: '100%' }" />
+    </ng-template>
+  </nz-modal>
+</nz-spin>

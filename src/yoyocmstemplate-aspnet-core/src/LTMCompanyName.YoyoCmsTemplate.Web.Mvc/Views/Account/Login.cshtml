@@ -1,0 +1,116 @@
+@using System.Globalization
+@using Abp.Configuration.Startup
+@using Abp.Extensions
+@using Abp.MultiTenancy
+@using LTMCompanyName.YoyoCmsTemplate.Identity
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Models.Account.LoginFormViewModel
+@inject SignInManager SignInManager
+@inject IMultiTenancyConfig MultiTenancyConfig
+
+
+@section Scripts
+    {
+    <environment include="Development">
+        <script src="~/view-resources/Views/Account/Login.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/view-resources/Views/Account/Login.min.js" asp-append-version="true"></script>
+    </environment>
+
+
+}
+<div class="login-form login-signin">
+    @if (!(ViewBag.DisableTenantChange ?? false) && MultiTenancyConfig.IsEnabled)
+    {
+        <vc:tenant-change></vc:tenant-change>
+    }
+    @if (!Model.SuccessMessage.IsNullOrEmpty())
+    {
+        <div class="alert alert-success  m-3" role="alert">
+            <div class="alert-icon"><i class="fa fa-check"></i></div>
+            <div class="alert-text">
+                @Model.SuccessMessage
+            </div>
+            <div class="alert-close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        </div>
+    }
+    <form class="form " id="login-signin" asp-action="Login" asp-controller="Account" method="post" autocomplete="off">
+        <!--begin::Title-->
+        <div class="pb-13 pt-lg-0 pt-5">
+            <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">@L("LogIn")</h3>
+            @*<span class="text-muted font-weight-bold font-size-h4">
+                New Here?
+                <a href="javascript:;" id="kt_login_signup" class="text-primary font-weight-bolder">Create an Account</a>
+            </span>*@
+        </div>
+        <!--begin::Title-->
+
+        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+        <input type="hidden" name="returnUrlHash" />
+        <input type="hidden" name="ss" value="@ViewBag.SingleSignIn" />
+
+
+        <div class="form-group">
+            <input class="form-control form-control-solid h-auto p-6 rounded-lg" type="text" placeholder="@L("UserNameOrEmail")" name="usernameOrEmailAddress" autocomplete="off" value="@(Model.UserNameOrEmailAddress ?? "")" required>
+        </div>
+        <div class="form-group">
+            <input class="form-control  form-control-solid h-auto p-6 rounded-lg" type="password" placeholder="@L("Password")" name="password" autocomplete="off">
+        </div>
+
+        <!--begin::Action-->
+
+        <div class="form-group d-flex align-items-center">
+            <label class="checkbox mb-0">
+                <input type="checkbox" name="rememberMe" value="true">
+                <span></span>
+            </label>
+            <div class="pl-2">
+                @L("RememberMe")
+            </div>
+            <a href="@Url.Action("ForgotPassword", "Account")" id="forget-password" class="kt-link kt-link--brand">@L("ForgotPassword")</a>
+
+
+        </div>
+
+        <div class="kt-login-v2__actions row ">
+
+            <div class="col-lg-12 col-12  ml-auto">
+                <button type="submit" id="kt_login_signin_submit" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">@L("LogIn")</button>
+
+            </div>
+        </div>
+
+        <!--end::Action-->
+    </form>
+
+    <div class="text-center">
+        <div>
+            @if (Model.IsSelfRegistrationAllowed)
+            {
+                <a href="@Url.Action("Register", "Account", new { ss = ViewBag.SingleSignIn, returnUrl = ViewBag.ReturnUrl })" class="kt-link kt-link--brand">@L("CreateAnAccount")</a>
+                <span> | </span>
+            }
+            @if (Model.IsTenantSelfRegistrationEnabled)
+            {<a href="@Url.Action("SelectEdition", "TenantRegistration")" class="kt-link kt-link--brand">新租户</a>
+                <span> | </span>
+
+            }
+
+            <a href="@Url.Action("EmailActivation", "Account")" id="email-activation-btn" class="kt-link kt-link--brand">发送激活邮件</a>
+            <vc:account-languages></vc:account-languages>
+
+        </div>
+    </div>
+
+    <!--end::Form-->
+    <!--begin::Separator-->
+    <div class="kt-separator kt-separator--space-lg  kt-separator--border-solid"></div>
+    <!--end::Separator-->
+
+
+
+</div>

@@ -1,0 +1,190 @@
+<page-header [title]="l('ManageWebSiteNotice')"></page-header>
+
+<nz-card [nzBordered]="false">
+  <div class="mb-md">
+    <div nz-row nzGutter="8">
+      <!-- 模糊搜索框 -->
+      <div nz-col nzSpan="8" nzMd="12" nzXs="24" nzSm="24">
+        <input
+          type="text"
+          nz-input
+          [(ngModel)]="filterText"
+          (keyup.enter)="refresh()"
+          [placeholder]="l('SearchWithThreeDot')"
+        />
+      </div>
+      <!-- 查询和刷新按钮 -->
+      <div nz-col nzSpan="8" nzMd="12" nzXs="24" nzSm="24">
+        <button nz-button nzType="primary" type="submit" (click)="refresh()">
+          <span>{{ l('Search') }}</span>
+        </button>
+        <button nz-button nzType="default" type="submit" (click)="refreshGoFirstPage()">
+          {{ l('Reset') }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mb-md">
+    <!-- 增强型功能按钮位置 如： 添加、批量删除、导出Excel表 -->
+    <div nz-row nzGutter="8">
+      <div nz-col nzSpan="8" nzMd="12" nzXs="24" nzSm="24" class="btn-gutter">
+        <button nz-button [nzType]="'primary'" *ngIf="isGranted('Pages.WebSiteNotice.Create')" (click)="createOrEdit()">
+          <i class="iconfont icon-plus"></i>
+          <span>
+            {{ l('Create') }}
+          </span>
+        </button>
+
+        <ng-container *ngIf="selectedDataItems.length > 0">
+          <button
+            nz-button
+            [nzType]="'danger'"
+            *ngIf="isGranted('Pages.WebSiteNotice.BatchDelete')"
+            (click)="batchDelete()"
+          >
+            <i class="iconfont icon-delete"></i>
+            <span>
+              {{ l('BatchDelete') }}
+            </span>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <!-- 复选框提示的内容数据部分 -->
+  <table-checkbox-panel
+    [selectLength]="selectedDataItems.length"
+    (onClear)="restCheckStatus(dataList)"
+    (onRefresh)="refreshGoFirstPage()"
+  ></table-checkbox-panel>
+  <!-- 实体的表格内容 -->
+  <div nz-row nzGutter="8" class="my-md">
+    <nz-table
+      #ajaxTable
+      nzSize="default"
+      [nzData]="dataList"
+      [nzTotal]="totalItems"
+      [(nzPageIndex)]="pageNumber"
+      [(nzPageSize)]="pageSize"
+      (nzPageIndexChange)="pageNumberChange()"
+      (nzPageSizeChange)="refresh()"
+      [nzShowSizeChanger]="true"
+      [nzShowQuickJumper]="true"
+      [nzNoResult]="noDataTemplate"
+      [nzShowTotal]="showTotalTemplate"
+      [nzFrontPagination]="false"
+      [nzScroll]="{ x: '1300px', y: '520px' }"
+    >
+      <!-- [nzLoading]="isTableLoading" 要开启表格的loading状态，移动代码到上方 -->
+      <!-- 暂无数据组件 -->
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+      <ng-template #showTotalTemplate let-total let-range="range">
+        {{ l('GridFooterDisplayText', pageNumber, totalPages, total, range[0], range[1]) }}
+      </ng-template>
+      <!-- 表头 -->
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <th
+            nzBreakWord="true"
+            nzAlign="center"
+            nzWidth="50px"
+            nzShowCheckbox
+            [(nzChecked)]="allChecked"
+            [nzDisabled]="allCheckboxDisabled"
+            [nzIndeterminate]="checkboxIndeterminate"
+            (nzCheckedChange)="checkAll($event)"
+          ></th>
+          <th nzShowSort nzSortKey="Title" nzWidth="180px" nzAlign="left">
+            <span>{{ l('WebSiteNoticeTitle') }}</span>
+          </th>
+          <th nzShowSort nzSortKey="Content" nzWidth="180px" nzAlign="left">
+            <span>{{ l('WebSiteNoticeContent') }}</span>
+          </th>
+          <th nzShowSort nzSortKey="ViewCount" nzWidth="180px" nzAlign="left">
+            <span>{{ l('ViewCount') }}</span>
+          </th>
+          <th nzWidth="230px" nzAlign="center">
+            <span>{{ l('Actions') }}</span>
+          </th>
+        </tr>
+      </thead>
+      <!-- 表格内容 -->
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data">
+          <!-- Checkbox多选框 -->
+          <td
+            nzAlign="center"
+            nzShowCheckbox
+            [(nzChecked)]="item.checked"
+            (nzCheckedChange)="refreshCheckStatus(dataList)"
+          ></td>
+          <td nzAlign="left">
+            <ellipsis lines="2" tooltip>
+              <span>
+                {{ item.title }}
+              </span>
+            </ellipsis>
+          </td>
+          <td nzAlign="left">
+            <ellipsis lines="2" tooltip>
+              <span>
+                {{ item.content }}
+              </span>
+            </ellipsis>
+          </td>
+          <td nzAlign="left">
+            <ellipsis lines="2" tooltip>
+              <span>
+                {{ item.viewCount }}
+              </span>
+            </ellipsis>
+          </td>
+
+          <td>
+            <!-- 编辑 -->
+            <ng-container *ngIf="isGranted('Pages.WebSiteNotice.Edit')">
+              <a (click)="createOrEdit(item.id)">
+                <i class="iconfont icon-edit mr-sm"></i>
+                <span>{{ l('Edit') }}</span>
+              </a>
+              <nz-divider nzType="vertical"></nz-divider>
+            </ng-container>
+            <!-- 更多 -->
+            <ng-container *ngIf="isGrantedAny('Pages.WebSiteNotice.Create', 'Pages.WebSiteNotice.Delete')">
+              <a nz-dropdown [nzDropdownMenu]="actionDropdownMenu">
+                <span>{{ l('More') }}</span>
+                <i class="iconfont icon-down"></i>
+              </a>
+              <nz-dropdown-menu #actionDropdownMenu="nzDropdownMenu">
+                <ul nz-menu>
+                  <li nz-menu-item>
+                    <a *ngIf="isGranted('Pages.WebSiteNotice.Create')" (click)="createOrEdit()">
+                      <i class="iconfont icon-plus"></i>{{ l('Create') }}
+                    </a>
+                  </li>
+                  <li nz-menu-divider></li>
+                  <!-- 删除 -->
+                  <li nz-menu-item *ngIf="isGranted('Pages.WebSiteNotice.Delete')">
+                    <a
+                      nz-popconfirm
+                      [nzPopconfirmTitle]="l('ConfirmDeleteWarningMessage')"
+                      (nzOnConfirm)="delete(item)"
+                      [nzOkText]="l('Ok')"
+                      [nzCancelText]="l('Cancel')"
+                    >
+                      <i class="iconfont icon-delete mr-sm"></i>
+                      <span>{{ l('Delete') }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</nz-card>

@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\abpversion.props"></Import>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <RootNamespace>LTMCompanyName.YoyoCmsTemplate</RootNamespace>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="EntityMapper\CoursesManagement\**" />
+    <Compile Remove="MultiTenancy\**" />
+    <EmbeddedResource Remove="EntityMapper\CoursesManagement\**" />
+    <EmbeddedResource Remove="MultiTenancy\**" />
+    <None Remove="EntityMapper\CoursesManagement\**" />
+    <None Remove="MultiTenancy\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp.Dapper" Version="$(AbpVersion)" />
+    <PackageReference Include="E.EntityFrameworkCore.Extensions" Version="0.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
+    
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.4" />
+    <PackageReference Include="Riven.EntityFrameworkCore.DevartOracle" Version="0.0.3" />
+    <PackageReference Include="Riven.EntityFrameworkCore.Oracle" Version="0.0.3" />
+    <PackageReference Include="Riven.EntityFrameworkCore.PostgreSQL" Version="0.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LTMCompanyName.YoyoCmsTemplate.Core\LTMCompanyName.YoyoCmsTemplate.Core.csproj" />
+  </ItemGroup>
+ 
+</Project>

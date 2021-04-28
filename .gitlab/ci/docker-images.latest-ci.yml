@@ -1,0 +1,70 @@
+# master分支制作镜像-镜像tag:latest
+
+host-docker-master:
+  image: docker:19.03.12
+  stage: build_images_latest
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-host  -f ./src/yoyocmstemplate-aspnet-core/src/LTMCompanyName.YoyoCmsTemplate.Web.Host/Dockerfile.host.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-host
+  only:
+    refs:
+      - master
+  tags:
+    - dotnet
+
+migrator-docker-master:
+  image: docker:19.03.12
+  stage: build_images_latest
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-migrator  -f ./src/yoyocmstemplate-aspnet-core/tools/LTMCompanyName.YoyoCmsTemplate.Migrator/Dockerfile.migrator.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-migrator
+  only:
+    refs:
+      - master
+  tags:
+    - dotnet
+
+angular-docker-master:
+  image: docker:19.03.12
+  stage: build_images_latest
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-ng  -f ./src/yoyocmstemplate-angular/Dockerfile.ng.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-ng
+  only:
+    refs:
+      - master
+  tags:
+    - angular
+
+#vue 镜像
+vue-docker-master:
+  image: docker:19.03.12
+  stage: build_images_latest
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-vue  -f ./src/yoyocmstemplate-vue/Dockerfile.vue.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-vue
+  only:
+    refs:
+      - master
+  tags:
+    - vue

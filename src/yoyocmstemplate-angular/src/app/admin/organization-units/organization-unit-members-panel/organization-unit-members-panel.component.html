@@ -1,0 +1,114 @@
+<nz-card>
+  <ng-container *ngIf="organizationUnit">
+    <!-- 检索表单 -->
+    <form nz-form [nzLayout]="'inline'" (ngSubmit)="refresh()" autocomplete="off">
+      <nz-form-control>
+        <nz-row nzGutter="8">
+          <!-- 左边搜索框 -->
+          <nz-col nzSpan="16">
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+              <input type="text" nz-input [(ngModel)]="filterText" (keyup.enter)="refresh()" name="filterText"
+                [placeholder]="l('SearchWithThreeDot')" />
+              <ng-template #suffixButton>
+                <button nz-button nzType="primary" nzSearch type="submit">
+                  <i class="iconfont icon-search "></i>
+                  <!-- <i class="iconfont icon-search"></i> -->
+                </button>
+              </ng-template>
+            </nz-input-group>
+          </nz-col>
+          <!-- 右边弹框 -->
+          <nz-col nzSpan="8" class="text-right">
+            <ng-container *ngIf="organizationUnit">
+              <ng-container *ngIf="isGranted('Pages.Administration.OrganizationUnits.ManageUsers')">
+                <a (click)="addUser()">
+                  <!-- <i iconfont icon-plus></i>  -->
+                  <i class="iconfont icon-plus "></i>
+                  {{ l('AddUser') }}
+                </a>
+                <nz-divider nzType="vertical"></nz-divider>
+              </ng-container>
+              <ng-container *ngIf="isGranted('Pages.Administration.OrganizationUnits.ManageUsers')">
+                <a (click)="batchDelete()">
+                  <!-- <i class="iconfont icon-delete"></i>  -->
+                  <i class="iconfont icon-delete "></i>
+                  {{ l('BatchDelete') }}
+                </a>
+                <nz-divider nzType="vertical"></nz-divider>
+              </ng-container>
+              <a class="ml-sm">
+                <!-- <i class="iconfont icon-reload" nz-tooltip [nzTooltipTitle]="l('Refresh')"
+                  (click)="clearFilterAndRefresh()"></i> -->
+
+                <i class="iconfont icon-reload " nz-tooltip [nzTooltipTitle]="l('Refresh')"
+                  (click)="clearFilterAndRefresh()"></i>
+              </a>
+            </ng-container>
+          </nz-col>
+        </nz-row>
+      </nz-form-control>
+    </form>
+    <!-- 复选框提示的内容数据部分 -->
+    <table-checkbox-panel [selectLength]="selectedDataItems.length" (onClear)="restCheckStatus(dataList)"
+      (onRefresh)="refreshGoFirstPage()"></table-checkbox-panel>
+
+    <nz-table #ajaxTable [nzFrontPagination]="false" [nzShowQuickJumper]="true" [nzShowSizeChanger]="true"
+      [nzData]="dataList" [nzTotal]="totalItems" [nzLoading]="isTableLoading" [(nzPageIndex)]="pageNumber"
+      [(nzPageSize)]="pageSize" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()"
+      [nzNoResult]="noDataTemplate" [nzShowTotal]="showTotalTemplate">
+      <!-- 暂无数据 -->
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+      <ng-template #showTotalTemplate let-total let-range="range">
+        {{ l('GridFooterDisplayText', pageNumber, totalPages, total, range[0], range[1]) }}
+      </ng-template>
+      <!-- 表头 -->
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled"
+            [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th nzWidth="150px" class="text-center">
+            <span>{{ l('Actions') }}</span>
+          </th>
+          <th nzShowSort nzSortKey="userName">
+            <span>{{ l('UserName') }}</span>
+          </th>
+          <th nzShowSort nzSortKey="addedTime" class="text-center">
+            <span>{{ l('AddedTime') }}</span>
+          </th>
+        </tr>
+      </thead>
+      <!-- 表格内容 -->
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data">
+          <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+          <td class="text-center">
+            <!-- 删除 -->
+            <ng-container *ngIf="isGranted('Pages.Administration.OrganizationUnits.ManageUsers')">
+              <a nz-popconfirm
+                [nzPopconfirmTitle]="l('RemoveUserFromOuWarningMessage', item.userName, organizationUnit.title)"
+                (nzOnConfirm)="removeMember(item)" [nzOkText]="l('Ok')" [nzCancelText]="l('Cancel')">
+                <i class="iconfont icon-delete mr-sm"></i>
+                <!-- <i class="iconfont icon-delete mr-sm"></i> -->
+                <span>{{ l('Delete') }}</span>
+              </a>
+            </ng-container>
+          </td>
+          <td>
+            {{ item.userName }}
+          </td>
+          <td class="text-center">
+            {{ item.addedTime | _moment }}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+  </ng-container>
+
+  <div class="text-center" *ngIf="!organizationUnit">
+    <no-data [text]="l('SelectAnOrganizationUnitToSeeMembers')"></no-data>
+  </div>
+</nz-card>

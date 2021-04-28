@@ -1,0 +1,222 @@
+<page-header [title]="l('AuditLogs')"></page-header>
+
+<nz-card [nzBordered]="false">
+  <!-- 检索表单 -->
+  <form nz-form (ngSubmit)="refreshGoFirstPage()" class="mb-md">
+    <nz-form-item nz-row nzGutter="8">
+      <nz-form-label nz-col [nzSm]="2">
+        {{ l('UserName') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="22">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+          <input type="text" nz-input [(ngModel)]="username" name="UserName" [placeholder]="l('UserName')" />
+          <ng-template #suffixButton>
+            <button nz-button nzType="primary" nzSearch type="submit">
+              <!-- <i class="iconfont icon-search"></i> -->
+              <i class="iconfont icon-search "></i>
+            </button>
+          </ng-template>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 错误状态 -->
+    <nz-form-item nz-row nzGutter="8">
+      <nz-form-label nz-col [nzSm]="2">
+        {{ l('ErrorState') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="10">
+        <nz-select [(ngModel)]="hasException" name="HasException" [nzPlaceHolder]="l('ErrorState')" nzAllowClear>
+          <nz-option [nzLabel]="l('All')" nzValue=""></nz-option>
+          <nz-option [nzLabel]="l('Success')" nzValue="false"></nz-option>
+          <nz-option [nzLabel]="l('HasError')" nzValue="true"></nz-option>
+        </nz-select>
+      </nz-form-control>
+      <nz-form-label nz-col [nzSm]="2">
+        {{ l('DateRange') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="10">
+        <nz-range-picker name="DateRange" [(ngModel)]="startToEndDate"
+          [nzPlaceHolder]="[l('StartDateTime'), l('EndDateTime')]"></nz-range-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row nzGutter="8" *ngIf="advancedFiltersVisible">
+      <nz-form-label nz-col [nzSm]="2">
+        {{ l('Service') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="10">
+        <input nz-input name="Service" [(ngModel)]="serviceName" [placeholder]="l('Service')" />
+      </nz-form-control>
+
+      <nz-form-label nz-col [nzSm]="2">
+        {{ l('Duration') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="10">
+        <nz-input-group nzCompact>
+          <nz-input-number name="MinExecutionDuration" [(ngModel)]="minExecutionDuration"
+            [nzPlaceHolder]="l('MinExecutionDuration')" [nzMin]="0" [nzMax]="86400000" [nzStep]="1"
+            style="text-align: center; width: 152px;"></nz-input-number>
+          <input type="text" disabled nz-input placeholder="~"
+            style="width: 30px; border-left: 0px;pointer-events: none; background-color: rgb(255, 255, 255);" />
+          <nz-input-number name="MaxExecutionDuration" [(ngModel)]="maxExecutionDuration"
+            [nzPlaceHolder]="l('MaxExecutionDuration')" [nzMin]="0" [nzMax]="86400000" [nzStep]="1"
+            style="text-align: center; border-left: 0px; width: 152px;"></nz-input-number>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row nzGutter="8" *ngIf="advancedFiltersVisible">
+      <nz-form-label nz-col [nzSm]="2">
+        {{ l('MethodName') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="10">
+        <input nz-input name="MethodName" [(ngModel)]="methodName" [placeholder]="l('MethodName')" />
+      </nz-form-control>
+
+      <nz-form-label nz-col [nzSm]="2">
+        {{ l('Browser') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="10">
+        <input nz-input name="BrowserInfo" [(ngModel)]="browserInfo" [placeholder]="l('Browser')" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <!-- 操作部分 -->
+  <nz-row nzGutter="8">
+    <nz-col nzMd="20" nzSm="12" class="btn-gutter"> </nz-col>
+    <nz-col nzMd="4" nzSm="12" class="text-right">
+      <a (click)="advancedFiltersVisible = !advancedFiltersVisible">
+        {{ advancedFiltersVisible ? l('HideAdvancedFilters') : l('ShowAdvancedFilters') }}
+
+        <i class="iconfont" [ngClass]="advancedFiltersVisible ? 'icon-down ' : 'icon-up'"></i>
+        <!-- <i nz-icon nzType="{{advancedFiltersVisible ? 'down' : 'up'}}" nzTheme="outline"></i> -->
+      </a>
+    </nz-col>
+  </nz-row>
+  <!-- 数据部分 -->
+
+  <nz-table #ajaxTable nzShowSizeChanger [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber"
+    [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()"
+    [nzPageSizeOptions]="PageSizeOptions" (nzPageSizeChange)="refresh()" [nzNoResult]="noDataTemplate"
+    [nzShowTotal]="showTotalTemplate" [nzFrontPagination]="false">
+    <!-- 暂无数据 -->
+    <ng-template #noDataTemplate>
+      <no-data></no-data>
+    </ng-template>
+    <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+    <ng-template #showTotalTemplate let-total let-range="range">
+      {{ l('GridFooterDisplayText', pageNumber, totalPages, total, range[0], range[1]) }}
+    </ng-template>
+    <!-- 表头 -->
+
+    <thead nz-thead (nzSortChange)="gridSort($event)">
+      <tr>
+        <th nz-th nzShowSort nzSortKey="executionTime">
+          <span>{{ l('Time') }}</span>
+        </th>
+        <th nz-th nzShowSort nzSortKey="userName">
+          <span>{{ l('UserName') }}</span>
+        </th>
+        <th nz-th nzShowSort nzSortKey="serviceName">
+          <span>{{ l('Service') }}</span>
+        </th>
+        <th nz-th nzShowSort nzSortKey="methodName">
+          <span>{{ l('Action') }}</span>
+        </th>
+        <th nz-th nzShowSort nzSortKey="executionDuration">
+          <span>{{ l('Duration') }}</span>
+        </th>
+        <th nz-th nzShowSort nzSortKey="ipAddress">
+          <span>{{ l('IpAddress') }}</span>
+        </th>
+        <th nz-th nzShowSort nzSortKey="clientIpAddress">
+          <span>{{ l('Client') }}</span>
+        </th>
+        <th class="text-center" nzShowSort nzSortKey="browserInfo">
+          <span>{{ l('Browser') }}</span>
+        </th>
+        <th nzWidth="100px" class="text-center">
+          <span>{{ l('ExceptionType') }}</span>
+        </th>
+
+        <th nzWidth="120px" class="text-center">
+          <span>{{ l('Actions') }}</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody nz-tbody>
+      <tr nz-tbody-tr *ngFor="let item of ajaxTable.data">
+        <td nz-td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.executionTime | _moment: 'YYYY-MM-DD HH:mm:ss'">
+              {{ item.executionTime | _moment: 'YYYY-MM-DD HH:mm:ss' }}
+            </span>
+          </ellipsis>
+        </td>
+        <td nz-td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.userName">
+              {{ item.userName }}
+            </span>
+          </ellipsis>
+        </td>
+        <td nz-td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.serviceName">
+              {{ item.serviceName }}
+            </span>
+          </ellipsis>
+        </td>
+        <td nz-td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.methodName">
+              {{ item.methodName }}
+            </span>
+          </ellipsis>
+        </td>
+        <td nz-td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="l('Xms', item.executionDuration)">
+              {{ l('Xms', item.executionDuration) }}
+            </span>
+          </ellipsis>
+        </td>
+        <td nz-td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.clientIpAddress">
+              {{ item.clientIpAddress }}
+            </span>
+          </ellipsis>
+        </td>
+        <td nz-td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.clientName">
+              {{ item.clientName }}
+            </span>
+          </ellipsis>
+        </td>
+        <td class="text-center">
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.browserInfo">
+              {{ truncateStringWithPostfix(item.browserInfo, 20) }}
+            </span>
+          </ellipsis>
+        </td>
+        <td class="text-center">
+          <i class="iconfont icon-warning-circle text-warning" *ngIf="item.exception" nz-tooltip
+            [nzTooltipTitle]="l('HasError')"></i>
+          <i class="iconfont icon-check-circle  text-green" *ngIf="!item.exception" nz-tooltip
+            [nzTooltipTitle]="l('Success')"></i>
+        </td>
+        <td nzWidth="120px" class="text-center">
+          <span>
+            <a (click)="showDetails(item)">
+              <i class="iconfont icon-search "></i>
+              <span>{{ l('ViewDetails') }}</span>
+            </a>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+</nz-card>

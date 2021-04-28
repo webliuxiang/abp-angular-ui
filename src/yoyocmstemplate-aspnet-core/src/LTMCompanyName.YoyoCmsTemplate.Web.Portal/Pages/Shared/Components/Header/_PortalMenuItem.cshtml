@@ -1,0 +1,69 @@
+﻿@using LTMCompanyName.YoyoCmsTemplate.Url
+@using Abp.Collections.Extensions
+
+@model PortalMenuItemViewModel
+
+@{
+    var classStr = string.Empty;
+    var aclassStr = string.Empty;
+    if (!Model.MenuItem.Items.IsNullOrEmpty())
+    {
+        //有下级菜单
+        classStr = "nav-item hs-has-sub-menu u-header__nav-item";
+
+        aclassStr = Model.CurrentLevel>0 ? " nav-link u-header__sub-menu-nav-link" : " nav-link u-header__nav-link u-header__nav-link-toggle";
+    }
+    else
+    {
+
+        classStr = "nav-item u-header__nav-item " + (Model.MenuItem.Name == Model.CurrentPageName ? " active" : string.Empty);
+
+        aclassStr = Model.CurrentLevel>0 ? " nav-link u-header__sub-menu-nav-link" : " nav-link u-header__nav-link";
+    }
+}
+
+@if (Model.MenuItem.Items.IsNullOrEmpty())
+{
+    <li class="@classStr">
+        @if (!Model.MenuItem.Url.IsNullOrEmpty())
+        {
+            <a class="@aclassStr" target="@Model.MenuItem.Target" href="@(WebUrlHelper.IsRooted(Model.MenuItem.Url) ? Model.MenuItem.Url : ApplicationPath + Model.MenuItem.Url)">
+                @Model.MenuItem.DisplayName
+            </a>
+        }
+        else
+        {
+            <a class="@aclassStr" href="@ApplicationPath">
+                @Model.MenuItem.DisplayName
+            </a>
+        }
+    </li>
+}
+else
+{
+ 
+
+    <li class="nav-item hs-has-sub-menu u-header__nav-item" 
+        data-event="hover"
+        data-animation-in="slideInUp"
+        data-animation-out="fadeOut"
+        data-position="left">
+        <a id="nav-link-@Model.CurrentLevel" class="@aclassStr" href="javascript:;" aria-haspopup="true" aria-expanded="false"  aria-labelledby="nav-submenu-@Model.CurrentLevel">@Model.MenuItem.DisplayName</a>
+        
+
+        <ul id="nav-submenu-@Model.CurrentLevel" class="hs-sub-menu u-header__sub-menu u-header__sub-menu--spacer"  aria-labelledby="nav-link-@Model.CurrentLevel" style="min-width: 230px;">
+            @foreach (var item in Model.MenuItem.Items)
+            {
+                var modelmenu = new PortalMenuItemViewModel(item, Model.CurrentLevel + 1, Model.CurrentPageName);
+                <partial name="Components/Header/_PortalMenuItem" model="modelmenu "/>
+            }
+
+
+
+
+        </ul>
+    </li>
+}
+
+
+ 

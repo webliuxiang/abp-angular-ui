@@ -1,0 +1,48 @@
+{
+  "scripts": [
+    {
+      "output": "view-resources/Views/front-mvc/global-52abp-pro-required.min.js",
+      "input": [
+        "node_modules/json2/lib/JSON2/static/json2.js",
+        "node_modules/jquery/dist/jquery.js",
+        "node_modules/jquery-migrate/dist/jquery-migrate.js",
+        "node_modules/bootstrap/dist/js/bootstrap.bundle.js",
+        "node_modules/jquery-serializejson/jquery.serializejson.js",
+        "node_modules/jquery-validation/dist/jquery.validate.js",
+        "node_modules/jquery.cookie/jquery.cookie.js"
+      ]
+    },
+    {
+      "output": "view-resources/Views/Areas/AppAreaName/_Bundles/common-scripts.min.js",
+      "input": [
+        "wwwroot/Common/js/ModalManager.js",
+        "wwwroot/Common/js/ResourceLoader.js",
+        "wwwroot/Common/js/jquery-custom.js",
+        "wwwroot/Common/js/consts.js",
+        "wwwroot/Common/js/jquery-validation-custom.js",
+        "wwwroot/Common/js/passwordComplexityHelper.js",
+        "wwwroot/Common/js/helpers.js"
+      ]
+    }
+  ],
+  "styles": [
+    {
+      "output": "view-resources/Common/Styles/common-styles.min.css",
+      "input": [
+        "wwwroot/Common/Styles/**/*.css",
+        "wwwroot/Common/Styles/**/*.less",
+        "!wwwroot/Common/Styles/**/*min.css"
+      ]
+    }
+  
+  ],
+  "scriptMappings": [
+
+    {
+      "outputFolder": "lib/jquery-validation/dist/localization/",
+      "input": [
+        "node_modules/jquery-validation/dist/localization/*.js"
+      ]
+    }
+  ]
+}

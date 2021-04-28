@@ -1,0 +1,175 @@
+@inherits TopBarBase
+
+
+
+        <div class="container u-header__hide-content pt-2">
+            <div class="d-flex align-items-center">
+                <!-- Language -->
+                <div class="position-relative">
+
+                    <a id="languageDropdownInvoker" class="dropdown-nav-link dropdown-toggle d-flex align-items-center" href="javascript:;" role="button"
+                       aria-controls="languageDropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false"
+                       data-unfold-event="hover"
+                       data-unfold-target="#languageDropdown"
+                       data-unfold-type="css-animation"
+                       data-unfold-duration="300"
+                       data-unfold-delay="300"
+                       data-unfold-hide-on-scroll="true"
+                       data-unfold-animation-in="slideInUp"
+                       data-unfold-animation-out="fadeOut">
+                        <i class="dropdown-item-icon @(Model.CurrentLanguage.Icon)" alt="@Model.CurrentLanguage.Name"></i>
+                        <span class="d-inline-block d-sm-none">@Model.CurrentLanguage.Name</span>
+                        <span class="d-none d-sm-inline-block">@Model.CurrentLanguage.DisplayName</span>
+                    </a>
+                    <div id="languageDropdown" class="dropdown-menu dropdown-unfold" aria-labelledby="languageDropdownInvoker">
+
+
+                        <h3>@Model.Languages.Count</h3>
+
+
+                        @foreach (var language in Model.Languages)
+                        {
+                            if (Model.CurrentLanguage.Name == language.Name)
+                            {
+                                <a class="dropdown-item active" href="#" alt="@language.Name"> @language.DisplayName</a>
+
+                                continue;
+                            }
+
+
+                        }
+
+                    </div>
+
+
+
+
+
+                </div>
+                <!-- End Language -->
+
+                <div class=" ml-auto">
+
+                    @*移动端自适应的时候触发 Jump To Links*@
+                    <div class="d-inline-block d-sm-none position-relative mr-2">
+                        <a id="jumpToDropdownInvoker" class="dropdown-nav-link dropdown-toggle d-flex align-items-center" href="javascript:;" role="button"
+                           aria-controls="jumpToDropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false"
+                           data-unfold-event="hover"
+                           data-unfold-target="#jumpToDropdown"
+                           data-unfold-type="css-animation"
+                           data-unfold-duration="300"
+                           data-unfold-delay="300"
+                           data-unfold-hide-on-scroll="true"
+                           data-unfold-animation-in="slideInUp"
+                           data-unfold-animation-out="fadeOut">
+                            跳转到
+                        </a>
+
+                        <div id="jumpToDropdown" class="dropdown-menu dropdown-unfold" aria-labelledby="jumpToDropdownInvoker">
+                            <a class="dropdown-item" asp-action="Index" asp-controller="Home">Help</a>
+                            <a class="dropdown-item" asp-action="Index" asp-controller="Home">Contacts</a>
+                        </div>
+                    </div>
+                    <!-- End Jump To -->
+                    <!--PC端的 Links -->
+                    <div class="d-none d-sm-inline-block ml-sm-auto">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item mr-0">
+                                <a class="u-header__navbar-link" href="../pages/faq.html">Help</a>
+                            </li>
+                            <li class="list-inline-item mr-0">
+                                <a class="u-header__navbar-link" href="../pages/contacts-agency.html">Contacts</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End Links -->
+
+
+
+                </div>
+
+                <ul class="list-inline ml-2 mb-0">
+
+                    @if (AbpSession.UserId.HasValue)
+                    {
+                        // LTMCompanyName.YoyoCmsTemplate.Web.Portal\Views\Common\Modals\_AccountSidebarNavigation.cshtml  对应路径
+
+                        <!-- Account Login -->
+                        <li class="list-inline-item">
+                            <!-- Account Sidebar Toggle Button -->
+                            <a id="sidebarNavToggler" class="btn btn-xs btn-text-secondary u-sidebar--account__toggle-bg ml-1" href="javascript:;" role="button"
+                               aria-controls="sidebarContent"
+                               aria-haspopup="true"
+                               aria-expanded="false"
+                               data-unfold-event="click"
+                               data-unfold-hide-on-scroll="false"
+                               data-unfold-target="#sidebarContent"
+                               data-unfold-type="css-animation"
+                               data-unfold-animation-in="fadeInRight"
+                               data-unfold-animation-out="fadeOutRight"
+                               data-unfold-duration="500">
+                                <span class="position-relative">
+                                    <span class="u-sidebar--account__toggle-text">@AbpSession.UserId</span>
+
+
+                                    @*<span class="badge badge-sm badge-success badge-pos rounded-circle">3</span>*@
+
+                                </span>
+                            </a>
+                            <!-- End Account Sidebar Toggle Button -->
+                        </li>
+                        <!-- End Account Login -->
+                        <li class="list-inline-item  text-center">
+                            <a asp-controller="home" asp-area="Admin" asp-action="Index" class="btn btn-xs   btn-text btn-text-secondary   u-sidebar--account__toggle-bg" role="button">个人中心</a>
+                        </li>
+                        <li class="list-inline-item text-center ">
+                            @*<a class="btn btn-xs   btn-text btn-text-secondary   u-sidebar--account__toggle-bg" role="button" href="@Url.Action("Logout","Account")">注销</a>*@
+                        </li>
+
+                    }
+                    else
+                    {
+                        <!-- Account Login -->
+                        <li class="list-inline-item">
+                            <NavLink href="Login"> <i class="fas fa-user-circle text-primary "></i>登录</NavLink>
+                           
+                            <a class="link  text-warning" asp-controller="Account" asp-action="Register">
+
+                                <i class="fas fa-registered   text-warning"></i>
+                                注册
+                            </a>
+                            @*<a class="btn btn-xs   btn-text btn-text-secondary   u-sidebar--account__toggle-bg" href="@Url.Action("Login","Account")">  <span class="fas fa-user-circle btn-icon__inner font-size-1"></span>content</a>*@
+
+
+                            @*Account Sidebar Toggle Button*@
+                            @*<a id="sidebarNavToggler" class="btn btn-xs btn-icon btn-text-secondary" href="javascript:;" role="button"
+                               aria-controls="sidebarContent"
+                               aria-haspopup="true"
+                               aria-expanded="false"
+                               data-unfold-event="click"
+                               data-unfold-hide-on-scroll="false"
+                               data-unfold-target="#sidebarContent"
+                               data-unfold-type="css-animation"
+                               data-unfold-animation-in="fadeInRight"
+                               data-unfold-animation-out="fadeOutRight"
+                               data-unfold-duration="500">
+                                <span class="fas fa-user-circle btn-icon__inner font-size-1"></span>
+                            </a>*@
+                            <!-- End Account Sidebar Toggle Button -->
+                        </li>
+                        <!-- End Account Login -->
+
+                    }
+                </ul>
+
+
+            </div>
+        </div>
+
+
+
+    

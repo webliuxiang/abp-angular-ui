@@ -1,0 +1,28 @@
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Resources
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Views.Shared.Components.TenantChange.TenantChangeViewModel
+@inject IWebResourceManager WebResourceManager
+@{
+    WebResourceManager.AddScript("/view-resources/Views/Shared/Components/TenantChange/Default.js");
+}
+
+
+    <div class="pb-13 pt-lg-0 pt-5 align-items-sm-center">
+
+
+        <span class="tenant-change-component">
+            @L("CurrentTenant"):
+
+            @if (Model.Tenant != null)
+            {
+                <span title="@Model.Tenant.Name"><strong>@Model.Tenant.TenancyName</strong></span>
+            }
+            else
+            {
+                <span>@L("NotSelected")</span>
+            }
+
+            (<a href="#">@L("Change")</a>)
+        </span>
+    </div>
+
+

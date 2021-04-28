@@ -1,0 +1,45 @@
+<span *ngFor="let item of menuList" [ngStyle]="{'display': display}">
+
+  <!-- 嵌套子集 -->
+  <app-wechat-menu-button style="float: none;" [parentMenu]="item" [(menuList)]="item.subMenu" [isHorizontal]="false"
+    [subMenuIsHorizontal]="item.subMenuHorizontal" [maxLength]="5" (menuClicked)="menuClick($event)" [width]="width"
+    [height]="height">
+  </app-wechat-menu-button>
+
+  <!-- 菜单本身按钮 -->
+  <button nz-button class="text-center" (click)="menuClick(item)" style="position: relative;"
+    [ngStyle]="{'display': display,'width':width,'height':height,'margin-top':isHorizontal?'5px':'0px'}" nz-tooltip
+    [nzTooltipTitle]="item.text" nzTooltipPlacement="left">
+    <!-- <i nz-icon type="caret-down" theme="outline" *ngIf="isHorizontal"
+      style='position: absolute;top:-11px;color: #ccc;left:45px;'>
+    </i> -->
+
+    <i class="iconfont icon-caret-down" *ngIf="isHorizontal"
+      style='position: absolute;top:-11px;color: #ccc;left:45px;'></i>
+    <ellipsis lines="1">
+      {{item.text}}
+    </ellipsis>
+
+  </button>
+
+</span>
+
+
+<!-- 添加按钮,因为样式原因，这里暂时写多几个 -->
+<button nz-button class="text-center" *ngIf="isHorizontal&&menuList.length!==0&&showAddMenuButton" (click)="addMenu()"
+  [ngStyle]="{'display': display,'width':width,'height':height,'position':'relative','top':'16px'}">
+  <!-- <i nz-icon type="plus" theme="outline"></i> -->
+  <i class="iconfont icon-plus"></i>
+</button>
+
+<button nz-button class="text-center" *ngIf="isHorizontal&&menuList.length===0&&showAddMenuButton" (click)="addMenu()"
+  [ngStyle]="{'display': display,'width':width,'height':height}">
+  <!-- <i nz-icon type="plus" theme="outline"></i> -->
+  <i class="iconfont icon-plus"></i>
+</button>
+
+<button nz-button class="text-center" *ngIf="!isHorizontal&&showAddMenuButton" (click)="addMenu()"
+  [ngStyle]="{'display': display,'width':width,'height':height}">
+  <!-- <i nz-icon type="plus" theme="outline"></i> -->
+  <i class="iconfont icon-plus"></i>
+</button>

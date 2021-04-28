@@ -1,0 +1,89 @@
+<form nz-form #validateForm="ngForm" (ngSubmit)="save()" autocomplete="off">
+  <!-- 模态框头部 -->
+  <div class="modal-header">
+    <div class="modal-title">
+      <i class="iconfont icon-medicinebox mr-sm"></i>
+      <!-- <i class="iconfont icon-medicine-box mr-sm"></i> -->
+      <span *ngIf="role.id">{{ l('EditRole') }}:{{ role.displayName }}</span>
+      <span *ngIf="!role.id">{{ l('CreateNewRole') }}</span>
+    </div>
+  </div>
+  <!-- 模态框内部部分 -->
+  <fieldset>
+    <nz-alert nzType="info" nzCloseable [nzShowIcon]="true" [nzMessage]="l('Note_RefreshPageForPermissionChanges')">
+    </nz-alert>
+    <!-- 标签页 -->
+
+    <nz-tabset>
+      <!-- 第一组标签 -->
+      <nz-tab [nzTitle]="roleTabTitleTpl">
+        <ng-template #roleTabTitleTpl>
+          <i class="iconfont icon-medicinebox mr-sm"></i>
+          <!-- <i class="iconfont icon-medicine-box"></i> -->
+          {{ l('RoleName') }}
+        </ng-template>
+
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSm]="4" nzFor="RoleName" nzRequired>
+            {{ l('RoleName') }}
+          </nz-form-label>
+          <nz-form-control nz-col [nzSm]="20" nzHasFeedback>
+            <nz-input-group [nzPrefix]="nzPrefixIconRoleName">
+              <input nz-input #roleNameInput="ngModel" name="RoleName" [(ngModel)]="role.displayName"
+                [placeholder]="l('RoleName')" required maxlength="64" />
+            </nz-input-group>
+            <nz-form-control nzExtra *ngIf="roleNameInput.control.dirty && roleNameInput.control.errors">
+              <ng-container *ngIf="roleNameInput.control.hasError('required')">{{ l('ThisFieldIsRequired') }}
+              </ng-container>
+              <ng-container *ngIf="roleNameInput.control.hasError('minlength')">{{ l('MinLength') }}</ng-container>
+              <ng-container *ngIf="roleNameInput.control.hasError('maxlength')">{{ l('MaxLength') }}</ng-container>
+            </nz-form-control>
+            <ng-template #nzPrefixIconRoleName><span class="iconfont icon-book"
+                style="color: rgba(0, 0, 0, 0.25);"></span>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+
+        <!-- 默认角色 -->
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSm]="4" nzFor="Default">
+            {{ l('Default') }}
+            <em>
+              <i class="iconfont   icon-warning-circle" nz-tooltip [nzTooltipTitle]="l('DefaultRole_Description')"></i>
+
+              <!-- <i class="iconfont icon-info-circle-o" nz-tooltip [nzTooltipTitle]="l('DefaultRole_Description')"></i> -->
+            </em>
+          </nz-form-label>
+          <nz-form-control nz-col [nzSm]="20">
+            <nz-switch name="Default" [(ngModel)]="role.isDefault" [nzCheckedChildren]="l('Yes')"
+              [nzUnCheckedChildren]="l('No')"></nz-switch>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-tab>
+      <!-- 第二组标签 -->
+      <nz-tab [nzTitle]="permissionsTitleTpl">
+        <ng-template #permissionsTitleTpl>
+          <i class="iconfont icon-safetycertificate"></i>
+          <!-- <i class="iconfont icon-safety"></i> -->
+
+          {{ l('Permissions') }}
+        </ng-template>
+        <permission-tree #permissionTree></permission-tree>
+      </nz-tab>
+    </nz-tabset>
+  </fieldset>
+  <!-- 模态框底部 -->
+  <div class="modal-footer">
+    <button nz-button [nzType]="'default'" type="button" (click)="close($event)" [disabled]="saving">
+      <!-- <i class="iconfont icon-close-circle-o"></i> -->
+      <i class="iconfont icon-close-circle"></i>
+      {{ l('Cancel') }}
+    </button>
+    <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid || saving"
+      [nzLoading]="saving">
+      <!-- <i class="iconfont icon-save" *ngIf="!saving"></i>  -->
+      <i class="iconfont icon-save" *ngIf="!saving"></i>
+      {{ l('Save') }}
+    </button>
+  </div>
+</form>

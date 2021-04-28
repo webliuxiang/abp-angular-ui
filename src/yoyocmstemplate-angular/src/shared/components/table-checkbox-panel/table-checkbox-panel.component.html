@@ -1,0 +1,13 @@
+<!-- 复选框提示的内容数据部分 -->
+<div class="my-md">
+  <nz-alert [nzType]="'info'" [nzShowIcon]="true" [nzMessage]="message">
+    <ng-template #message>
+      <span [innerHTML]="l('GridSelectedXItemsTips', selectLength)"></span>
+      <a (click)="onClearClick()" class="ml-md">
+        {{ l('ClearEmpty') }}
+      </a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a (click)="onRefreshClick()"> {{ l('Refresh') }} </a>
+    </ng-template>
+  </nz-alert>
+</div>

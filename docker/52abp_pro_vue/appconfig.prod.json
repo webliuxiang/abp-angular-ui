@@ -1,0 +1,49 @@
+{
+  "remoteServiceBaseUrl": "https://host.52abp.com",
+  "uploadApiUrl": "/api/File/Upload",
+  "portalBaseUrl": "https://www.52abp.com",
+  "localeMappings": [
+    {
+      "from": "pt-BR",
+      "to": "pt"
+    },
+    {
+      "from": "zh-CN",
+      "to": "zh"
+    },
+    {
+      "from": "he-IL",
+      "to": "he"
+    }
+  ],
+  "ngZorroLocaleMappings": [
+    {
+      "from": "en",
+      "to": "en_US"
+    },
+    {
+      "from": "zh-Hans",
+      "to": "zh_CN"
+    }
+  ],
+  "ngAlainLocaleMappings": [
+    {
+      "from": "en",
+      "to": "en-US"
+    },
+    {
+      "from": "zh-Hans",
+      "to": "zh-CN"
+    }
+  ],
+  "momentLocaleMappings": [
+    {
+      "from": "en",
+      "to": "en"
+    },
+    {
+      "from": "zh-Hans",
+      "to": "zh-cn"
+    }
+  ]
+}

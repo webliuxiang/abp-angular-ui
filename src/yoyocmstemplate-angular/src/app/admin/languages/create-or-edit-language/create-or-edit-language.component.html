@@ -1,0 +1,76 @@
+<form nz-form #languageCreateOrEditForm="ngForm" (ngSubmit)="save()" autocomplete="off">
+  <div class="modal-header">
+    <div class="modal-title">
+      <!-- <i class="iconfont icon-global mr-sm"></i> -->
+      <i class="iconfont icon-global mr-sm"></i>
+      <span *ngIf="language.id">{{ l('EditLanguage') }}: {{ language.name }}</span>
+      <span *ngIf="!language.id">{{ l('CreateNewLanguage') }}</span>
+    </div>
+  </div>
+
+  <fieldset>
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="4" nzFor="languageName" nzRequired>
+        {{ l('LanguageName') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="20" nzHasFeedback>
+        <nz-select name="languageName" #languageName="ngModel" [(ngModel)]="selectedLanguage"
+          [nzPlaceHolder]="l('LanguageName')" [nzShowSearch]="true" required>
+          <nz-option *ngFor="let option of languageNames" [nzLabel]="option.displayText" [nzValue]="option.value">
+          </nz-option>
+        </nz-select>
+        <nz-form-control nzExtra *ngIf="languageName.control.dirty && languageName.control.errors">
+          <ng-container *ngIf="languageName.control.hasError('required')">{{ l('ThisFieldIsRequired') }}</ng-container>
+        </nz-form-control>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="4" nzFor="languageIcon" nzRequired>
+        {{ l('LanguageIcon') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="20" nzHasFeedback>
+        <nz-select name="languageIcon" #languageIcon="ngModel" [(ngModel)]="language.icon"
+          [nzPlaceHolder]="l('LanguageIcon')" [nzShowSearch]="true" required>
+          <nz-option nzCustomContent *ngFor="let option of flags" [nzValue]="option.value"
+            [nzLabel]="option.displayText">
+            <!-- <i class="anticon mr-sm" [ngClass]="option.value"></i> -->
+            <i class="iconfont mr-sm" [ngClass]="option.value"></i>
+            <span>
+              {{ option.displayText }}
+            </span>
+          </nz-option>
+        </nz-select>
+        <nz-form-control nzExtra *ngIf="languageIcon.control.dirty && languageIcon.control.errors">
+          <ng-container *ngIf="languageIcon.control.hasError('required')">{{ l('ThisFieldIsRequired') }}</ng-container>
+        </nz-form-control>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- 启用 -->
+
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="4" nzFor="IsEnabled">
+        {{ l('Enabled') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="20">
+        <nz-switch name="IsEnabled" [(ngModel)]="language.isEnabled" [nzCheckedChildren]="l('Yes')"
+          [nzUnCheckedChildren]="l('No')"></nz-switch>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 功能按钮 -->
+    <div class="modal-footer">
+      <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">
+        <!-- <i class="iconfont icon-close-circle-o"></i>  -->
+        <i class="iconfont  icon-close-circle"></i>
+        {{ l('Cancel') }}
+      </button>
+      <button nz-button [nzType]="'primary'" type="submit" [disabled]="!languageCreateOrEditForm.form.valid || saving"
+        [nzLoading]="saving">
+        <!-- <i class="iconfont icon-save" *ngIf="!saving"></i>  -->
+        <i class="iconfont  icon-save" *ngIf="!saving"></i>
+        {{ l('Save') }}
+      </button>
+    </div>
+  </fieldset>
+</form>

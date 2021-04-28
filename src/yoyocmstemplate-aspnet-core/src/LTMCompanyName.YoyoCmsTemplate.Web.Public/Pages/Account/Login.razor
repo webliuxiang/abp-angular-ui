@@ -1,0 +1,24 @@
+﻿@page "/Login"
+@using LTMCompanyName.YoyoCmsTemplate.UserManagerment.Users
+@using System.Web
+@using System.ComponentModel.DataAnnotations
+@inherits LoginBase
+
+<h3>Login</h3>
+
+
+
+<EditForm Model="@LoginModel" OnValidSubmit="HandleValidSubmitAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText  @bind-Value="LoginModel.UsernameOrEmailAddress" />
+    <InputText type="password"  @bind-Value="LoginModel.Password"/>
+    <InputCheckbox    @bind-Value="LoginModel.RememberMe"></InputCheckbox>
+    <button type="submit">Submit</button>
+</EditForm>
+
+
+
+
+ 

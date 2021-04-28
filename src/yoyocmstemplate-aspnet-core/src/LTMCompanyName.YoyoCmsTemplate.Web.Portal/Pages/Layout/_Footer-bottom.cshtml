@@ -1,0 +1,64 @@
+@using LTMCompanyName.YoyoCmsTemplate
+
+ <!-- ========== FOOTER ========== -->
+<footer class="bg-dark">
+
+    <div class="border-bottom">
+        <div class="container space-2 ">
+            <div class="row  justify-content-md-between">
+                <div class="col-6 col-lg-3 mb-7 mb-lg-0">
+
+                    <h3 class="h6 text-white">扫描二维码，关注我们</h3>
+                    <!-- Logo -->
+                    <a class="d-inline-flex align-items-center mb-3" href="javascript:" aria-label="Front">
+
+                        <img src="~/yoyosoft/images/money-qr/web_wechat_QR.jpg" style="max-height: 180px;" title="微信公众号：角落的白板报" alt="微信公众号：角落的白板报" />
+                    </a>
+                     <!-- End Logo -->
+                    <!-- Copyright -->
+                    <p class="small text-muted  "> 欢迎您，关注公众号“角落的白板报” </p>
+
+                    <!-- End Copyright -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="container text-center space-1">
+        
+
+        <ul class="list-inline list-group-flush list-group-borderless">
+            <li class="list-inline-item px-2">
+                <a class="list-group-item-action text-info" href="#contactusModal" data-modal-target="#contactusModal" data-modal-effect="fadein">商务合作</a>
+            </li>
+            <li class="list-inline-item px-2">
+                <a class="list-group-item-action text-info" target="_blank" href="https://study.163.com/course/courseMain.htm?courseId=1006191011&share=2&shareId=400000000309007">
+                    52ABP快速开发视频
+                </a>
+            </li>
+        </ul>
+
+        <p class="small text-secondary">
+            &copy; Copyrights @Clock.Now.Year <a href="https://www.yoyomooc.com/" class="text-primary" target="_blank">yoyomooc.com</a> All Rights Reserved .
+
+            版本: v@(AppVersionHelper.Version) [@AppVersionHelper.ReleaseDate.ToString("yyyyMMdd")]
+            |
+            <a class="list-group-item-action" href="http://www.miitbeian.gov.cn" target="_blank">
+                备案信息：蜀ICP备16022114号 | 成都笑园比领网络科技有限公司
+            </a>
+            |
+            <a class="list-group-item-action" href="https://analytics.google.com/analytics/web/#/report-home/a165340233w231100601p217336588" target="_blank">谷歌分析</a>
+       
+           
+        </p>
+    </div>
+    <!-- End Copyright -->
+</footer>
+<!-- ========== END FOOTER ========== -->
+@* 模态框 *@
+
+@await Html.PartialAsync("~/Pages/Shared/Common/Modals/_ContactusModal.cshtml")
+
+@await Html.PartialAsync("~/Pages/Shared/Common/Modals/_MoneyPayModal.cshtml")

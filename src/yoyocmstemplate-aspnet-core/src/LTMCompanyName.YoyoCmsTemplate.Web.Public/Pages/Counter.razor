@@ -1,0 +1,38 @@
+@page "/counter"
+<Title>Counter(@currentCount) - Server Side App</Title>
+<Meta Property="og:url" Content="我是url说明" />
+<Meta Property="ogp:title" Content="我是SEO标题说明" />
+<Link Rel="icon" Href="@($"/favicons/GetFaviconName")" />
+
+
+
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private int currentCount = 0;
+
+    private string name;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+        name = Convert.ToString(currentCount);
+
+    }
+
+
+
+    private string GetFaviconName()
+    {
+
+
+
+        return currentCount > 9 ? "counter-9-plus.png" : $"counter-{currentCount}.png";
+    }
+
+}

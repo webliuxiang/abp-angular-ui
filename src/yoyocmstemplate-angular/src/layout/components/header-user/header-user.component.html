@@ -1,0 +1,45 @@
+<div
+        class="alain-pro__nav-item d-flex align-items-center px-sm"
+        nz-dropdown
+        nzPlacement="bottomRight"
+        [nzDropdownMenu]="dropdownMenu"
+>
+    <nz-avatar [nzSrc]="'/assets/images/user.png'" nzSize="small" class="mr-sm"></nz-avatar>
+    {{ loginUserName }}
+</div>
+
+<nz-dropdown-menu #dropdownMenu="nzDropdownMenu">
+    <div nz-menu class="width-sm">
+        <!-- 返回我的账户 -->
+        <div nz-menu-item (click)="backToMyAccount()" *ngIf="isImpersonatedLogin">
+            <i class="iconfont icon-rollback  mr-sm"></i>
+            <!-- <i class="iconfont icon-rollback mr-sm"></i> -->
+            {{ l('BackToMyAccount') }}
+        </div>
+        <!-- 密码修改 -->
+        <div nz-menu-item (click)="changePassword()">
+            <i class="iconfont icon-ellipsis  mr-sm"></i>
+            <!-- <i class="iconfont icon-ellipsis mr-sm"></i> -->
+            {{ l('ChangePassword') }}
+        </div>
+        <!-- 登陆记录 -->
+        <div nz-menu-item (click)="showLoginAttempts()">
+            <i class="iconfont icon-unorderedlist  mr-sm"></i>
+            <!-- <i class="iconfont icon-bars mr-sm"></i> -->
+            {{ l('LoginAttempts') }}
+        </div>
+        <!-- 设置 -->
+        <div nz-menu-item (click)="changeMySettings()">
+            <i class="iconfont icon-setting  mr-sm"></i>
+            <!-- <i class="iconfont icon-setting mr-sm"></i> -->
+            {{ l('MySettings') }}
+        </div>
+        <li nz-menu-divider></li>
+        <!-- 注销 -->
+        <div nz-menu-item (click)="logout()">
+            <i class="iconfont icon-logout  mr-sm"></i>
+            <!-- <i class="iconfont icon-logout mr-sm"></i> -->
+            {{ l('Logout') }}
+        </div>
+    </div>
+</nz-dropdown-menu>

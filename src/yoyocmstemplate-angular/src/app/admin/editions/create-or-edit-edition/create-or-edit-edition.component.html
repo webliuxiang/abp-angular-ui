@@ -1,0 +1,56 @@
+<div class="modal-header">
+  <div class="modal-title" *ngIf="!editionId">
+    {{l('CreateNewEdition')}}
+  </div>
+  <div class="modal-title" *ngIf="editionId">
+    {{l('EditEdition')}}:
+    <span>{{edition.displayName}}</span>
+  </div>
+</div>
+
+<form nz-form #validateForm="ngForm" (ngSubmit)="save()" autocomplete="off">
+
+  <nz-tabset>
+    <nz-tab nzTitle="{{l('EditionProperties')}}">
+      <nz-form-item>
+        <nz-form-label>{{l("EditionName")}} *</nz-form-label>
+        <nz-form-control>
+          <input nz-input #editionNameInput="ngModel" type="text" name="EditionDisplayName"
+            [ngClass]="{'edited':edition.displayName}" [(ngModel)]="edition.displayName" required maxlength="64" />
+
+          <nz-form-control nzExtra *ngIf="editionNameInput.control.dirty&&editionNameInput.control.errors">
+            <ng-container *ngIf="editionNameInput.control.hasError('required')">{{l('ThisFieldIsRequired')}}
+            </ng-container>
+          </nz-form-control>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!--<nz-form-item>-->
+      <!--<nz-form-label>{{l("SubscriptionPrice")}}</nz-form-label>-->
+      <!--<nz-form-control>-->
+      <!--<nz-radio-group name="SubscriptionPrice" nzName="SubscriptionPrice" [(ngModel)]="isFree" (ngModelChange)="resetPrices($event)" >-->
+      <!--<label nz-radio nzValue="true">{{l("Free")}}</label>-->
+      <!--<label nz-radio nzValue="false">{{l("Paid")}}</label>-->
+      <!--</nz-radio-group>-->
+      <!--</nz-form-control>-->
+      <!--</nz-form-item>-->
+
+    </nz-tab>
+
+    <nz-tab nzTitle="{{l('Features')}}">
+      <edition-feature-tree #featureTree></edition-feature-tree>
+    </nz-tab>
+  </nz-tabset>
+
+  <div class="modal-footer">
+    <button nz-button [disabled]="saving" type="button" (click)="close()">
+      {{l("Cancel")}}
+    </button>
+    <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid" [nzLoading]="saving">
+      <!-- <i class="acticon acticon-save"></i> -->
+      <i class="iconfont icon-save"></i>
+      <span>{{l("Save")}}</span>
+    </button>
+  </div>
+
+</form>

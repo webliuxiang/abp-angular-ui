@@ -1,0 +1,13 @@
+.ou-text {
+  color: #999;
+}
+.ou-text.ou-text-has-members {
+  color: #000;
+}
+.ou-text.ou-text-has-members .ou-text-member-count,
+.ou-text.ou-text-has-members .ou-text-role-count {
+  font-weight: bold;
+}
+.vakata-context {
+  background: #fff;
+}

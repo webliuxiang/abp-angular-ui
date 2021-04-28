@@ -1,0 +1,184 @@
+@using System.Globalization
+@using Abp.Configuration
+@using Abp.Configuration.Startup
+@using Abp.Web.Mvc.Alerts
+@using Abp.Web.Security.AntiForgery
+@using LTMCompanyName.YoyoCmsTemplate.Localization
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Resources
+
+@inject LTMCompanyName.YoyoCmsTemplate.Timing.AppTimes AppTimes
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@inject IMultiTenancyConfig MultiTenancyConfig
+@inject IWebResourceManager WebResourceManager
+@inject ISettingManager SettingManager
+@inject IAlertManager AlertManager
+
+@{
+    Layout = null;
+    AbpAntiForgeryManager.SetCookie(Context);
+ }
+<!DOCTYPE html>
+<html lang="en" dir=@(CultureHelper.IsRtl ? "rtl" : "")>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="YoyoCmsTemplate- Powered By YoyoSoft">
+    <meta name="author" content="YoyoCmsTemplate- Powered By YoyoSoft">
+    <meta name="keywords" content="YoyoCmsTemplate- Powered By YoyoSoft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+    <link rel="shortcut icon" href="~/favicon.ico">
+
+    <title>YoyoCmsTemplate- Powered By YoyoSoft </title>
+
+
+    <link href="~/keen/assets/css/pages/login/login-1.min.css" rel="stylesheet" asp-append-version="true" />
+
+    <link href="~/keen/assets/plugins/global/plugins.bundle.css" rel="stylesheet" asp-append-version="true" />
+     <link href="~/keen/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" asp-append-version="true" />
+ 
+    <link href="~/keen/assets/css/style.bundle.min.css" rel="stylesheet" asp-append-version="true" />
+
+    <link href="~/keen/assets/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/keen/assets/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/keen/assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/keen/assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+
+
+    <link href="~/view-resources/Common/Styles/common-styles.min.css" rel="stylesheet" asp-append-version="true" />
+
+
+
+    <!-- View specific styles -->
+    @RenderSection("styles", required: false)
+
+    <script type="text/javascript">
+        @*     用于从javascript获取应用程序的根路径。 如果您正在IIS下的虚拟目录中运行应用程序，那么它将非常有用。 *@
+        var abp = abp || {};
+        abp.appPath = '@ApplicationPath';
+    </script>
+</head>
+<body id="kt_body" class="quick-panel-right demo-panel-right offcanvas-right header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+
+
+    <div class="d-flex flex-column flex-root">
+
+        <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
+            <!--begin::Aside-->
+            <div class="login-aside d-flex flex-column flex-row-auto" style="background-color: #7EBFDB;">
+                <!--begin::Aside Top-->
+                <div class="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
+                    <!--begin::Aside header-->
+                    <a href="#" class="text-center mb-15">
+                        <img src="~/images/logo/logo-txt-white-shield.svg" alt="logo" class="h-70px" />
+                    </a>
+                    <!--end::Aside header-->
+                    <!--begin::Aside title-->
+                    <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg text-white">
+                        52ABP-PRO
+                        <br />强大的功能 &amp; 优秀的设计
+                    </h3>
+                    <!--end::Aside title-->
+                </div>
+                <!--end::Aside Top-->
+                <!--begin::Aside Bottom-->
+                <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-bottom bgi-position-x-center"
+                     style="        background-image: url(/keen/assets/media/svg/illustrations/payment.svg)"></div>
+                <!--end::Aside Bottom-->
+            </div>
+            <!--begin::Aside-->
+            <!--begin::Content-->
+            <div class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
+                <!--begin::Content body-->
+                <div class="d-flex flex-column-fluid flex-center">
+
+
+
+                    @RenderBody()
+
+                 
+                     
+                    
+                </div>
+                <!--begin::Content footer-->
+                @*<div class="d-flex justify-content-lg-start justify-content-center align-items-end py-7 py-lg-0">
+                    <a href="#" class="text-primary font-weight-bolder font-size-h5">Terms</a>
+                    <a href="#" class="text-primary ml-10 font-weight-bolder font-size-h5">Plans</a>
+                    <a href="#" class="text-primary ml-10 font-weight-bolder font-size-h5">Contact Us</a>
+                </div>*@
+                <!--end::Content footer-->
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3E97FF", "secondary": "#E5EAEE", "success": "#08D1AD", "info": "#844AFF", "warning": "#F5CE01", "danger": "#FF3D60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#DEEDFF", "secondary": "#EBEDF3", "success": "#D6FBF4", "info": "#6125E1", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
+
+    <script src="~/keen/assets/plugins/global/plugins.bundle.js" asp-append-version="true"></script>
+    <script src="~/keen/assets/plugins/custom/prismjs/prismjs.bundle.js" asp-append-version="true"></script>
+    <script src="~/keen/assets/js/scripts.bundle.min.js" asp-append-version="true"></script>
+
+
+    @*<script src="~/keen/assets/plugins/custom/abp-web-resources/abpweb.bundle.js" asp-append-version="true"></script>*@
+<script src="~/keen/assets/_Bundles/account.mvc.bundle.js"  asp-append-version="true"></script>
+
+    @if (CultureInfo.CurrentUICulture.Name != "en")
+        {
+            if (CultureInfo.CurrentUICulture.Name == "zh-Hans")
+            {
+
+                <script src="~/lib/jquery-validation/dist/localization/messages_zh.min.js"></script>
+            }
+            else
+            {
+
+                <script src="~/lib/jquery-validation/dist/localization/messages_@Html.Raw(CultureInfo.CurrentUICulture.Name.Replace("-", "_") + ".js")" asp-append-version="true"></script>
+            }
+
+        }
+
+
+    <script>
+    // Localizing momentjs
+    moment.locale('@CultureInfo.CurrentUICulture.Name');
+    </script>
+
+    @* ABP框架的生成的动态脚本API,&minify=true 可进行压缩 *@
+    <script src="~/AbpServiceProxies/GetAll?v=@(AppTimes.StartupTime.Ticks)&minify=true" type="text/javascript"></script>
+    <script src="~/AbpScripts/GetScripts?v=@(AppTimes.StartupTime.Ticks)&minify=true" type="text/javascript"></script>
+
+    @* 公共通用的js *@
+
+    @*<script src="~/Common/js/ModalManager.js" asp-append-version="true"></script>
+    <script src="~/Common/js/ResourceLoader.js" asp-append-version="true"></script>
+    <script src="~/Common/js/jquery-custom.js" asp-append-version="true"></script>
+    <script src="~/Common/js/consts.js" asp-append-version="true"></script>
+    <script src="~/Common/js/jquery-validation-custom.js" asp-append-version="true"></script>
+    <script src="~/Common/js/passwordComplexityHelper.js" asp-append-version="true"></script>
+    <script src="~/Common/js/helpers.js" asp-append-version="true"></script>*@
+
+
+<script src="~/view-resources/Views/Areas/AppAreaName/_Bundles/common-scripts.min.js" asp-append-version="true"></script>
+
+
+
+
+
+    @WebResourceManager.RenderScripts()
+
+    <!-- 节点，用于接收每个页面的内容-->
+    @RenderSection("Scripts", false)
+    <script>
+        jQuery(document).ready(function () {
+            if (window.CurrentPage) {
+                CurrentPage.init();
+            }
+        });
+    </script>
+</body>
+</html>

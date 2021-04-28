@@ -1,0 +1,117 @@
+@using Abp.Extensions;
+@using Abp.Timing;
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Views.Shared.Components.AdminTopBar.AdminTopBarViewModel
+<!-- begin:: Header -->
+    <div id="kt_header" class="header header-fixed">
+
+        <div class="container-fluid d-flex align-items-stretch justify-content-between">
+
+
+            <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+                <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
+                    <ul class="menu-nav ">
+                        <li class="menu-item menu-item-open menu-item-here menu-item-submenu
+                            menu-item-rel menu-item-open menu-item-here menu-item-active" data-menu-toggle="click" aria-haspopup="true">
+
+                            <a href="//github.com/52abp"
+                               class="btn btn-info   btn-pill">
+                                <i class="la la-github"></i>
+                                <span>源代码</span>
+                            </a>
+
+                        </li>
+                        <li class="menu-item menu-item-open menu-item-here menu-item-submenu
+                            menu-item-rel menu-item-open menu-item-here menu-item-active" data-menu-toggle="click" aria-haspopup="true">
+                            <a href="//www.52abp.com/Purchase"
+                               class="btn btn-info   btn-pill">
+                                <i class="la la-money"></i>
+                                <span>商业服务</span>
+                            </a>
+
+                        </li>
+                        <li class="menu-item menu-item-open menu-item-here menu-item-submenu
+                            menu-item-rel menu-item-open menu-item-here menu-item-active" data-menu-toggle="click" aria-haspopup="true">
+                            <a href="//www.52abp.com/Wiki"
+                               class="btn btn-info   btn-pill">
+                                <i class="la la-file"></i>
+                                <span>文档中心</span>
+                            </a>
+
+                        </li>
+
+
+
+
+                    </ul>
+                </div>
+            </div>
+
+            <!-- end:: Header Menu -->
+            <!-- begin:: Header Topbar -->
+            <div class="topbar">
+
+
+
+
+                @*<partial name="_quick_actions_btn.cshtml"/>*@
+
+                <div class="dropdown mr-1">
+                    @if (Model.Languages.Count > 1)
+                    {
+
+
+
+                        <!--begin::Toggle-->
+                        <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">
+                            <div class="btn btn-icon btn-clean btn-dropdown btn-lg">
+                                <i class="@Model.CurrentLanguage.Icon" aria-label="@Model.CurrentLanguage.Icon"></i>
+                            </div>
+                        </div>
+                        <!--end::Toggle-->
+                        <!--begin:: Languages 多语言 -->
+
+                        <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-right">
+                            <ul class="navi navi-hover py-4" aria-label="@L("Languages")" role="menu">
+                                @foreach (var language in Model.Languages.Where(language => language.Name != Model.CurrentLanguage.Name))
+                                {
+                                    <li class="navi-item">
+                                        <a href="~/AbpLocalization/ChangeCulture?cultureName=@language.Name&returnUrl=@ApplicationPath@Context.Request.Path.Value.RemovePreFix("/")" class="kt-nav__link">
+                                            <i class="@language.Icon"></i>
+                                            <span class="kt-nav__link-text ml-1">  @language.DisplayName</span>
+
+                                        </a>
+                                    </li>
+
+                                }
+                            </ul>
+                        </div>
+
+
+                        <!--end:: Languages -->
+                    }
+
+                    <!--begin: User Bar -->
+                <div class="topbar-item ml-4">
+
+
+                    <div class="btn btn-icon btn-light-primary h-40px w-40px p-0" id="kt_quick_user_toggle">
+                         <img alt="Pic" src="@Url.Action("GetProfilePicture", "Profile", new {area = string.Empty})?t=@Clock.Now.Ticks.ToString()" height="300"  class="h-30px align-self-end" />
+
+                    </div>
+
+                 </div>
+
+                    <!--end: User Bar -->
+                    <!--begin:: Quick Panel Toggler -->
+                    @*<div class="topbar-item topbar-item--quick-panel" data-toggle="kt-tooltip"
+             title="快捷菜单" data-placement="right">
+            <span class="topbar-icon" id="kt_quick_panel_toggler_btn">
+                <i class="flaticon2-grids"></i>
+            </span>
+        </div>*@
+                </div>
+                <!--end:: Quick Panel Toggler -->
+                <!-- end:: Header Topbar -->
+            </div>
+                </div> </div>
+        <!-- end:: Header -->

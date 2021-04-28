@@ -1,0 +1,238 @@
+# 从编译项目通过、构建包内容
+
+# 编译项目为docker镜像，然后推送到仓库中
+
+# 定义stages
+stages:
+  - build
+  - docker_build
+  - docker_master
+  - deploy
+# 编译dotnet
+dotnet-build:
+  image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/dotnet/core/sdk:3.1
+  stage: build
+  before_script:
+    - cd src/yoyocmstemplate-aspnet-core/
+  script:
+    - dotnet build LTMCompanyName.YoyoCmsTemplate.sln
+  tags:
+    - "docker"
+  only:
+    changes:
+      - src/yoyocmstemplate-aspnet-core/**/**
+# 开发环境的docker镜像制作
+docker-host-build:
+  image: docker:19.03.12
+  stage: docker_build
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-host:dev  -f ./src/yoyocmstemplate-aspnet-core/src/LTMCompanyName.YoyoCmsTemplate.Web.Host/Dockerfile.host.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-host:dev
+  only:
+    - develop
+    - develop-mooc
+    changes:
+      - src/yoyocmstemplate-aspnet-core/**/**
+  tags:
+    - ltm
+  dependencies:
+    - dotnet-build
+
+## 迁移工具镜像
+docker-migrator-build:
+  image: docker:19.03.12
+  stage: docker_build
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-migrator:dev  -f ./src/yoyocmstemplate-aspnet-core/tools/LTMCompanyName.YoyoCmsTemplate.Migrator/Dockerfile.migrator.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-migrator:dev
+  only:
+    - develop
+    - develop-mooc
+    changes:
+      - src/yoyocmstemplate-aspnet-core/**/**
+  tags:
+    - ltm
+  dependencies:
+    - dotnet-build
+
+
+
+# 编译angular
+angular-build:
+  image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/node:13.2-alpine
+  stage: build
+  before_script:
+    - cd src/yoyocmstemplate-angular/
+    - npm set progress=false && npm config set depth 0 && npm cache clean --force
+  script:
+    - npm i
+    - npm run build
+  tags:
+    - "docker"
+  only:
+    changes:
+      - src/yoyocmstemplate-angular/**/**
+#angular镜像开发版本
+docker-angular-build:
+  image: docker:19.03.12
+  stage: docker_build
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-ng:dev  -f ./src/yoyocmstemplate-angular/Dockerfile.ng.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-ng:dev
+  only:
+    - develop
+    - develop-mooc
+  tags:
+    - ltm
+  dependencies:
+    - angular-build
+
+
+
+
+
+
+
+
+
+# 编译vue
+
+vue-build:
+  image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/node:13.2-alpine
+  stage: build
+  before_script:
+    - cd src/yoyocmstemplate-vue/
+    - npm set progress=false && npm config set depth 0 && npm cache clean --force
+  script:
+    - npm i
+    - npm run build
+  only:
+    changes:
+      - src/yoyocmstemplate-vue/**/**
+  tags:
+    - "docker"
+
+
+#vue 镜像开发版本
+docker-vue-build:
+  image: docker:19.03.12
+  stage: docker_build
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-vue:dev  -f ./src/yoyocmstemplate-vue/Dockerfile.vue.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-vue:dev
+  only:
+    - develop
+    - develop-mooc
+    changes:
+      - src/yoyocmstemplate-vue/**/**
+  tags:
+    - ltm
+  dependencies:
+    - vue-build
+
+# master分支制作镜像-镜像tag:latest
+
+docker-host-build-master: 
+  image: docker:19.03.12
+  stage: docker_master
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-host  -f ./src/yoyocmstemplate-aspnet-core/src/LTMCompanyName.YoyoCmsTemplate.Web.Host/Dockerfile.host.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-host
+  only:
+    - master
+    changes:
+      - src/yoyocmstemplate-aspnet-core/**/**
+  tags:
+    - ltm
+  dependencies:
+    - dotnet-build
+
+
+
+docker-migrator-build-master:
+  image: docker:19.03.12
+  stage: docker_build_dev
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-migrator  -f ./src/yoyocmstemplate-aspnet-core/tools/LTMCompanyName.YoyoCmsTemplate.Migrator/Dockerfile.migrator.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-migrator
+  only:
+    - master
+    changes:
+      - src/yoyocmstemplate-aspnet-core/**/**
+  tags:
+    - ltm
+  dependencies:
+    - docker-host-build-master
+
+
+docker-angular-build-master:
+  image: docker:19.03.12
+  stage: docker_build_dev
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-ng  -f ./src/yoyocmstemplate-angular/Dockerfile.ng.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-ng
+  only:
+    - master
+    changes:
+      - src/yoyocmstemplate-angular/**/**
+  tags:
+    - ltm
+  dependencies:
+    - angular-build
+
+
+#vue 镜像开发版本
+docker-vue-build-master:
+  image: docker:19.03.12
+  stage: docker_build_dev
+  services:
+    - name: docker:19.03.12-dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+  script:
+    - echo "开始制作docker镜像"
+    - docker build .  -t $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-vue  -f ./src/yoyocmstemplate-vue/Dockerfile.vue.compose
+    - docker push $CI_REGISTRY_aliyun/yoyosoft/52abp_pro-vue
+  only:
+    - master
+    changes:
+      - src/yoyocmstemplate-vue/**/**
+  tags:
+    - ltm
+  dependencies:
+    - vue-build

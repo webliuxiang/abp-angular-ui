@@ -1,0 +1,122 @@
+{
+  "scripts": [
+    {
+      "output": "view-resources/Views/front-mvc/global-52abp-pro-required.min.js",
+      "input": [
+        "node_modules/json2/lib/JSON2/static/json2.js",
+        "node_modules/jquery/dist/jquery.js",
+        "node_modules/jquery-migrate/dist/jquery-migrate.js",
+        "node_modules/popper.js/dist/umd/popper.js",
+        "node_modules/bootstrap/dist/js/bootstrap.js",
+        "node_modules/jquery-serializejson/jquery.serializejson.js"
+      ]
+    },
+
+    {
+      "output": "view-resources/Views/front-mvc/portal-52abp-pro-libs.min.js",
+      "input": [
+        "node_modules/spin.js/spin.js",
+        "node_modules/spin.js/jquery.spin.js",
+        "node_modules/block-ui/jquery.blockUI.js",
+        "node_modules/toastr/build/toastr.min.js",
+        "node_modules/spin.js/spin.js",
+        "node_modules/spin.js/jquery.spin.js",
+        "node_modules/block-ui/jquery.blockUI.js",
+        "node_modules/sweetalert/dist/sweetalert.min.js",
+        "node_modules/moment/min/moment-with-locales.js",
+        "node_modules/moment-timezone/builds/moment-timezone-with-data.js",
+        "node_modules/abp-web-resources/Abp/Framework/scripts/abp.js",
+        "node_modules/abp-web-resources/Abp/Framework/scripts/libs/abp.jquery.js",
+        "node_modules/abp-web-resources/Abp/Framework/scripts/libs/abp.toastr.js",
+        "node_modules/abp-web-resources/Abp/Framework/scripts/libs/abp.blockUI.js",
+        "node_modules/abp-web-resources/Abp/Framework/scripts/libs/abp.spin.js",
+        "node_modules/abp-web-resources/Abp/Framework/scripts/libs/abp.sweet-alert.js",
+        "node_modules/abp-web-resources/Abp/Framework/scripts/libs/abp.moment.js",
+        "wwwroot/yoyosoft/Scripts/*.js"
+
+
+      ]
+    },
+    {
+      "output": "view-resources/Views/front-mvc/portal-52abp-pro-front.min.js",
+      "input": [
+        "wwwroot/Front/assets/vendor/hs-megamenu/src/hs.megamenu.js",
+        "node_modules/svg-injector/dist/svg-injector.min.js",
+        "node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js",
+        "node_modules/jquery-validation/dist/jquery.validate.js",        
+        "node_modules/slick-carousel/slick/slick.js",
+        "node_modules/datatables/media/js/jquery.dataTables.min.js",
+        "node_modules/flatpickr/dist/flatpickr.min.js",
+        "node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"
+      ]
+    },
+    {
+      "output": "view-resources/Views/front-mvc/portal-52abp-pro-front-components.min.js",
+      "input": [
+        "wwwroot/Front/assets/js/hs.core.js",
+        "wwwroot/Front/assets/js/components/hs.header.js",
+        "wwwroot/Front/assets/js/components/hs.unfold.js",
+        "wwwroot/Front/assets/js/components/hs.malihu-scrollbar.js",
+        "wwwroot/Front/assets/js/components/hs.focus-state.js",
+        "wwwroot/Front/assets/js/components/hs.svg-injector.js",
+        "wwwroot/Front/assets/js/components/hs.go-to.js",
+        "wwwroot/Front/assets/js/components/hs.show-animation.js",
+        "wwwroot/Front/assets/js/components/hs.slick-carousel.js",
+        "wwwroot/Front/assets/js/components/hs.countdown.js",
+        "wwwroot/Front/assets/js/components/hs.validation.js",
+        "wwwroot/Front/assets/js/components/hs.selectpicker.js",
+        "wwwroot/Front/assets/js/components/hs.datatables.js",
+        "wwwroot/Front/assets/js/components/hs.range-datepicker.js",
+        "wwwroot/Front/assets/js/components/hs.fancybox.js"
+
+      ]
+    }
+
+
+
+  ],
+  "styles": [
+    {
+      "output": "Common/front-mvc/common-styles.min.css",
+      "input": [
+        "wwwroot/Common/Styles/**/*.css",
+        "wwwroot/Common/Styles/**/*.less",
+        "!wwwroot/Common/Styles/**/*min.css"
+      ]
+    },
+    {
+      "output": "view-resources/Views/front-mvc/portal-52abp-pro-libs.min.css",
+      "input": [
+        "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+        "node_modules/animate.css//animate.min.css",
+        "wwwroot/Front/assets/vendor/hs-megamenu/src/hs.megamenu.css",
+        "node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css",
+        "wwwroot/Front/assets/vendor/fancybox/jquery.fancybox.css",
+        "node_modules/slick-carousel/slick/slick.css",
+        "node_modules/famfamfam-flags/dist/sprite/famfamfam-flags.css",
+        "node_modules/toastr/build/toastr.css"
+      ]
+    },
+    {
+      "output": "view-resources/Views/front-mvc/portal-52abp-pro-libs-rtl.min.css",
+      "input": [
+
+        "node_modules/famfamfam-flags/dist/sprite/famfamfam-flags.css"
+
+      ]
+    },
+    {
+      "output": "view-resources/Views/front-mvc/portal-52abp-pro-plug.min.css",
+      "input": [
+        "node_modules/flatpickr/dist/flatpickr.min.css",
+        "node_modules/bootstrap-select/dist/css/bootstrap-select.min.css",
+
+        "wwwroot/Front/assets/global/css/sticky-footer.css"
+
+      ]
+    }
+
+
+  ],
+  "scriptMappings": []
+}

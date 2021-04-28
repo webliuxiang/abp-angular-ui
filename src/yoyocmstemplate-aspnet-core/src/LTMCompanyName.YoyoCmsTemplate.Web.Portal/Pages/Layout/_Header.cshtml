@@ -1,0 +1,20 @@
+@using LTMCompanyName.YoyoCmsTemplate.Web.Portal.Pages.Shared.Components.Header
+<!-- ========== HEADER ========== -->
+    <header id="header" class="header">
+
+        <partial name="~/Pages/Layout/_SearchPushTop.cshtml" />
+
+
+        @* Header头部 *@
+        <div class="header-section">
+            @* 顶部菜单 *@
+            @*@await Component.InvokeAsync(typeof(TopBarViewComponent))*@
+
+
+            @* 进行header头部菜单的处理 *@
+            @await Component.InvokeAsync(typeof(HeaderViewComponent), new { currentPageName = ViewBag.CurrentPageName })
+
+
+        </div>
+    </header>
+<!-- ========== END HEADER ========== -->

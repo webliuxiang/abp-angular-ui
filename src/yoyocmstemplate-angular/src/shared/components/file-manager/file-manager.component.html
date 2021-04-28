@@ -1,0 +1,144 @@
+<div class="d-flex justify-content-between">
+  <div class="d-flex align-items-center flex-1">
+    <nz-upload
+      [nzAction]="uploadFileUrl"
+      [nzShowUploadList]="false"
+      [nzHeaders]="uploadHeaders"
+      nzMultiple
+      (nzChange)="uploadChange($event)"
+    >
+      <button nz-button nzType="primary">
+        <i nz-icon nzType="upload"></i>
+        <span>{{ l('FileUpload') }}</span>
+      </button>
+    </nz-upload>
+    <ng-template [ngTemplateOutlet]="actions"></ng-template>
+    <button class="ml-sm" nz-button (click)="openDirectory()">
+      <i class="iconfont icon-plus"></i>
+      <span>
+        {{ l('CreateDirectory') }}
+      </span>
+    </button>
+    <button class="ml-sm" nz-button (click)="refreshGoFirstPage()">
+      <i class="iconfont icon-reload"></i>
+      <span>
+        {{ l('Refresh') }}
+      </span>
+    </button>
+  </div>
+
+  <nz-button-group>
+    <button nz-button (click)="showType = 'big'" [disabled]="showType == 'big'">
+      <i nz-icon nzType="appstore"></i>
+    </button>
+    <button nz-button (click)="showType = 'small'" [disabled]="showType == 'small'">
+      <i nz-icon nzType="bars"></i>
+    </button>
+  </nz-button-group>
+</div>
+<nz-spin [nzSpinning]="loading">
+  <div *ngIf="showType == 'small'" class="file-manager__header">
+    <div class="file-manager__header-name">{{ l('FileName') }}</div>
+    <div class="file-manager__header-pixel">{{ l('Pixel') }}</div>
+    <div class="file-manager__header-time">{{ l('LastModificationTime') }}</div>
+  </div>
+  <div class="file-manager" [ngClass]="{ 'file-manager__small': showType == 'small' }">
+    <div *ngIf="path.length > 1" (click)="back()" class="file-item">
+      <i class="file-item__icon iconfont icon-rollback"></i>
+      <div class="file-item__name">...</div>
+      <!-- 路径比较深的显示back按钮 -->
+    </div>
+    <div
+      *ngFor="let i of list; let idx = index"
+      class="file-item"
+      [ngClass]="{ 'file-item__selected': i.selected }"
+      (click)="cho(i)"
+    >
+      <i
+        *ngIf="i.dir === true"
+        class="file-item__icon iconfont   "
+        [ngClass]="'icon-' + i.fileExt"
+        style="font-size: 29px;"
+      ></i>
+      <ng-container *ngIf="i.dir === false">
+        <i
+          *ngIf="!i.isImg"
+          class="file-item__icon iconfont   "
+          [ngClass]="'icon-' + i.fileExt"
+          style="font-size: 29px;"
+        ></i>
+        <div class="file-item__img" *ngIf="i.isImg" [ngStyle]="{ 'background-image': 'url(' + i.path + ')' }"></div>
+      </ng-container>
+      <div class="file-item__name">{{ i.name }}</div>
+      <div class="file-item__pixel">
+        <span *ngIf="i.isImg">{{ i.width }}x{{ i.height }}</span>
+      </div>
+      <div class="file-item__time">{{ i.creationTime | _moment }}</div>
+      <span nz-dropdown [nzDropdownMenu]="actionMenu" class="dd-btn file-item__actions">
+        <i nz-icon nzType="ellipsis"></i>
+      </span>
+      <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item nz-popconfirm nzPopconfirmTitle="l('AreYouSure')" (nzOnConfirm)="copyImg(i.id)">
+            Copy
+          </li>
+          <li nz-menu-item (click)="copyData(i.path, 'link')">{{ l('CopyUrl') }}</li>
+          <li nz-menu-item (click)="copyData(i.path, 'code')">{{ l('CopyCode') }}</li>
+          <li nz-menu-item (click)="rename(i)">{{ l('ReName') }}</li>
+          <li nz-menu-item (click)="openMoveModal(i)">{{ l('Move') }}</li>
+          <li nz-menu-item nz-popconfirm nzPopconfirmTitle="l('AreYouSure')" (nzOnConfirm)="remove(i.id)">
+            {{ l('DeleteSysFile') }}
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+    </div>
+  </div>
+  <div class="text-center mt-md">
+    <ng-template #showTotalTemplate let-total let-range="range">
+      {{ l('GridFooterDisplayText', pageNumber, totalPages, total, range[0], range[1]) }}
+    </ng-template>
+    <nz-pagination
+      [(nzPageIndex)]="pageNumber"
+      [nzTotal]="totalItems"
+      [nzShowTotal]="showTotalTemplate"
+      [nzPageSizeOptions]="[10, 20, 30, 40, 50]"
+      [(nzPageSize)]="pageSize"
+      nzShowQuickJumper
+      nzShowSizeChanger
+      (nzPageIndexChange)="pageNumberChange()"
+      (nzPageSizeChange)="refresh()"
+    ></nz-pagination>
+  </div>
+
+  <div class="no-data" *ngIf="totalItems === 0">
+    {{ l('NoData') }}
+  </div>
+</nz-spin>
+
+
+<nz-modal [(nzVisible)]="renameModel" [nzTitle]="l('ReName')" (nzOnOk)="renameOk()" (nzOnCancel)="renameModel = false">
+  <input nz-input [(ngModel)]="renameTitle" name="renameTitle" />
+</nz-modal>
+
+
+<nz-modal [(nzVisible)]="moveModel" [nzTitle]="l('Move')" (nzOnOk)="moveOk()" (nzOnCancel)="moveModel = false">
+  <nz-tree-select
+    class="d-block"
+    [nzNodes]="folderNodes"
+    nzShowSearch
+    nzExpandAll
+    [(ngModel)]="moveId"
+    [nzAsyncData]="true"
+    (nzExpandChange)="onDirectoryExpandChange($event)"
+  >
+  </nz-tree-select>
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="directoryModel"
+  nzTitle="创建文件夹"
+  (nzOnOk)="createDirecotry()"
+  (nzOnCancel)="directoryModel = false"
+>
+  <input nz-input [(ngModel)]="directoryName" name="directoryName"
+/></nz-modal>

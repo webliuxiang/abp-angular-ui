@@ -1,0 +1,29 @@
+﻿@using Abp.Application.Services.Dto
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Models.Common.Modals
+
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.Editions.MoveTenantsToAnotherEditionViwModel
+
+@await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("MoveTenantsOfEdition")))
+
+<div class="modal-body">
+
+    <form name="MoveTenantsToAnotherEditionForm" role="form" novalidate class="form-validation">
+
+        <input type="hidden" name="SourceEditionId" value="@Model.EditionId" />
+
+        <div class="form-group">
+            <a href="@(ApplicationPath + "AreasAdminName/Tenants?editionId="+ Model.EditionId)" target="_blank">
+                @L("MoveTenantsOfEditionDescription", Model.TenantCount)
+            </a>
+        </div>
+
+        <div class="form-group">
+            <label for="TargetEditionId">@L("Edition")</label>
+            @Html.DropDownList("TargetEditionId", Model.EditionItems.Select(i => i.ToSelectListItem()), new { @class = "form-control", @required = "required" })
+        </div>
+
+    </form>
+
+</div>
+
+@await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

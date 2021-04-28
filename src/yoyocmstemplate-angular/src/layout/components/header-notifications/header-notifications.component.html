@@ -1,0 +1,85 @@
+<ng-template #extra>
+    <a
+            [hidden]="notifications && notifications.length === 0"
+            (click)="setAllNotificationsAsRead()"
+            style="margin-right: 10px;"
+    >
+        <i class="iconfont icon-check" style="font-size: 20px;"></i>
+        {{ l('SetAllAsRead') }}
+    </a>
+    <a class="mr-sm" (click)="loadNotifications()">
+        <i class="iconfont icon-reload" style="font-size: 20px;"></i>
+        {{ l('Refresh') }}
+    </a>
+    <a (click)="chantNotificationSettings()">
+        <i class="iconfont icon-setting" style="font-size: 20px;"></i>
+        {{ l('Settings') }}
+    </a>
+</ng-template>
+
+<div class="alain-pro__nav-item" nz-dropdown nzPlacement="bottomRight" [nzDropdownMenu]="dropdownMenu">
+    <nz-badge [nzCount]="unreadNotificationCount">
+        <i class="iconfont icon-bell"></i>
+    </nz-badge>
+</div>
+
+<nz-dropdown-menu #dropdownMenu="nzDropdownMenu">
+    <div nz-menu class="wd-lg">
+        <nz-spin [nzSpinning]="loading">
+            <nz-card
+                    [nzTitle]="l('NewNotifications')"
+                    [nzLoading]="loading"
+                    nzBordered="false"
+                    class="ant-card__body-nopadding"
+                    [nzExtra]="extra"
+                    style="min-width:450px;"
+            >
+                <!-- 通知列表 -->
+                <div
+                        nz-row
+                        [nzType]="'flex'"
+                        [nzJustify]="'center'"
+                        [nzAlign]="'middle'"
+                        class="py-sm bg-grey-lighter-h point"
+                        *ngFor="let item of notifications"
+                        (click)="gotoUrl(item.url)"
+                >
+                    <div nz-col [nzSpan]="20">
+                        <p class="mb0">
+                            <ellipsis lines="1">
+                <span nz-tooltip [nzTooltipTitle]="item.text">
+                  <nz-badge [hidden]="item.icon === 'fatal'" [nzStatus]="item.icon"></nz-badge>
+                  <nz-badge
+                          [hidden]="item.icon !== 'fatal'"
+                          nzStatus="default"
+                          [nzStyle]="{ 'background-color': 'black' }"
+                  >
+                  </nz-badge>
+                    {{ item.text }}
+                </span>
+                            </ellipsis>
+                        </p>
+                        <p>
+                            {{ item.time | momentFromNow }}
+                            <a [hidden]="item.state !== 'UNREAD'" (click)="setNotificationAsRead(item)">{{ l('SetAsRead') }}</a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 没有数据 -->
+                <div nz-row *ngIf="!notifications || notifications.length === 0">
+                    <div nz-col [nzSpan]="24" class="pt-md border-top-1 text-center text-grey point">
+                        {{ l('ThereIsNoNotification') }}
+                    </div>
+                </div>
+
+                <!-- 查看所有通知 -->
+                <div nz-row *ngIf="notifications && notifications.length !== 0">
+                    <div nz-col [nzSpan]="24" class="pt-md border-top-1 text-center text-grey point">
+                        <a [routerLink]="['/app/notifications']">{{ l('SeeAllNotifications') }}</a>
+                    </div>
+                </div>
+            </nz-card>
+        </nz-spin>
+    </div>
+</nz-dropdown-menu>

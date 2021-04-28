@@ -1,0 +1,43 @@
+# STEP 1: Build
+FROM registry.cn-hangzhou.aliyuncs.com/yoyosoft/node:14.13.1-slim as builder
+
+LABEL authors="ltm <ltm@ddxc.org>"
+
+# # 复制包版本锁定文件到目录
+COPY src/WebManagement-angular/package.json ./
+
+# RUN ls -l
+
+# 配置npm
+RUN npm set progress=false && npm config set depth 0 && npm cache clean --force
+# 还原并移动node_modules到52abp-pro目录
+RUN npm i  && mkdir /52abp-pro && cp -R ./node_modules ./52abp-pro
+
+# 将52abp的源代码复制到此目录中
+# 将52abp-pro目录中的node_modules复制到/src/WebManagement-angular目录
+WORKDIR /52abp-pro
+
+COPY ./src/WebManagement-angular .
+
+#RUN rm .npmrc
+# RUN ls -l
+
+RUN npm run build
+
+# 测试docker脚本。
+# STEP 2: Setup
+FROM registry.cn-hangzhou.aliyuncs.com/yoyosoft/nginx:1.17.6-alpine
+
+# COPY --from=builder /52abp-pro/_nginx/default.conf /etc/nginx/conf.d/default.conf
+# COPY --from=builder /52abp-pro/_nginx/ssl/ /etc/nginx/ssl/
+
+# 复制WebManagement-angular/nginx.conf配置文件到镜像中
+COPY ["./src/WebManagement-angular/_nginx/default.conf", "/etc/nginx/nginx.conf"]
+
+# 清空nginx自带的文件
+RUN rm -rf /usr/share/nginx/html/*
+
+# 从builder中获取编译输出到/usr/share/nginx/html目录
+COPY --from=builder /52abp-pro/dist /usr/share/nginx/html
+
+CMD [ "nginx", "-g", "daemon off;"]

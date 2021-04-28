@@ -1,0 +1,42 @@
+<!-- 菜单显示名称 -->
+<div>
+    <label>{{l('WechatMenuName')}}</label>
+    <input *ngIf="entity" nz-input name="name" [(ngModel)]="entity.name" (ngModelChange)="menuItem.text=$event;" />
+</div>
+
+<!-- 不包含子菜单显示 -->
+<fieldset *ngIf="showMenuType">
+    <label>{{l('WechatMenuType')}}</label>
+    <nz-select *ngIf="entity" name="menuType" style="width: 100%;display: block;" [(ngModel)]="entity.type">
+        <nz-option *ngFor="let item of menuTypeList" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+    </nz-select>
+</fieldset>
+
+
+
+<!-- 点击、选择地理位置、弹出拍照或者相册发图、弹出系统拍照发图、弹出微信相册发图器、扫码推事件、扫码推事件且弹出提示框 -->
+<fieldset *ngIf="showKeyInput">
+    <label>{{l('WechatMenuKey')}}</label>
+    <input nz-input name="key" [(ngModel)]="entity.key" />
+</fieldset>
+
+<!-- 打开网址、小程序 -->
+<fieldset *ngIf="showMenuUrl">
+    <label>{{l('WechatMenuUrl')}}</label>
+    <input nz-input name="url" [(ngModel)]="entity.url" />
+</fieldset>
+
+<!-- 小程序 -->
+<fieldset *ngIf="showAppIdAndAppPagePath">
+    <label>{{l('WechatMenuAppId')}}</label>
+    <input nz-input name="appid" [(ngModel)]="entity.appid" />
+    <br>
+    <label>{{l('WechatMenuPagePath')}}</label>
+    <input nz-input name="pagepath" [(ngModel)]="entity.pagepath" />
+</fieldset>
+
+<!-- 下发消息(除文本消息)、跳转图文消息URL -->
+<fieldset *ngIf="showMediaId">
+    <label>{{l('WechatMenuMediaId')}}</label>
+    <input nz-input name="media_id" [(ngModel)]="entity.media_id" />
+</fieldset>

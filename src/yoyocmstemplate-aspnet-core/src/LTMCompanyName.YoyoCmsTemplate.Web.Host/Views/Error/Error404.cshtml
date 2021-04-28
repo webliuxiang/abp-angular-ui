@@ -1,0 +1,35 @@
+
+@{
+    Layout = "_Layout";
+
+  
+ 
+}
+
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center  ">
+
+                    Oops:404Error  <small> @L("OopsYouAreLost") </small>
+                </h3>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title "><a href="@Url.Action("Index", "Home")" class="link">@L("HomePage")</a></h5>
+                <p class="card-text text-danger">  @L("WeCanNotFindThePage")</p>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col-md-2">
+
+    </div>
+</div>
+
+

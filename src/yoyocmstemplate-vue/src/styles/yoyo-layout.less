@@ -1,0 +1,128 @@
+// 菜单和内容响应式
+.ant-layout-sider,
+.ant-pro-content {
+  transition: all 300ms;
+
+  .alain-pro .page-header {
+    margin-right: -24px;
+    margin-bottom: 24px;
+    margin-left: -24px;
+    padding: 12px 24px 0;
+    border-bottom: 1px solid #efe3e5;
+  }
+}
+
+@media (max-width: 767px) {
+  // .ant-layout-sider {
+  //   transform: translateX(80px);
+  // }
+  // .ant-layout-sider {
+  //   position: fixed;
+  // }
+  .ant-pro-content {
+    transform: translateX(256px);
+  }
+
+  .alain-pro__collapsed {
+    .ant-layout-sider {
+      transform: translate3d(-80px, 0, 0);
+    }
+
+    .ant-pro-content {
+      transform: translateX(0);
+    }
+
+    .alain-pro__sider {
+      box-shadow: none;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .ant-pro-content {
+    margin-left: 256px;
+  }
+
+  .alain-pro__collapsed {
+    .ant-pro-content {
+      margin-left: 80px;
+    }
+  }
+}
+
+:not(.ant-layout-sider-collapsed) {
+  .alain-pro__header-logo-expanded {
+    display: inline-block;
+  }
+
+  .alain-pro__header-logo-collapsed {
+    display: none;
+  }
+}
+
+.ant-layout-sider-collapsed {
+  .alain-pro__header-logo-expanded {
+    display: none;
+  }
+
+  .alain-pro__header-logo-collapsed {
+    display: inline-block;
+  }
+}
+
+.alain-pro__sider-logo {
+  text-align: center;
+  padding-right: 24px;
+}
+
+.ant-layout {
+  height: 100%;
+  overflow: hidden;
+}
+
+.ant-layout-has-sider {
+  .layout-content {
+    overflow: auto;
+  }
+}
+
+.layout-tab {
+  //margin: 0px -10px;
+
+
+  .reuse-tab {
+    //padding: 0px 24px;
+  }
+
+  .ant-tabs-bar {
+    margin: 0px;
+  }
+
+}
+
+.layout-content {
+  padding: 0px 24px 0px;
+  padding-top: 0px;
+  height: 100% !important;
+  margin-top: 1px;
+}
+
+// 滚动条
+.layout-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.layout-content::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.layout-content::-webkit-scrollbar-thumb {
+  background-color: #6e6e6e;
+  outline: #333 solid 1px;
+}
+
+.ant-layout.ant-layout-has-sider > .ant-layout,
+.ant-layout.ant-layout-has-sider > .ant-layout-content {
+  overflow: hidden;
+}

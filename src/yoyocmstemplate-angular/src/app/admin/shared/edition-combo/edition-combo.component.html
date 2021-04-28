@@ -1,0 +1,7 @@
+<nz-select [(ngModel)]="selectedEdition" [nzPlaceHolder]="placeholder" nzAllowClear (ngModelChange)="selectedEditionChange.emit($event)">
+  <nz-option
+    *ngFor="let item of editions"
+    [nzLabel]="item.displayText"
+    [nzValue]="item">
+  </nz-option>
+</nz-select>

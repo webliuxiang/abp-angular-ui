@@ -1,0 +1,50 @@
+<div class="d-flex align-items-center">
+  <!-- Menu -->
+  <div class="alain-pro__header-item alain-pro__header-trigger" (click)="toggleCollapsedSidebar()">
+    <i
+      class="iconfont"
+      [ngClass]="settings.layout.collapsed ? 'icon-indent ' : 'icon-outdent'"
+      style="font-size: 18px"
+    ></i>
+  </div>
+  <!-- Github Page -->
+  <a class="alain-pro__header-item alain-pro__header-trigger" href="http://code.52abp.com/commercial" target="_blank">
+    <i class="iconfont icon-github-fill" style="font-size: 20px"></i>
+  </a>
+  <!-- 52abp官网 -->
+  <a class="alain-pro__header-item alain-pro__header-trigger" href="https://www.52abp.com">
+    <i class="iconfont icon-link" style="font-size: 20px"></i>
+  </a>
+</div>
+
+<!-- 右侧菜单栏 -->
+<div class="alain-pro__header-right">
+  <header-i18n class="alain-pro__header-item"></header-i18n>
+  <header-notifications class="alain-pro__header-item mr-sm"></header-notifications>
+
+  <!-- Settings -->
+  <div class="alain-pro__nav-item mr-sm" nz-dropdown nzPlacement="bottomRight" [nzDropdownMenu]="dropdownMenu">
+    <i class="iconfont icon-setting"></i>
+  </div>
+
+  <nz-dropdown-menu class="hidden-xs alain-pro__header-item" #dropdownMenu="nzDropdownMenu">
+    <div nz-menu style="width: 200px">
+      <div nz-menu-item>
+        <header-fullscreen></header-fullscreen>
+      </div>
+      <div
+        nz-menu-item
+        (click)="this.settings.setLayout('theme', this.settings.layout.theme === 'dark' ? 'light' : 'dark')"
+      >
+        <div>
+          <i class="iconfont icon-bg-colors"></i>
+          {{ l('SwitchTheme') }}
+        </div>
+      </div>
+      <div nz-menu-item>
+        <header-storage></header-storage>
+      </div>
+    </div>
+  </nz-dropdown-menu>
+  <header-user class="hidden-xs alain-pro__header-item"></header-user>
+</div>

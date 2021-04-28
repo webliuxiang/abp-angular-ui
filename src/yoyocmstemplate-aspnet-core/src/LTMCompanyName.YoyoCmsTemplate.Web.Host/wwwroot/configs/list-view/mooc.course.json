@@ -1,0 +1,219 @@
+[
+  { // 行号列
+    "field": "", // 字段,支持嵌套 aa.bb 
+    "title": "序号", // 列名
+    "type": "no", // 类型
+    "render": null, // 要使用的渲染器名称
+    "width": 40, // 宽度
+    "order": 0, // 排序号
+    "numberDigits": 2, // 列类型为number时保留小数位
+    "dateFormat": null, // 列类型为datetime类型格式化规则
+    "statistical": null, // 统计类型
+    "fixed": "left" // 固定列 left 或 right,必须指定width
+  },
+
+  { // 选择框列
+    "field": "",
+    "title": "",
+    "type": "checkbox",
+    "render": null,
+    "width": 35,
+    "order": 1,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": "left"
+  },
+  { // 操作按钮列
+    "field": "",
+    "title": "操作",
+    "type": "action",
+    "render": null,
+    "width": 60,
+    "order": 2,
+    "numberDigits": 0,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": "left",
+    "actions": [
+      {
+        "name": null,
+        "type": "select",
+        "label": "操作",
+        "buttons": [
+          {
+            "name": "edit",
+            "type": "button",
+            "label": "编辑",
+            "icon": "",
+            "acl": null
+          },
+          {
+            "name": "delete",
+            "type": "button",
+            "label": "删除",
+            "icon": "",
+            "acl": "Pages.Course.Delete"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "field": "imgUrl",
+    "title": "封面",
+    "type": "img",
+    "render": null,
+    "width": 60,
+    "order": 3,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "title",
+    "title": "课程名称",
+    "type": null,
+    "render": null,
+    "width": 160,
+    "order": 4,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "price",
+    "title": "价格",
+    "type": "number",
+    "render": null,
+    "width": 60,
+    "order": 5,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "courseStateString",
+    "title": "发布状态",
+    "type": null,
+    "render": null,
+    "width": null,
+    "order": 6,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "gradeOfDifficulty",
+    "title": "难度等级",
+    "type": null,
+    "render": null,
+    "width": null,
+    "order": 7,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "courseVideoTypeString",
+    "title": "课程类型",
+    "type": null,
+    "render": null,
+    "width": null,
+    "order": 8,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "typeString",
+    "title": "连载状态",
+    "type": null,
+    "render": null,
+    "width": null,
+    "order": 9,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "recommendCourse",
+    "title": "推荐",
+    "type": "yn",
+    "render": null,
+    "width": null,
+    "order": 10,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "orderCount",
+    "title": "已售",
+    "type": null,
+    "render": null,
+    "width": 60,
+    "order": 11,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "notBuyerQqGroup",
+    "title": "售前Q群",
+    "type": null,
+    "render": null,
+    "width": null,
+    "order": 12,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "buyerQqGroup",
+    "title": "售后Q群",
+    "type": null,
+    "render": null,
+    "width": null,
+    "order": 13,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "creationTime",
+    "title": "创建时间",
+    "type": "date",
+    "render": null,
+    "width": 120,
+    "order": 14,
+    "numberDigits": 0,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "startTime",
+    "title": "直播开始时间",
+    "type": "date",
+    "render": null,
+    "width": 120,
+    "order": 15,
+    "numberDigits": 0,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  }
+
+]

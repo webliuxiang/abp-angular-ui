@@ -1,0 +1,19 @@
+﻿
+
+{
+	"sProcessing":   "Pr贸ise谩il...",
+	"sLengthMenu":   "Taispe谩in iontr谩lacha _MENU_",
+	"sZeroRecords":  "Gan aon taifead meaitse谩il aimsithe",
+	"sInfo":         "_START_ Showing a _END_ na n-iontr谩lacha  _TOTAL_",
+	"sInfoEmpty":    "Showing 0-0 na n-iontr谩lacha  0",
+	"sInfoFiltered": "(scagtha 贸 _MAX_ iontr谩lacha ioml谩n)",
+	"sInfoPostFix":  "",
+	"sSearch":       "Cuardaigh:",
+	"sUrl":          "",
+	"oPaginate": {
+		"sFirst":    "An Ch茅ad",
+		"sPrevious": "Roimhe Seo",
+		"sNext":     "Ar Aghaidh",
+		"sLast":     "Last"
+	}
+}

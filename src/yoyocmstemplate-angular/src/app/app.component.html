@@ -1,0 +1,12 @@
+<ng-container [ngSwitch]="themeLayout">
+
+    <!--  -->
+    <ng-container *ngSwitchCase="layoutValue.top_navigation_menu">
+        <layout-theme-one></layout-theme-one>
+    </ng-container>
+    <!--  -->
+    <ng-container *ngSwitchDefault>
+        <layout-default></layout-default>
+    </ng-container>
+
+</ng-container>

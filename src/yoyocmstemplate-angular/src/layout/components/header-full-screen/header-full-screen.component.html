@@ -1,0 +1,7 @@
+<div (click)="_click()">
+    <i
+            class="iconfont"
+            [ngClass]="status ? 'icon-fullscreen ' : 'icon-fullscreen-exit'"
+    ></i>
+    {{ status ? l('ExitFullScreen') : l('FullScreen') }}
+</div>

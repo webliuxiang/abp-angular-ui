@@ -1,0 +1,95 @@
+﻿@using Abp.Authorization.Users
+@using Abp.Json
+@using LTMCompanyName.YoyoCmsTemplate.Configuration.AppSettings
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Models.Account.RegisterViewModel
+
+
+@section Scripts
+    {
+    <script>
+        window.passwordComplexitySetting = @Html.Raw(Model.PasswordComplexitySetting.ToJsonString(indented: true));
+    </script>
+
+  
+    <environment include="Development">
+        <script src="~/view-resources/Views/Account/Register.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/view-resources/Views/Account/Register.min.js" asp-append-version="true"></script>
+    </environment>
+     
+}
+
+
+<div class="account-login">
+
+    <div class="kt-login-v2__title">
+        <h3> @L("Register")</h3>
+    </div>
+    <form class="kt-login-v2__form kt-form register-form" asp-action="Register" asp-controller="Account" method="post">
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger  m-3" role="alert">
+                <div class="alert-icon"><i class="la la-warning"></i></div>
+                <div class="alert-text">
+                    @ViewBag.ErrorMessage
+                </div>
+                <div class="alert-close">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            </div>
+        }
+
+        <input type="hidden" name="IsExternalLogin" value="@Model.IsExternalLogin.ToString()" />
+        <input type="hidden" name="ExternalLoginAuthSchema" value="@Model.ExternalLoginAuthSchema" />
+        <input type="hidden" name="SingleSignOn" value="@Model.SingleSignIn" />
+        <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
+
+
+        <div class="form-group">
+            <input class="form-control " type="text" placeholder="@L("Name")" name="Name" required value="@Model.Name" maxlength="@AbpUserBase.MaxNameLength" />
+        </div>
+
+        <div class="form-group ">
+            <input class="form-control " type="text" placeholder="@L("Surname")" name="Surname" required value="@Model.Surname" maxlength="@AbpUserBase.MaxSurnameLength" />
+        </div>
+        <div class="form-group ">
+            <input class="form-control " type="email" placeholder="@L("EmailAddress")" name="EmailAddress" required value="@Model.EmailAddress" maxlength="@AbpUserBase.MaxEmailAddressLength" />
+        </div>
+
+        @if (!Model.IsExternalLogin)
+        {
+            <div class="form-group m-form__group">
+                <input class="form-control placeholder-no-fix input-ltr" type="text" autocomplete="off" placeholder="@L("UserName")" name="UserName" value="@Model.UserName" required maxlength="@AbpUserBase.MaxUserNameLength" />
+            </div>
+            <div class="form-group m-form__group">
+                <input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="RegisterPassword" placeholder="@L("Password")" name="Password" required />
+            </div>
+            <div class="form-group m-form__group">
+                <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="@L("PasswordRepeat")" name="PasswordRepeat" required />
+            </div>
+        }
+
+        <div class="kt-login-v2__actions row ">
+            <div class=" col-6  ml-auto">
+                <a asp-action="Login" asp-controller="Account" class="btn btn-outline-primary  btn-elevate  btn-block btn-pill  kt-label-font-color-1 ">
+                    @L("Back")
+                </a>
+
+            </div>
+            <div class=" col-6  ml-auto">
+
+                <button type="submit" class="btn btn-brand btn-elevate  btn-block btn-pill">@L("LogIn")</button>
+            </div>
+        </div>
+
+    </form>
+
+
+
+
+
+</div>

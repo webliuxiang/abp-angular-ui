@@ -1,0 +1,69 @@
+<form nz-form #editUserPermissionsForm="ngForm" (ngSubmit)="save()" nzLayout="horizontal" autocomplete="off">
+  <!-- 模态框头部 -->
+  <div class="modal-header">
+    <div class="modal-title">
+      <i class="iconfont icon-safetycertificate  mr-sm"></i>
+      <!-- <i class="iconfont icon-safety mr-sm"></i> -->
+      <span>
+        {{ l('Permissions') }}
+        <span *ngIf="userName"> - {{ userName }}</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- 模态框内容 -->
+
+  <fieldset>
+    <nz-alert
+      nzType="warning"
+      nzCloseable
+      [nzShowIcon]="true"
+      [nzMessage]="l('Note_RefreshPageForPermissionChanges')"
+      class="mb-md"
+    ></nz-alert>
+    <permission-tree #permissionTree></permission-tree>
+  </fieldset>
+
+  <!-- 模态框底部内容 -->
+  <div class="modal-footer">
+    <button
+      nz-button
+      [nzType]="'default'"
+      type="button"
+      (click)="resetPermissions()"
+      [disabled]="saving"
+      [nzLoading]="resettingPermissions"
+      nz-tooltip
+      [nzTooltipTitle]="l('ResetPermissionsTooltip')"
+      class="mr-sm"
+    >
+      <i class="iconfont icon-reload" *ngIf="!resettingPermissions"></i>
+      <!-- <i class="iconfont icon-reload" *ngIf="!resettingPermissions"></i> -->
+      {{ l('ResetSpecialPermissions') }}
+    </button>
+
+    <button
+      nz-button
+      [nzType]="'default'"
+      type="button"
+      (click)="close($event)"
+      [disabled]="saving || resettingPermissions"
+    >
+      <!-- <i class="iconfont icon-close-circle-o"></i>  -->
+      <i class="iconfont icon-close-circle"></i>
+      {{ l('Cancel') }}
+    </button>
+
+    <button
+      nz-button
+      [nzType]="'primary'"
+      type="submit"
+      [disabled]="!editUserPermissionsForm.form.valid || saving || resettingPermissions"
+      [nzLoading]="saving"
+    >
+      <!-- <i class="iconfont icon-save" *ngIf="!saving"></i>  -->
+      <i class="iconfont icon-save" *ngIf="!saving"></i>
+      {{ l('Save') }}
+    </button>
+  </div>
+</form>

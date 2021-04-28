@@ -1,0 +1,79 @@
+<div class="modal-header">
+  <div class="modal-title">{{ l('MySettings') }}</div>
+</div>
+<form nz-form #validateForm="ngForm" (ngSubmit)="save()" autocomplete="off">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24">{{ l('ProfilePictureFile') }}</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <upload-user-portrait
+        [profilePictureId]="user.profilePictureId"
+        (onUpLoadProfilePictureSuccess)="upLoadProfilePictureSuccess($event)"
+        (onRemoveProfilePicture)="removeProfilePicture()"
+      >
+      </upload-user-portrait>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- 用户名(登陆使用) -->
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="userName">{{ l('UserName') }}</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <input
+        nz-input
+        name="userName"
+        #userNameInput="ngModel"
+        [(ngModel)]="user.userName"
+        [disabled]="isAdmin"
+        autocomplete="username"
+        required
+      />
+      <nz-form-control nzExtra *ngIf="userNameInput.control.dirty && userNameInput.control.errors">
+        <ng-container *ngIf="userNameInput.control.hasError('required')">{{ l('ThisFieldIsRequired') }}</ng-container>
+      </nz-form-control>
+      <nz-form-control nzExtra *ngIf="isAdmin">{{ l('ThisAdminUser') }}</nz-form-control>
+    </nz-form-control>
+  </nz-form-item>
+  <!-- 手机号码 -->
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber">{{ l('PhoneNumber') }}</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <input
+        nz-input
+        name="phoneNumber"
+        [(ngModel)]="user.phoneNumber"
+        [placeholder]="l('PhoneNumber')"
+        autocomplete="tel"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <!-- 邮箱地址 -->
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="emailAddress">{{ l('EmailAddress') }}</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <input
+        nz-input
+        name="emailAddress"
+        #emailAddress="ngModel"
+        [(ngModel)]="user.emailAddress"
+        [placeholder]="l('EmailAddress')"
+        autocomplete="email"
+        required
+        email
+      />
+      <nz-form-control nzExtra *ngIf="emailAddress.control.dirty && emailAddress.control.errors">
+        <ng-container *ngIf="emailAddress.control.hasError('required')">{{ l('ThisFieldIsRequired') }}</ng-container>
+        <ng-container *ngIf="emailAddress.control.hasError('email')">{{ l('NotEmail') }}</ng-container>
+      </nz-form-control>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- 功能按钮 -->
+  <div class="modal-footer">
+    <button nz-button type="button" [disabled]="saving" (click)="close()">
+      {{ l('Cancel') }}
+    </button>
+    <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.valid || saving">
+      {{ l('Save') }}
+    </button>
+  </div>
+</form>

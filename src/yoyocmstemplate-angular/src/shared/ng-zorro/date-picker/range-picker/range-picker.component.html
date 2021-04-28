@@ -1,0 +1,30 @@
+<nz-range-picker
+        [nzAllowClear]="nzAllowClear"
+        [nzAutoFocus]="nzAutoFocus"
+        [nzClassName]="nzClassName"
+        [nzDateRender]="nzDateRender"
+        [nzDisabled]="nzDisabled"
+        [nzDisabledDate]="nzDisabledDate"
+        [nzLocale]="nzLocale"
+        [nzPopupStyle]="nzPopupStyle"
+        [nzDropdownClassName]="nzDropdownClassName"
+        [nzSize]="nzSize"
+        [nzStyle]="nzStyle"
+
+
+        [nzDisabledTime]="nzDisabledTime"
+        [nzFormat]="nzFormat"
+        [nzRenderExtraFooter]="nzRenderExtraFooter"
+        [nzShowTime]="nzShowTime"
+        [nzPlaceHolder]="nzPlaceHolder"
+        [nzRanges]="nzRanges"
+
+        [(ngModel)]="value"
+        (nzOnOk)="onNzOk($event)"
+        (ngModelChange)="onNgModelChangeChange($event)"
+        (nzOnCalendarChange)="onNzOnCalendarChange($event)"
+        (nzOnOpenChange)="onNzOnOpenChange($event)"
+
+>
+
+</nz-range-picker>

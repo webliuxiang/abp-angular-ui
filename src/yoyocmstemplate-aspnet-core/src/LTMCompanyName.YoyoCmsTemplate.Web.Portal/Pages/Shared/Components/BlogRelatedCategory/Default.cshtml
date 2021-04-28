@@ -1,0 +1,58 @@
+@model LTMCompanyName.YoyoCmsTemplate.Web.Portal.Pages.Shared.Components.BlogRelatedCategory.Dtos.BlogRelatedCategoryDto
+
+@{ 
+    var postsList = Model.postsDto;
+}
+
+    <div id="stickyBlockStartPoint" class="col-md-4 col-lg-3">
+        <div class="js-sticky-block pl-lg-4"
+             data-parent="#stickyBlockStartPoint"
+             data-sticky-view="md"
+             data-start-point="#stickyBlockStartPoint"
+             data-end-point="#stickyBlockEndPoint"
+             data-offset-top="16"
+             data-offset-bottom="16">
+
+            <div class="border-top pt-5 mt-5">
+                <h3 class="h6 font-weight-semi-bold mb-4">文章阅读排行榜</h3>
+                
+               
+
+                @for (int i = 0; i < postsList.Count; i++)
+                {
+                
+ 
+                    <!-- Blog Card -->
+                    <article class=" @(i!=0?"border-top pt-5 mt-5":"")">
+                        <div class="row justify-content-between">
+                            <div class="col-4 pt-3">
+
+                                <a asp-page="./Blog/Details" asp-route-blogshortName="@Model.BlogShortName" asp-route-Posturl="@postsList[i].Url">
+
+                                    <img class="img-fluid align-content-between" src="@postsList[i].CoverImage" alt="文章封面图片" />
+
+                                </a>
+
+                            </div>  
+                            <div class="col-8">
+                                <h4 class="h6 font-weight-medium mb-0">
+
+                                    <a asp-page="./Blog/Details" asp-route-blogshortName="@Model.BlogShortName" asp-route-Posturl="@postsList[i].Url">@postsList[i].Title</a>
+                                </h4>
+                                @*<a class="d-inline-block text-muted font-weight-medium text-uppercase small" href="@postUrl">@postsList[i].ReadCount </a>*@
+                            </div>
+
+
+                        </div>
+                    </article>
+                    <!-- End Blog Card -->
+                }
+
+
+             
+
+
+
+            </div>
+        </div>
+    </div>

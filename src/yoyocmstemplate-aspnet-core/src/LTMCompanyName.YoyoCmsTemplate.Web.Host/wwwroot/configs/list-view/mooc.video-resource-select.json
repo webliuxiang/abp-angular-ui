@@ -1,0 +1,98 @@
+[
+  { // 行号列
+    "field": "", // 字段,支持嵌套 aa.bb 
+    "title": "编号", // 列名
+    "type": "no", // 类型
+    "render": null, // 要使用的渲染器名称
+    "width": 40, // 宽度
+    "order": 0, // 排序号
+    "numberDigits": 2, // 列类型为number时保留小数位
+    "dateFormat": null, // 列类型为datetime类型格式化规则
+    "statistical": null, // 统计类型
+    "fixed": "left" // 固定列 left或right,必须指定width
+  },
+  { // 选择框列
+    "field": "",
+    "title": "",
+    "type": "radio",
+    "render": null,
+    "width": 35,
+    "order": 1,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": "left"
+  },
+  { // 普通数据列
+    "field": "title", // 字段,支持嵌套 aa.bb 
+    "title": "视频名称", // 列名
+    "type": null, // 类型
+    "render": null, // 要使用的渲染器名称
+    "width": 200, // 宽度
+    "order": 2, // 排序号
+    "numberDigits": 2, // 列类型为number时保留小数位
+    "dateFormat": null, // 列类型为datetime类型格式化规则
+    "statistical": null, // 统计类型
+    "fixed": null // 固定列 left或right,必须指定width
+  },
+  {
+    "field": "cateName",
+    "title": "分类名称",
+    "type": null,
+    "render": null,
+    "width": 200,
+    "order": 2,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "duration",
+    "title": "视频时长",
+    "type": "ss",
+    "render": null,
+    "width": null,
+    "order": 2,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "size",
+    "title": "视频大小",
+    "type": "byte", // byte
+    "render": null,
+    "width": null,
+    "order": 2,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "status",
+    "title": "视频状态",
+    "type": null,
+    "render": null,
+    "width": null,
+    "order": 2,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  },
+  {
+    "field": "syncCreationTime",
+    "title": "上传时间",
+    "type": "date",
+    "render": null,
+    "width": null,
+    "order": 2,
+    "numberDigits": 2,
+    "dateFormat": null,
+    "statistical": null,
+    "fixed": null
+  }
+]

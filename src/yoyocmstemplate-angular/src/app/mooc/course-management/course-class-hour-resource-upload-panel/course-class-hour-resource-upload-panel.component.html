@@ -1,0 +1,17 @@
+<upload-video-resouce-panel [multiple]="false"
+                            [callSave]="callSave"
+                            (dataListLengthChange)="onUploadDataListLengthChange($event)"
+                            (savingChange)="onUploadSavingChange($event)"
+                            (uploadingChange)="onUploadingChange($event)"
+                            (uploadSuccessVideoInfo)="onUploadSuccessVideoInfo($event)"
+>
+</upload-video-resouce-panel>
+
+<div style="text-align: right;margin-top: -44px;">
+    <button nz-button
+            [disabled]="!dataListLength||dataListLength===0||dataListLength>1"
+            [nzLoading]="uploading"
+            (click)="handleUpload($event)">
+        {{l('上传')}}
+    </button>
+</div>

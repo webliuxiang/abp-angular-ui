@@ -1,0 +1,332 @@
+<form nz-form #validateForm="ngForm" (ngSubmit)="save()" autocomplete="off">
+  <div class="modal-header">
+    <div class="modal-title">
+      <!-- <i class="iconfont icon-user mr-sm"></i> -->
+      <i class="iconfont icon-user mr-sm"></i>
+      <span *ngIf="user.id">{{ l('Edit') }}:{{ user.userName }}</span>
+      <span *ngIf="!user.id">{{ l('CreateNewUser') }}</span>
+    </div>
+  </div>
+
+  <fieldset>
+    <nz-tabset>
+      <nz-tab [nzTitle]="userInfoTabTitleTpl">
+        <ng-template #userInfoTabTitleTpl>
+          <i class="iconfont icon-user"></i>
+          <!-- <i class="iconfont icon-user"></i> -->
+          {{ l('UserInformations') }}
+        </ng-template>
+        <nz-row nzGutter="8">
+          <nz-col nzSpan="18">
+            <nz-form-item nz-row>
+              <nz-form-label nz-col [nzSm]="5" nzFor="userName" nzRequired>
+                {{ l('UserName') }}
+                <em *ngIf="isAdmin">
+                  <!-- <i class="iconfont icon-info-circle-o"
+                                       nz-tooltip
+                                       [nzTitle]="l('CanNotChangeAdminUserName')"></i> -->
+
+                  <i class="iconfont icon-info-circle" nz-tooltip [nzTooltipTitle]="l('CanNotChangeAdminUserName')"></i>
+                </em>
+              </nz-form-label>
+              <nz-form-control nz-col [nzSm]="19" nzHasFeedback>
+                <nz-input-group [nzPrefix]="nzPrefixIconUser">
+                  <input
+                    nz-input
+                    #userNameInput="ngModel"
+                    name="userName"
+                    [disabled]="isAdmin"
+                    [(ngModel)]="user.userName"
+                    [placeholder]="l('UserName')"
+                    required
+                    maxlength="32"
+                  />
+                </nz-input-group>
+                <nz-form-control nzExtra *ngIf="isAdmin">{{ l('ThisAdminUser') }}</nz-form-control>
+                <nz-form-control
+                  nzExtra
+                  *ngIf="!isAdmin && userNameInput.control.dirty && userNameInput.control.errors"
+                >
+                  <ng-container *ngIf="userNameInput.control.hasError('required')"
+                    >{{ l('ThisFieldIsRequired') }}
+                  </ng-container>
+                  <ng-container *ngIf="userNameInput.control.hasError('minlength')">{{ l('MinLength') }} </ng-container>
+                  <ng-container *ngIf="userNameInput.control.hasError('maxlength')">{{ l('MaxLength') }} </ng-container>
+                </nz-form-control>
+
+                <ng-template #nzPrefixIconUser
+                  ><span class="iconfont icon-user" style="color: rgba(0, 0, 0, 0.25)"></span>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </nz-col>
+          <nz-col nzSpan="6" class="text-center">
+            <nz-form-item>
+              <upload-user-portrait
+                [profilePictureId]="user.profilePictureId"
+                (onUpLoadProfilePictureSuccess)="upLoadProfilePictureSuccess($event)"
+                (onRemoveProfilePicture)="removeProfilePicture()"
+              >
+              </upload-user-portrait>
+            </nz-form-item>
+          </nz-col>
+        </nz-row>
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSm]="4" nzFor="emailAddress" nzRequired>
+            {{ l('EmailAddress') }}
+          </nz-form-label>
+          <nz-form-control nz-col [nzSm]="20" nzHasFeedback>
+            <nz-input-group [nzPrefix]="nzPrefixIconMail">
+              <input
+                nz-input
+                #emailAddressInput="ngModel"
+                name="emailAddress"
+                [(ngModel)]="user.emailAddress"
+                [placeholder]="l('EmailAddress')"
+                type="email"
+                required
+                maxlength="256"
+                email
+              />
+            </nz-input-group>
+            <nz-form-control nzExtra *ngIf="emailAddressInput.control.dirty && emailAddressInput.control.errors">
+              <ng-container *ngIf="emailAddressInput.control.hasError('required')"
+                >{{ l('ThisFieldIsRequired') }}
+              </ng-container>
+              <ng-container *ngIf="emailAddressInput.control.hasError('email')"
+                >{{ l('InvalidEmailAddress') }}
+              </ng-container>
+            </nz-form-control>
+
+            <ng-template #nzPrefixIconMail
+              ><span class="iconfont icon-mail" style="color: rgba(0, 0, 0, 0.25)"></span>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSm]="4" nzFor="PhoneNumber">
+            {{ l('PhoneNumber') }}
+          </nz-form-label>
+          <nz-form-control nz-col [nzSm]="20" nzHasFeedback>
+            <nz-input-group [nzPrefix]="nzPrefixIconPhone">
+              <input
+                nz-input
+                #phoneNumberInput="ngModel"
+                name="PhoneNumber"
+                [(ngModel)]="user.phoneNumber"
+                [placeholder]="l('PhoneNumber')"
+                maxlength="24"
+              />
+            </nz-input-group>
+            <nz-form-control nzExtra *ngIf="phoneNumberInput.control.dirty && phoneNumberInput.control.errors">
+              <ng-container *ngIf="phoneNumberInput.control.hasError('required')"
+                >{{ l('ThisFieldIsRequired') }}
+              </ng-container>
+              <ng-container *ngIf="phoneNumberInput.control.hasError('minlength')">{{ l('MinLength') }}</ng-container>
+              <ng-container *ngIf="phoneNumberInput.control.hasError('maxlength')">{{ l('MaxLength') }}</ng-container>
+            </nz-form-control>
+
+            <ng-template #nzPrefixIconPhone
+              ><span class="iconfont icon-phone" style="color: rgba(0, 0, 0, 0.25)"></span>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- 设置随机密码 -->
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSm]="4" nzFor="SetRandomPassword">
+            {{ l('SetRandomPassword') }}
+          </nz-form-label>
+          <nz-form-control nz-col [nzSm]="8">
+            <nz-switch
+              name="SetRandomPassword"
+              [(ngModel)]="setRandomPassword"
+              [nzCheckedChildren]="l('Yes')"
+              [nzUnCheckedChildren]="l('No')"
+            ></nz-switch>
+          </nz-form-control>
+          <!-- 验证双公约验证 -->
+
+          <ng-container *ngIf="isTwoFactorEnabled">
+            <nz-form-label nz-col [nzSm]="4" nzFor="IsTwoFactorEnabled">
+              {{ l('IsTwoFactorEnabled') }}
+            </nz-form-label>
+            <nz-form-control nz-col [nzSm]="8">
+              <!-- <nz-switch name="IsTwoFactorEnabled" [(ngModel)]="user.isTwoFactorEnabled" [nzCheckedChildren]="l('Yes')" [nzUnCheckedChildren]="l('No')"></nz-switch> -->
+            </nz-form-control>
+          </ng-container>
+        </nz-form-item>
+
+        <!-- 设置密码 -->
+        <nz-form-item nz-row *ngIf="!setRandomPassword">
+          <nz-form-label nz-col [nzSm]="4" nzFor="Password" [nzRequired]="!user.id && !setRandomPassword">
+            {{ l('Password') }}
+          </nz-form-label>
+          <nz-form-control nz-col [nzSm]="20" nzHasFeedback>
+            <nz-input-group [nzPrefix]="nzPrefixIconLock">
+              <input
+                nz-input
+                type="password"
+                name="password"
+                #password="ngModel"
+                [(ngModel)]="user.password"
+                [placeholder]="l('Password')"
+                [required]="!user.id && !setRandomPassword"
+                minlength="6"
+                maxlength="32"
+              />
+            </nz-input-group>
+            <nz-form-control nzExtra *ngIf="password.control.dirty && password.control.errors">
+              <ng-container *ngIf="password.control.hasError('required')">{{ l('ThisFieldIsRequired') }}</ng-container>
+              <ng-container *ngIf="password.control.hasError('maxlength')">{{ l('MaxLength') }}</ng-container>
+              <ng-container *ngIf="password.control.hasError('minlength')">{{ l('MinLength') }}</ng-container>
+            </nz-form-control>
+
+            <ng-template #nzPrefixIconLock
+              ><span class="iconfont icon-lock" style="color: rgba(0, 0, 0, 0.25)"></span>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="!setRandomPassword">
+          <nz-form-label nz-col [nzSm]="4" nzFor="passwordRepeat" [nzRequired]="!user.id && !setRandomPassword">
+            {{ l('PasswordRepeat') }}
+          </nz-form-label>
+          <nz-form-control nz-col [nzSm]="20" nzHasFeedback>
+            <nz-input-group [nzPrefix]="nzPrefixIconLock">
+              <input
+                nz-input
+                type="password"
+                name="passwordRepeat"
+                #passwordRepeat="ngModel"
+                [(ngModel)]="passwordRepeatStr"
+                [placeholder]="l('PasswordRepeat')"
+                [validateEqual]="user.password"
+                [required]="!user.id && !setRandomPassword"
+                minlength="6"
+                maxlength="32"
+              />
+            </nz-input-group>
+            <nz-form-control nzExtra *ngIf="passwordRepeat.control.dirty && passwordRepeat.control.errors">
+              <ng-container *ngIf="passwordRepeat.control.hasError('validateEqual')"
+                >{{ l('PasswordsDontMatch') }}
+              </ng-container>
+            </nz-form-control>
+
+            <ng-template #nzPrefixIconLock
+              ><span class="iconfont icon-lock" style="color: rgba(0, 0, 0, 0.25)"></span>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSm]="4" nzFor="ShouldChangePasswordOnNextLogin">
+            {{ l('ShouldChangePasswordOnNextLogin') }}
+          </nz-form-label>
+          <nz-form-control nz-col [nzSm]="8">
+            <nz-switch
+              name="ShouldChangePasswordOnNextLogin"
+              [(ngModel)]="user.needToChangeThePassword"
+              [nzCheckedChildren]="l('Yes')"
+              [nzUnCheckedChildren]="l('No')"
+            >
+            </nz-switch>
+          </nz-form-control>
+
+          <nz-form-label nz-col [nzSm]="4" nzFor="SendActivationEmail">
+            {{ l('SendActivationEmail') }}
+          </nz-form-label>
+          <nz-form-control nz-col [nzSm]="8">
+            <nz-switch
+              name="SendActivationEmail"
+              [nzDisabled]="sendActivationEmailDisabled"
+              [(ngModel)]="sendActivationEmail"
+              [nzCheckedChildren]="l('Yes')"
+              [nzUnCheckedChildren]="l('No')"
+            ></nz-switch>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-row>
+          <nz-form-label nz-col [nzSm]="4" nzFor="Active">
+            {{ l('Active') }}
+          </nz-form-label>
+          <nz-form-control nz-col [nzSm]="8">
+            <nz-switch
+              name="Active"
+              [(ngModel)]="user.isActive"
+              [nzCheckedChildren]="l('Yes')"
+              [nzUnCheckedChildren]="l('No')"
+              (ngModelChange)="onActiveChange($event)"
+            ></nz-switch>
+          </nz-form-control>
+
+          <ng-container *ngIf="isLockoutEnabled">
+            <nz-form-label nz-col [nzSm]="4" nzFor="IsLockoutEnabled">
+              {{ l('IsLockoutEnabled') }}
+            </nz-form-label>
+            <nz-form-control nz-col [nzSm]="8">
+              <nz-switch
+                name="IsLockoutEnabled"
+                [(ngModel)]="user.isLockoutEnabled"
+                [nzCheckedChildren]="l('Yes')"
+                [nzUnCheckedChildren]="l('No')"
+              ></nz-switch>
+            </nz-form-control>
+          </ng-container>
+        </nz-form-item>
+      </nz-tab>
+      <nz-tab [nzTitle]="roleTitleTpl">
+        <ng-template #roleTitleTpl>
+          <nz-badge [nzCount]="getAssignedRoleCount()">
+            <!-- <i class="iconfont icon-medicine-box"></i> -->
+            <i class="iconfont icon-medicinebox"></i>
+
+            <span>
+              {{ l('Roles') }}
+            </span>
+          </nz-badge>
+        </ng-template>
+        <nz-row>
+          <nz-col class="mb-md" nzSpan="6" *ngFor="let role of roles">
+            <label nz-checkbox [(ngModel)]="role.isAssigned" [name]="role.roleName">
+              {{ role.roleDisplayName }}
+            </label>
+          </nz-col>
+        </nz-row>
+      </nz-tab>
+      <nz-tab [nzTitle]="organizationUTitleTpl">
+        <ng-template #organizationUTitleTpl>
+          <!-- <i class="iconfont icon-share-alt"></i> -->
+          <i class="iconfont icon-share"></i>
+          {{ l('OrganizationUnits') }}
+        </ng-template>
+        <organization-unit-tree #organizationUnitTree></organization-unit-tree>
+      </nz-tab>
+    </nz-tabset>
+  </fieldset>
+
+  <div class="modal-footer">
+    <!-- {{roles | json}} -->
+    <button nz-button [nzType]="'default'" type="button" (click)="close($event)" [disabled]="saving">
+      <i class="iconfont icon-close-circle"></i>
+      <!-- <i class="iconfont icon-close-circle-o"></i>
+             -->
+      {{ l('Cancel') }}
+    </button>
+
+    <button
+      nz-button
+      [nzType]="'primary'"
+      type="submit"
+      [disabled]="!validateForm.form.valid || saving"
+      [nzLoading]="saving"
+    >
+      <i class="iconfont icon-save" *ngIf="!saving"></i>
+      <!-- <i class="iconfont icon-save"
+               *ngIf="!saving"></i>  -->
+
+      {{ l('Save') }}
+    </button>
+  </div>
+</form>

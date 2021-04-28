@@ -1,0 +1,123 @@
+<!-- 表单输入错误模板 -->
+<ng-template #errorTpl let-control>
+  <validation-messages [formCtrl]="control"></validation-messages>
+</ng-template>
+
+<div [@routerTransition]>
+  <nz-spin [nzTip]="l('Registering')" [nzSpinning]="saving">
+    <ng-container *ngIf="_loginService.authentSuccessModel">
+      <a nz-button nzType="link" (click)="back(false)">已有帐号,登录绑定</a>
+    </ng-container>
+
+    <form nz-form #validateForm="ngForm" (ngSubmit)="save()" autocomplete="off">
+      <br />
+
+      <!-- 邮箱 -->
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="errorTpl">
+          <nz-input-group [nzPrefix]="nzPrefixIconMail">
+            <input
+              nz-input
+              type="email"
+              name="emailAddress"
+              #emailAddress="ngModel"
+              [(ngModel)]="model.emailAddress"
+              [placeholder]="l('EmailAddress')"
+              required
+              email
+            />
+          </nz-input-group>
+          <ng-template #nzPrefixIconMail>
+            <span class="iconfont icon-mail" style="color: rgba(0, 0, 0, 0.25)"></span>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- 用户账号 -->
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="errorTpl">
+          <nz-input-group [nzPrefix]="nzPrefixIconUser">
+            <input
+              nz-input
+              name="userName"
+              #userName="ngModel"
+              [(ngModel)]="model.userName"
+              [placeholder]="l('UserName')"
+              required
+              maxlength="32"
+            />
+          </nz-input-group>
+
+          <ng-template #nzPrefixIconUser
+            ><span class="iconfont icon-user" style="color: rgba(0, 0, 0, 0.25)"></span>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- 密码 -->
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="errorTpl">
+          <nz-input-group [nzPrefix]="nzPrefixIconLock">
+            <input
+              nz-input
+              type="password"
+              name="password"
+              #password="ngModel"
+              [(ngModel)]="model.password"
+              type="password"
+              [placeholder]="l('Password')"
+              required
+              maxlength="32"
+              minlength="6"
+            />
+          </nz-input-group>
+
+          <ng-template #nzPrefixIconLock>
+            <span class="iconfont icon-lock" style="color: rgba(0, 0, 0, 0.25)"></span>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- 验证码 -->
+      <nz-form-item *ngIf="useCaptcha">
+        <nz-form-control>
+          <yoyo-captcha
+            #captcha
+            name="verificationCode"
+            #verificationCodeInput="ngModel"
+            [(ngModel)]="model.verificationCode"
+            [key]="model.userName"
+            [captchaType]="captchaType"
+            [timestamp]="captchaTimestamp"
+            required
+          >
+          </yoyo-captcha>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- 功能按钮 -->
+      <button
+        nz-button
+        [nzType]="'primary'"
+        [nzLoading]="saving"
+        class="yoyo__block"
+        type="submit"
+        [disabled]="!validateForm.valid || saving"
+      >
+        <span class="iconfont icon-login"></span>
+        <span>{{ l('Register') }}</span>
+      </button>
+    </form>
+
+    <div nz-row>
+      <div nz-col [nzSpan]="12"></div>
+      <div nz-col [nzSpan]="12" class="text-right">
+        <a (click)="back()">{{ l('Back') }}</a>
+      </div>
+    </div>
+
+    <p>
+      <span [innerHTML]="l('ServiceAgreement')"></span>
+    </p>
+  </nz-spin>
+</div>

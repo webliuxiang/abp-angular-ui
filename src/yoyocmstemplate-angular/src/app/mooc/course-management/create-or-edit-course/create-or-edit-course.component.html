@@ -1,0 +1,387 @@
+<!-- 表单输入错误模板 -->
+<ng-template #errorTpl let-control>
+  <validation-messages [formCtrl]="control"></validation-messages>
+</ng-template>
+
+<nz-card [nzBordered]="false">
+  <nz-spin [nzSpinning]="loading">
+    <form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+      <nz-tabset>
+        <!-- 基础信息 -->
+        <nz-tab [nzTitle]="tabTitleOne">
+          <ng-template #tabTitleOne>
+            {{ l('基础信息') }}
+          </ng-template>
+
+          <!-- 封面 -->
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+            <div nz-col [nzSm]="18" [nzXs]="24">
+              <nz-form-item>
+                <!-- AAA -->
+                <nz-form-label nzFor="imgUrl">{{ l('封面') }}</nz-form-label>
+                <nz-form-control>
+                  <nz-upload
+                    class="avatar-uploader"
+                    [nzAccept]="'image/*'"
+                    nzFileType="image/png,image/jpeg,image/gif,image/jpg"
+                    [nzHeaders]="authHeader"
+                    [nzAction]="uploadPictureUrl"
+                    nzName="avatar"
+                    nzListType="picture-card"
+                    [nzShowUploadList]="false"
+                    [nzBeforeUpload]="beforeUpload"
+                    (nzChange)="handleChange($event)"
+                  >
+                    <ng-container *ngIf="!imageUrl">
+                      <i class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></i>
+                      <div class="ant-upload-text">{{ l('上传') }}</div>
+                    </ng-container>
+                    <img *ngIf="imageUrl" [src]="imageUrl" class="avatar" style="width: 100px; height: 100px" />
+                  </nz-upload>
+                  <p *ngIf="!imageUrl">{{ l('UploadImageFormatSizeWarning', 2) }}</p>
+                  <input
+                    nz-input
+                    name="imgUrl"
+                    #imgUrl="ngModel"
+                    [(ngModel)]="entity.imgUrl"
+                    [placeholder]="l('封面图片')"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+          </div>
+
+          <!-- 课程标题(名称)/分类 -->
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <nz-form-label nzFor="titleInput" nzRequired>
+                  {{ l('标题') }}
+                </nz-form-label>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                  <input
+                    nz-input
+                    name="titleInput"
+                    #titleInput="ngModel"
+                    [(ngModel)]="entity.title"
+                    [placeholder]="l('请输入')"
+                    required
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <nz-form-label nzFor="categoryInput" nzRequired>
+                  {{ l('分类') }}
+                </nz-form-label>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                  <nz-tree-select
+                    style="width: 100%"
+                    #categoryInput="ngModel"
+                    name="categoryInput"
+                    [nzNodes]="nodes"
+                    nzShowSearch
+                    nzCheckable
+                    nzMaxTagCount="1"
+                    [nzPlaceHolder]="l('请选择')"
+                    [(ngModel)]="categoryIds"
+                    (ngModelChange)="onCategoryChange(categoryInput, $event)"
+                    required
+                  >
+                  </nz-tree-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+          </div>
+
+          <!-- 课程简介 -->
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+            <div nz-col [nzSm]="18" [nzXs]="24">
+              <nz-form-item>
+                <!-- AAA -->
+                <nz-form-label nzFor="introInput" nzRequired>
+                  {{ l('简介') }}
+                </nz-form-label>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                  <textarea
+                    nz-input
+                    #introInput="ngModel"
+                    name="introInput"
+                    [(ngModel)]="entity.intro"
+                    [placeholder]="l('请输入')"
+                    [nzAutosize]="{ minRows: 3, maxRows: 5 }"
+                    required
+                    maxlength="300"
+                  >
+                  </textarea>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+          </div>
+
+          <!-- 课程难度/价格 -->
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <!-- AAA -->
+                <nz-form-label nzRequired nzFor="gradeOfDifficulty">
+                  {{ l('课程难度') }}
+                </nz-form-label>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                  <nz-input-number
+                    style="width: 100%"
+                    [nzMin]="0"
+                    [nzMax]="5"
+                    [nzStep]="1"
+                    name="gradeOfDifficulty"
+                    #gradeOfDifficulty="ngModel"
+                    [(ngModel)]="entity.gradeOfDifficulty"
+                    [nzPlaceHolder]="l('请输入')"
+                    required
+                  >
+                  </nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <!-- BBB -->
+                <nz-form-label nzRequired nzFor="price">{{ l('Price') }}</nz-form-label>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                  <nz-input-number
+                    style="width: 100%"
+                    [nzMin]="0"
+                    [nzMax]="999"
+                    [nzStep]="0.1"
+                    name="price"
+                    #price="ngModel"
+                    [(ngModel)]="entity.price"
+                    [nzPlaceHolder]="l('价格')"
+                    required
+                  >
+                  </nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+          </div>
+
+          <!-- 连载状态/视频类型 -->
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <!-- AAA -->
+                <nz-form-label nzFor="type">{{ l('连载状态') }}</nz-form-label>
+                <nz-form-control>
+                  <sample-select
+                    style="width: 100%"
+                    name="type"
+                    #type="ngModel"
+                    [(ngModel)]="entity.type"
+                    [args]="courseTypeEnum"
+                  >
+                  </sample-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <!-- BBB -->
+                <nz-form-label nzFor="courseVideoType">{{ l('视频类型') }}</nz-form-label>
+                <nz-form-control>
+                  <sample-select
+                    style="width: 100%"
+                    name="courseVideoType"
+                    #courseVideoType="ngModel"
+                    [(ngModel)]="entity.courseVideoType"
+                    [args]="courseVideoTypeEnum"
+                  >
+                  </sample-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+          </div>
+
+          <!-- 发布状态/课程难度 -->
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <!-- AAA -->
+                <nz-form-label nzFor="courseState">{{ l('发布状态') }}</nz-form-label>
+                <nz-form-control>
+                  <sample-select
+                    style="width: 100%"
+                    name="courseState"
+                    #courseState="ngModel"
+                    [(ngModel)]="entity.courseState"
+                    [args]="courseStateEnum"
+                  >
+                  </sample-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <!-- BBB -->
+                <nz-form-label nzFor="recommendCourse">{{ l('推荐') }}</nz-form-label>
+                <nz-form-control>
+                  <label
+                    style="width: 100%"
+                    name="recommendCourse"
+                    #recommendCourse="ngModel"
+                    nz-checkbox
+                    [(ngModel)]="entity.recommendCourse"
+                  ></label>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+          </div>
+
+          <!-- QQ群 -->
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <!-- AAA -->
+                <nz-form-label nzFor="notBuyerQqGroup">{{ l('售前QQ群') }}</nz-form-label>
+                <nz-form-control>
+                  <input
+                    nz-input
+                    name="notBuyerQqGroup"
+                    #notBuyerQqGroup="ngModel"
+                    [(ngModel)]="entity.notBuyerQqGroup"
+                    [placeholder]="l('请输入')"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <!-- BBB -->
+                <nz-form-label nzFor="buyerQqGroup">{{ l('售后QQ群') }}</nz-form-label>
+                <nz-form-control>
+                  <input
+                    nz-input
+                    name="buyerQqGroup"
+                    #buyerQqGroup="ngModel"
+                    [(ngModel)]="entity.buyerQqGroup"
+                    [placeholder]="l('请输入')"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+          </div>
+
+          <!-- 有效期/直播时间 -->
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <!-- AAA -->
+                <nz-form-label nzFor="validDays">{{ l('有效期 (天)') }}</nz-form-label>
+                <nz-form-control [nzErrorTip]="errorTpl" [nzValidatingTip]="l('有效天数,0为永久有效')">
+                  <nz-input-number
+                    style="width: 100%"
+                    [nzMin]="0"
+                    [nzMax]="5000"
+                    [nzStep]="1"
+                    name="validDays"
+                    #validDays="ngModel"
+                    [(ngModel)]="entity.validDays"
+                    [nzPlaceHolder]="l('请输入')"
+                    required
+                  >
+                  </nz-input-number>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="9" [nzXs]="24">
+              <nz-form-item>
+                <!-- BBB -->
+                <nz-form-label nzFor="startTime">
+                  {{ l('直播开始时间') }}
+                </nz-form-label>
+                <nz-form-control>
+                  <app-date-picker
+                    nzShowTime
+                    nzFormat="yyyy-MM-dd HH:mm:ss"
+                    [nzPlaceHolder]="l('请选择')"
+                    name="startTime"
+                    #startTime="ngModel"
+                    [(ngModel)]="entity.startTime"
+                  >
+                  </app-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+          </div>
+
+          <!-- 描述 -->
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+            <div nz-col [nzSm]="18" [nzXs]="24">
+              <nz-form-item>
+                <!-- AAA -->
+                <nz-form-label nzFor="description">
+                  {{ l('描述') }}
+                </nz-form-label>
+
+                <nz-form-control>
+                  <!-- <simplemde
+                    #simplemde
+                    [options]="mdOptions"
+                    name="description"
+                    #description="ngModel"
+                    [(ngModel)]="entity.description"
+                  ></simplemde> -->
+
+                  <c-simplemde [(ngModel)]="entity.description"> </c-simplemde>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="3" nzXs="0"></div>
+          </div>
+        </nz-tab>
+
+        <!-- 课时 -->
+        <nz-tab [nzTitle]="tabTitleTwo">
+          <ng-template #tabTitleTwo>
+            <span>{{ l('课时') }}</span>
+          </ng-template>
+
+          <app-course-sections-panel [courseId]="entity.id"></app-course-sections-panel>
+        </nz-tab>
+      </nz-tabset>
+
+      <!-- 模态框底部 -->
+      <div class="modal-footer">
+        <button nz-button [nzType]="'default'" type="button" (click)="close($event)" [disabled]="saving">
+          <i class="iconfont icon-close-circle-o"></i> {{ l('Close') }}
+        </button>
+        <button
+          nz-button
+          [nzType]="'primary'"
+          type="submit"
+          [disabled]="!validateForm.form.valid || saving"
+          [nzLoading]="saving"
+        >
+          <i class="iconfont icon-save" *ngIf="!saving"></i> {{ l('Save') }}
+        </button>
+      </div>
+    </form>
+  </nz-spin>
+</nz-card>

@@ -1,0 +1,105 @@
+version: "3.8"
+
+volumes:
+    abpprodata:
+
+networks:
+    52abp-pro-net:
+
+services:
+    52abp_pro_mssql_server:
+        image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/mssql:2019-latest
+        ports:
+            - 1430:1433
+        volumes:
+            - abpprodata:/var/opt/mssql/
+        networks:
+            - 52abp-pro-net
+        environment:
+            - SA_PASSWORD=bb123456??
+            - ACCEPT_EULA=Y
+
+    52abp_pro_host:
+        build:
+            context: .
+            dockerfile: src/yoyocmstemplate-aspnet-core/src/LTMCompanyName.YoyoCmsTemplate.Web.Host/Dockerfile.host.compose
+        ports:
+            - "1900:80"
+        networks:
+            - 52abp-pro-net
+        volumes:
+            - "./docker/52abp_pro_host/Host-Logs:/app/App_Data/Logs"
+            - "./docker/52abp_pro_host/appsettings.Azure.json:/app/appsettings.Staging.json"
+
+        depends_on:
+            - 52abp_pro_migrator
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Staging
+            - WAITHOST=52abp_pro_mssql_server
+            - WAITPORT=1433
+            - ConnectionStrings__Default=Server=52abp_pro_mssql_server;Database=52abp_proDemo_Db;User Id=sa;Password=bb123456??;MultipleActiveResultSets=True
+
+    52abp_pro_migrator:
+        build:
+            context: .
+            dockerfile: src/yoyocmstemplate-aspnet-core/tools/LTMCompanyName.YoyoCmsTemplate.Migrator/Dockerfile.migrator.compose
+        ports:
+            - "1901:80"
+        networks:
+            - 52abp-pro-net
+        volumes:
+            - "./Host-Logs:/app/App_Data/Logs"
+        depends_on:
+            - 52abp_pro_mssql_server
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Staging
+            - WAITHOST=52abp_pro_mssql_server
+            - WAITPORT=1433
+            - ConnectionStrings__Default=Server=52abp_pro_mssql_server;Database=52abp_proDemo_Db;User Id=sa;Password=bb123456??;MultipleActiveResultSets=True
+
+    52abp_pro_ng:
+        build:
+            context: .
+            dockerfile: src/yoyocmstemplate-angular/Dockerfile.ng.compose
+        networks:
+            - 52abp-pro-net
+        ports:
+            - "1988:80"
+        depends_on:
+            - 52abp_pro_host
+        volumes:
+            - "./docker/52abp_pro_ng/appconfig.azure.json:/usr/share/nginx/html/assets/appconfig.prod.json"
+            #- "./docker/52abp_pro_ng/nginx.conf:/etc/nginx/nginx.conf"
+
+    52abp_pro_vue:
+        build:
+            context: .
+            dockerfile: src/yoyocmstemplate-vue/Dockerfile.vue.compose
+        networks:
+            - 52abp-pro-net
+        ports:
+            - "1966:80"
+        depends_on:
+            - 52abp_pro_host
+        volumes:
+            - "./docker/52abp_pro_vue/appconfig.azure.json:/usr/share/nginx/html/assets/appconfig.prod.json"
+            # - "./docker/52abp_pro_ng/nginx.conf:/etc/nginx/nginx.conf"
+
+    52abp_pro_ng_loadbalancer:
+        image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/haproxy:1.6.7
+        ports:
+            - "80:80"
+            - "5000:5000"
+            - "1936:1936"
+        environment:
+            - DNS_ENABLED=true
+            - LOG_LEVEL=info
+            - STATS_AUTH="admin:bb123456"
+            - STATS_PORT=1936
+        links:
+            - 52abp_pro_ng
+            - 52abp_pro_vue
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - 52abp-pro-net

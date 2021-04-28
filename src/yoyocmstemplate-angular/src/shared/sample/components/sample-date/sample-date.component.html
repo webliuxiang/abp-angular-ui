@@ -1,0 +1,12 @@
+<!--<ng-container [ngSwitch]="argsObject.type">-->
+<!--    <ng-container *ngSwitchCase="'range'">-->
+<!--        <app-range-picker [(ngModel)]="dateRange" (ngModelChange)="onDateRangeChange($event)">-->
+<!--            -->
+<!--        </app-range-picker>-->
+<!--    </ng-container>-->
+<!--</ng-container>-->
+
+<app-range-picker [(ngModel)]="dateRange" (ngModelChange)="onDateRangeChange($event)"
+[nzAllowClear]="argsObject.allowClear" [nzRanges]="defaultRanges">
+
+</app-range-picker>

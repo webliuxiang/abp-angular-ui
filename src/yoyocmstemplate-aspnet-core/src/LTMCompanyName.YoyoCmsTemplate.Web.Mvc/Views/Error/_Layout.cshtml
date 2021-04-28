@@ -1,0 +1,54 @@
+@using Abp.Timing
+
+@{
+    Layout = null;
+   
+}
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8" />
+
+    <title>AbpZeroTemplate</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+    @* Fill these meta tags upon your project specification *@
+    <meta content="AbpZeroTemplate" name="description" />
+    <meta content="AbpZeroTemplate" name="keywords" />
+    <meta content="AbpZeroTemplate" name="author" />
+
+    <link rel="shortcut icon" href="~/favicon.ico" />
+
+    <link rel="stylesheet" abp-href="/view-resources/Areas/AppAreaName/Views/_Bundles/vendors.bundle.css" asp-append-version="true" />
+  
+
+
+
+    <script type="text/javascript">
+        @* This is used to get the application's root path from javascript.
+        It's useful if you're running application in a virtual directory under IIS. *@
+        var abp = abp || {}; abp.appPath = '@ApplicationPath';
+    </script>
+
+</head>
+<body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--fixed kt-subheader--enabled kt-subheader--solid kt-aside--enabled kt-aside--fixed">
+    <div class="kt-grid kt-grid--ver kt-grid--root">
+        <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-error-v5" style="background-image: url(@(ApplicationPath)metronic/common/images/bg/bg5.jpg);">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script abp-src="/view-resources/Areas/AppAreaName/Views/_Bundles/account-layout-libs.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        abp.localization.defaultSourceName = '@LocalizationSourceName';
+    </script>
+
+    <!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
+    <script src="@(ApplicationPath)AbpScripts/GetScripts?v=@(Clock.Now.Ticks)" type="text/javascript"></script>
+</body>
+
+</html>

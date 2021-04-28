@@ -1,0 +1,127 @@
+<!-- 上传视频区域 -->
+<ng-container [ngSwitch]="multiple">
+  <ng-container *ngSwitchCase="true">
+    <ng-container *ngTemplateOutlet="uploadVideoTemplate"></ng-container>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <ng-container *ngIf="dataList.length === 0">
+      <ng-container *ngTemplateOutlet="uploadVideoTemplate"></ng-container>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<!-- 上传视频模板 -->
+<ng-template #uploadVideoTemplate>
+  <nz-form-item nz-row>
+    <nz-form-control nz-col [nzSm]="24">
+      <nz-upload nzType="drag" [nzLimit]="5" [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)">
+        <p class="ant-upload-drag-icon">
+          <i nz-icon nzType="inbox"></i>
+        </p>
+        <p class="ant-upload-text" style="font-size: 13px">将文件拖拽至此，或点击选择文件上传</p>
+        <p class="ant-upload-hint">支持.mp4、.avi、.rmvb，文件大小小于1G</p>
+      </nz-upload>
+    </nz-form-control>
+  </nz-form-item>
+</ng-template>
+
+<!-- 列表区域 -->
+<nz-table
+  #basicTable
+  [nzData]="dataList"
+  [nzShowPagination]="false"
+  nzSize="middle"
+  [nzScroll]="{ x: '400px', y: '240px' }"
+>
+  <thead>
+    <tr>
+      <th class="text-center" nzWidth="30px">{{ l('编号') }}</th>
+      <th class="text-center" nzWidth="200px">{{ l('文件名') }}</th>
+      <th class="text-center" nzWidth="80px">{{ l('大小') }}</th>
+      <th class="text-center" nzWidth="150px">
+        {{ l('分类') }}
+        <ng-container *ngIf="multiple">
+          <nz-tree-select
+            style="width: 100%"
+            [nzNodes]="vodCateList"
+            nzShowSearch
+            [nzPlaceHolder]="l('PleaseSelect')"
+            [(ngModel)]="vodCateId"
+            (ngModelChange)="onVodCateIdChange($event)"
+          >
+          </nz-tree-select>
+        </ng-container>
+      </th>
+      <th class="text-center" nzWidth="80px">{{ l('状态') }}</th>
+      <th class="text-center" nzWidth="50px">{{ l('操作') }}</th>
+    </tr>
+  </thead>
+  <tbody class="upload-video-resource">
+    <tr *ngFor="let data of basicTable.data; let i = index">
+      <td class="text-center">{{ i + 1 }}</td>
+      <td class="text-center">
+        <div class="editable-cell" [hidden]="editVodId === data.id" [title]="data.name" (click)="startEdit(data.id)">
+          {{ data.name }}
+        </div>
+        <input [hidden]="editVodId !== data.id" type="text" nz-input [(ngModel)]="data.name" (blur)="stopEdit()" />
+      </td>
+      <td class="text-center">{{ data.size }}</td>
+      <td>
+        <nz-tree-select
+          style="width: 100%"
+          [nzNodes]="vodCateList"
+          nzShowSearch
+          [nzPlaceHolder]="l('PleaseSelect')"
+          [(ngModel)]="data.cateId"
+        >
+        </nz-tree-select>
+      </td>
+
+      <td class="text-center" [ngSwitch]="data.state">
+        <nz-tag *ngSwitchCase="'ready'" [nzColor]="'green'" title="{{ data.info }}"> 待上传... </nz-tag>
+        <nz-tag *ngSwitchCase="'uploading'" [nzColor]="'magenta'" title="{{ data.info }}">
+          {{ data.info }}
+        </nz-tag>
+        <nz-tag *ngSwitchCase="'error'" [nzColor]="'red'" title="{{ data.info }}"> 上传失败 </nz-tag>
+        <nz-tag *ngSwitchCase="'cancel'" [nzColor]="'blue'" title="{{ data.info }}"> 暂停中... </nz-tag>
+        <nz-tag *ngSwitchCase="'success'" [nzColor]="'#87d068'" title="{{ data.info }}">
+          {{ l('加密') }}
+        </nz-tag>
+        <nz-tag *ngSwitchDefault [nzColor]="'volcano'">
+          {{ data.state || data.info }}
+        </nz-tag>
+      </td>
+      <td class="text-center">
+        <!-- 暂停 -->
+        <ng-container *ngIf="optionState.pause && data.state == 'uploading'">
+          <a (click)="pauseUpload(data)">
+            <i class="iconfont icon-pause mr-sm"></i>
+            <span>{{ l('暂停') }}</span>
+          </a>
+          <nz-divider nzType="vertical"></nz-divider>
+        </ng-container>
+        <!-- 恢复上传 -->
+        <ng-container *ngIf="optionState.resume && data.state == 'cancel'">
+          <a (click)="resumeUpload(data)">
+            <i class="iconfont icon-retweet mr-sm"></i>
+            <span>{{ l('恢复上传') }}</span>
+          </a>
+          <nz-divider nzType="vertical"></nz-divider>
+        </ng-container>
+        <!-- 删除 -->
+        <ng-container>
+          <a (click)="removeVideo(data)">
+            <i class="iconfont icon-delete mr-sm"></i>
+            <span>{{ l('删除') }}</span>
+          </a>
+        </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<nz-form-item nz-row>
+  <nz-form-control nz-col [nzSm]="24">
+    <nz-row class="my-md"></nz-row>
+    <p style="text-align: right" *ngIf="optionState.start"></p>
+  </nz-form-control>
+</nz-form-item>

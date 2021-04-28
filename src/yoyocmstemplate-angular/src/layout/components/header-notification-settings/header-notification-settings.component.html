@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <div class="modal-title">
+        <i class="iconfont icon-share mr-sm"></i>
+        <span>{{ l('NotificationSettings') }}</span>
+    </div>
+</div>
+
+<h4>{{ l('ReceiveNotifications') }}</h4>
+<label nz-checkbox [(ngModel)]="settings.receiveNotifications" name="receiveNotifications"></label>
+<span class="help-block">{{ l('ReceiveNotifications_Definition') }}</span>
+
+<h4 *ngIf="settings.notifications && settings.notifications.length">{{ l('NotificationTypes') }}</h4>
+<p
+        *ngIf="settings.notifications && settings.notifications.length && !settings.receiveNotifications"
+        class="text-danger"
+>
+    <small>{{ l('ReceiveNotifications_DisableInfo') }}</small>
+</p>
+
+<label
+        nz-checkbox
+        *ngFor="let item of settings.notifications"
+        [(ngModel)]="item.isSubscribed"
+        [nzDisabled]="!settings.receiveNotifications"
+>{{ item.displayName }}</label
+>
+
+<div class="modal-footer">
+    <button nz-button [nzType]="'default'" type="button" (click)="close($event)" [disabled]="saving">
+        <i class="iconfont icon-close-circle "></i>
+        {{l('Cancel')}}
+    </button>
+    <button nz-button [nzType]="'primary'" type="button" (click)="save()" [disabled]="saving" [nzLoading]="saving">
+        <i class="iconfont icon-save " *ngIf="!saving"></i>
+        {{l('Save')}}
+    </button>
+</div>

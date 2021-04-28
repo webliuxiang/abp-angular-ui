@@ -1,0 +1,101 @@
+<form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+  <!-- 模态框头部 -->
+  <div class="modal-header">
+    <div class="modal-title">
+      <i class="iconfont icon-medicine-box mr-sm"></i>
+      <span *ngIf="entity.id">{{ l('Edit') }}</span>
+      <span *ngIf="!entity.id">{{ l('Create') }}</span>
+    </div>
+  </div>
+  <!-- 模态框内容 -->
+  <fieldset>
+    <!-- 提示信息 -->
+    <!-- <nz-alert nzType="info" nzCloseable [nzShowIcon]="true" nzMessage="l('我想提示点什么内容给你说')"></nz-alert> -->
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name">{{ l('ProductName') }}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+        <input nz-input name="name" #name="ngModel" [(ngModel)]="entity.name" [placeholder]="l('ProductName')"
+          required />
+        <nz-form-control nzExtra *ngIf="name.control.dirty && name.control.errors">
+          <ng-container *ngIf="name.control.hasError('required')">{{ l('ThisFieldIsRequired') }}</ng-container>
+        </nz-form-control>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="price">{{ l('ProductPrice') }}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+        <nz-input-number name="price" #price="ngModel" [(ngModel)]="entity.price" [nzPlaceHolder]="l('ProductPrice')"
+          [nzMin]="0" [nzMax]="2147483647" [nzStep]="1" style="width:100%;" required></nz-input-number>
+        <nz-form-control nzExtra *ngIf="price.control.dirty && price.control.errors">
+          <ng-container *ngIf="price.control.hasError('required')">{{ l('ThisFieldIsRequired') }}</ng-container>
+        </nz-form-control>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="type">{{ l('ProductType') }}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+        <nz-select style="width: 100%;" name="type" #type="ngModel" [(ngModel)]="entity.type"
+          [nzPlaceHolder]="l('ProductType')">
+          <nz-option *ngFor="let option of types" [nzLabel]="getProductTypeLocStr(option.key)" [nzValue]="option.value">
+          </nz-option>
+        </nz-select>
+
+        <nz-form-control nzExtra *ngIf="type.control.dirty && type.control.errors">
+          <ng-container *ngIf="type.control.hasError('required')">{{ l('ThisFieldIsRequired') }}</ng-container>
+        </nz-form-control>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="createProjectCount">{{ l('CreateProjectCount') }}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+        <nz-input-number name="createProjectCount" #createProjectCount="ngModel" [(ngModel)]="entity.createProjectCount"
+          [nzPlaceHolder]="l('CreateProjectCount')" [nzMin]="0" [nzMax]="2147483647" [nzStep]="1" style="width:100%;"
+          required></nz-input-number>
+        <nz-form-control nzExtra *ngIf="createProjectCount.control.dirty && createProjectCount.control.errors">
+          <ng-container *ngIf="createProjectCount.control.hasError('required')">{{
+            l('ThisFieldIsRequired')
+          }}</ng-container>
+        </nz-form-control>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="recommended">{{ l('Recommended') }}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+        <label nz-checkbox name="recommended" #recommended="ngModel" [(ngModel)]="entity.recommended"></label>
+      </nz-form-control>
+    </nz-form-item>
+    <!-- <nz-form-item nz-row>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="indate">{{l('Indate')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+                <nz-input-number name="indate" #indate="ngModel" [(ngModel)]="entity.indate" [nzPlaceHolder]="l('Indate')"
+                    [nzMin]="0" [nzMax]="2147483647" [nzStep]="1" style="width:100%;" required></nz-input-number>
+                <nz-form-control nzExtra *ngIf="indate.control.dirty&&indate.control.errors">
+                    <ng-container *ngIf="indate.control.hasError('required')">{{l('ThisFieldIsRequired')}}</ng-container>
+                </nz-form-control>
+            </nz-form-control>
+        </nz-form-item> -->
+    <nz-form-item nz-row *ngIf="entity.code">
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="code">{{ l('ProductCode') }}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+        <input nz-input name="code" #code="ngModel" [(ngModel)]="entity.code" [placeholder]="l('ProductCode')"
+          [disabled]="true" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="published">立即发布</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+        <label nz-checkbox name="published" #published="ngModel" [(ngModel)]="entity.published"></label>
+      </nz-form-control>
+    </nz-form-item>
+  </fieldset>
+  <!-- 模态框底部 -->
+  <div class="modal-footer">
+    <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">
+      <i class="iconfont icon-close-circle-o"></i> {{ l('Cancel') }}
+    </button>
+    <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid || saving"
+      [nzLoading]="saving">
+      <i class="iconfont icon-save" *ngIf="!saving"></i> {{ l('Save') }}
+    </button>
+  </div>
+</form>

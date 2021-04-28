@@ -1,0 +1,22 @@
+version: "3.8"
+
+networks:
+  frontend:
+
+services:
+  vue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - frontend
+  loadbalancer:
+    image: dockercloud/haproxy:1.2.1
+    ports:
+      - 3000:80
+    links:
+      - vue
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - frontend

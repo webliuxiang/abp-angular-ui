@@ -1,0 +1,209 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "52abp-pro-ui": {
+      "projectType": "application",
+            "root": "",
+
+
+      "sourceRoot": "src",
+      "prefix": "app",
+          "schematics": {
+            "@schematics/angular:component": {
+              "style": "less"
+            }
+          },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+                        "aot": true,
+
+             "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/web.config",
+              {
+                "glob": "abp.signalr.js",
+                "input": "node_modules/abp-web-resources/Abp/Framework/scripts/libs",
+                "output": "/assets/abp-web-resources"
+              },
+              {
+                "glob": "abp.signalr-client.js",
+                "input": "node_modules/abp-web-resources/Abp/Framework/scripts/libs",
+                "output": "/assets/abp-web-resources"
+              }
+            ],
+            "styles": [
+              "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
+               "node_modules/@fullcalendar/common/main.css",
+              "node_modules/@fullcalendar/daygrid/main.css",
+              "node_modules/@fullcalendar/timegrid/main.css",
+              "node_modules/@fullcalendar/list/main.css",
+               "src/styles.less",
+              "src/assets/iconfont/iconfont.css"
+            ],
+            "scripts": [
+              "node_modules/ajv/dist/ajv.bundle.js",
+               "node_modules/qrious/dist/qrious.min.js",
+              "node_modules/@aspnet/signalr/dist/browser/signalr.min.js",
+              "node_modules/moment/min/moment-with-locales.js",
+              "node_modules/moment-timezone/builds/moment-timezone-with-data.js",
+              "src/assets/aliyunlib/aliyunuploadsdk/aliyunuploadsdk.min.js",
+              "src/assets/aliyunlib/aliyunuploadsdk/lib/es6promise.min.js",
+              "src/assets/aliyunlib/aliyunuploadsdk/lib/aliyunosssdk.min.js",
+              "src/assets/aliyunlib/aliplayer/aliplayer-min.js",
+              "node_modules/simplemde-antd/dist/simplemde.min.js",
+              "node_modules/perfect-scrollbar/dist/perfect-scrollbar.js",
+              "node_modules/moment/min/moment-with-locales.js",
+              "node_modules/moment-timezone/builds/moment-timezone-with-data.js",
+              "node_modules/abp-web-resources/Abp/Framework/scripts/abp.js",
+              "src/assets/abp-web-resources/abp.sweet-alert.js",
+              "node_modules/abp-web-resources/Abp/Framework/scripts/libs/abp.moment.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+              "hmr": {
+                "fileReplacements": [
+                  {
+                    "replace": "src/environments/environment.ts",
+                    "with": "src/environments/environment.hmr.ts"
+                  }
+                ]
+              },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "8mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "52abp-pro-ui:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "52abp-pro-ui:build:production"
+            },
+            "hmr": {
+              "browserTarget": "52abp-pro-ui:build:hmr",
+              "hmr": true
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "52abp-pro-ui:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.less"
+            ],
+            "scripts": [
+              "node_modules/ajv/dist/ajv.bundle.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "52abp-pro-ui:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "52abp-pro-ui:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "52abp-pro-ui"
+}

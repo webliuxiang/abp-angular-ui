@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <div class="modal-title">{{ l('EditTenantFeatures') }}</div>
+</div>
+
+<form nz-form #modalForm="ngForm" (ngSubmit)="save()">
+  <edition-feature-tree #featureTree></edition-feature-tree>
+
+  <div class="modal-footer">
+    <button
+      nz-button
+      type="button"
+      [disabled]="saving"
+      [nzLoading]="saving"
+      (click)="resetFeatures()"
+      nz-tooltip
+      [nzTooltipTitle]="l('ResetFeaturesTooltip')"
+    >
+      <span>{{ l('ResetSpecialFeatures') }}</span>
+    </button>
+    <button nz-button type="button" [disabled]="saving || resettingFeatures" (click)="close()">
+      {{ l('Cancel') }}
+    </button>
+    <button nz-button type="submit" [disabled]="resettingFeatures" [nzLoading]="saving" [nzType]="'primary'">
+      <!-- <i class="iconfont icon-save"></i>  -->
+      <i class="iconfont icon-save"></i>
+      <span>{{ l('Save') }}</span>
+    </button>
+  </div>
+</form>

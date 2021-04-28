@@ -1,0 +1,23 @@
+<page-header *ngIf="entity.id" [title]="l('Edit')"></page-header>
+<page-header *ngIf="!entity.id" [title]="l('Create')"></page-header>
+
+<nz-card [nzLoading]="loading">
+  <sf #validateForm [schema]="schema" [formData]="entity" button="none">
+    <!-- 模态框底部 -->
+    <div class="modal-footer">
+      <button nz-button type="button" (click)="close()">
+        <i class="iconfont icon-close-circle-o"></i> {{ l('Cancel') }}
+      </button>
+      <button
+        nz-button
+        type="submit"
+        [nzType]="'primary'"
+        (click)="submitForm(validateForm.value)"
+        [disabled]="!validateForm.valid"
+        [nzLoading]="saving"
+      >
+        <i class="iconfont icon-save" *ngIf="!saving"></i> {{ l('Save') }}
+      </button>
+    </div>
+  </sf>
+</nz-card>

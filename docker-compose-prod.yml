@@ -1,0 +1,101 @@
+version: "3.8"
+
+volumes:
+  abpprodata:
+  abp-Logs:
+
+networks:
+  52abp-pro-net:
+
+services:
+  52abp_pro_mssql_server:
+    image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/mssql:2019-latest
+    # ports:
+    #   - 1430:1433
+    volumes:
+      - abpprodata:/var/opt/mssql/
+    networks:
+      - 52abp-pro-net
+    environment:
+      - SA_PASSWORD=bb123456??
+      - ACCEPT_EULA=Y
+
+  52abp_pro_host:
+    image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/52abp_pro-host:latest
+    ports:
+      - "1900:80"
+    networks:
+      - 52abp-pro-net
+    volumes:
+      - "./docker/52abp_pro_host/host-Logs:/app/App_Data/Logs"
+      - "./docker/52abp_pro_host/appsettings.azure.json:/app/appsettings.Staging.json"
+
+    depends_on:
+      - 52abp_pro_migrator
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+      - WAITHOST=52abp_pro_mssql_server
+      - WAITPORT=1433
+      - ConnectionStrings__Default=Server=52abp_pro_mssql_server;Database=52abp_proDemo_Db;User Id=sa;Password=bb123456??;MultipleActiveResultSets=True
+
+  52abp_pro_migrator:
+    image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/52abp_pro-migrator:latest
+
+    # ports:
+    #   - "1901:80"
+    networks:
+      - 52abp-pro-net
+    volumes:
+      - "./docker/52abp_pro_host/migration-Logs:/app/Logs"
+    depends_on:
+      - 52abp_pro_mssql_server
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+      - WAITHOST=52abp_pro_mssql_server
+      - WAITPORT=1433
+      - ConnectionStrings__Default=Server=52abp_pro_mssql_server;Database=52abp_proDemo_Db;User Id=sa;Password=bb123456??;MultipleActiveResultSets=True
+
+  52abp_pro_ng:
+    image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/52abp_pro-ng:latest
+
+    networks:
+      - 52abp-pro-net
+    ports:
+      - "1988:80"
+    depends_on:
+      - 52abp_pro_host
+    volumes:
+      - "./docker/52abp_pro_ng/appconfig.azure.json:/usr/share/nginx/html/assets/appconfig.prod.json"
+      #- "./docker/52abp_pro_ng/nginx.conf:/etc/nginx/nginx.conf"
+
+  52abp_pro_vue:
+    image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/52abp_pro-vue:latest
+
+    networks:
+      - 52abp-pro-net
+    ports:
+      - "1966:80"
+    depends_on:
+      - 52abp_pro_host
+    volumes:
+      - "./docker/52abp_pro_vue/appconfig.azure.json:/usr/share/nginx/html/assets/appconfig.prod.json"
+      # - "./docker/52abp_pro_ng/nginx.conf:/etc/nginx/nginx.conf"
+
+  52abp_pro_ng_loadbalancer:
+    image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/haproxy:1.6.7
+    ports:
+      # - "80:80"
+      - "5000:5000"
+      - "1936:1936"
+    environment:
+      - DNS_ENABLED=true
+      - LOG_LEVEL=info
+      - STATS_AUTH="admin:bb123456"
+      - STATS_PORT=1936
+    links:
+      - 52abp_pro_ng
+      - 52abp_pro_vue
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - 52abp-pro-net

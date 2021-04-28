@@ -1,0 +1,58 @@
+@inherits LogoAndNavBase
+
+<div id="logoAndNav" class="container">
+    <!-- Nav -->
+    <nav class="js-mega-menu navbar navbar-expand-md u-header__navbar u-header__navbar--no-space">
+        <!-- Logo -->
+        <a class="navbar-brand u-header__navbar-brand u-header__navbar-brand-center" href="/" aria-label="Front">
+            <img src="/yoyomooc/images/logo_zi.png" style="width:80px;height:60px" />
+
+        </a>
+
+
+
+
+        <!-- End Logo -->
+        <!-- Responsive Toggle Button -->
+        <button type="button" class="navbar-toggler btn u-hamburger"
+                aria-label="Toggle navigation"
+                aria-expanded="false"
+                aria-controls="navBar"
+                data-toggle="collapse"
+                data-target="#navBar">
+            <span id="hamburgerTrigger" class="u-hamburger__box">
+                <span class="u-hamburger__inner"></span>
+            </span>
+        </button>
+        <!-- End Responsive Toggle Button -->
+
+
+
+
+        <!-- Navigation -->
+        <div id="navBar" class="collapse navbar-collapse u-header__navbar-collapse">
+            <ul class="navbar-nav u-header__navbar-nav">
+
+
+
+                <li class="nav-item hs-has-sub-menu u-header__nav-item" data-event="hover" data-animation-in="slideInUp" data-animation-out="fadeOut">
+                    <a id="blogMegaMenu" class="nav-link u-header__nav-link u-header__nav-link-toggle" href="javascript:;" aria-haspopup="true" aria-expanded="false" aria-labelledby="blogSubMenu">Blog</a>
+
+                    <!-- Blog - Submenu -->
+                    <ul id="blogSubMenu" class="hs-sub-menu u-header__sub-menu u-header__sub-menu--spacer animated fadeOut" aria-labelledby="blogMegaMenu" style="min-width: 230px; display: none;">
+                        <li><a class="nav-link u-header__sub-menu-nav-link" href="../blog/card-style.html">Card Style</a></li>
+                        <li><a class="nav-link u-header__sub-menu-nav-link" href="../blog/listing.html">Listing</a></li>
+                        <li><a class="nav-link u-header__sub-menu-nav-link" href="../blog/blog-profile.html">Blog Profile</a></li>
+                        <li><a class="nav-link u-header__sub-menu-nav-link" href="../blog/single-article.html">Single Article</a></li>
+                    </ul>
+                    <!-- End Submenu -->
+                </li>
+
+
+
+            </ul>
+        </div>
+        <!-- End Navigation -->
+    </nav>
+    <!-- End Nav -->
+</div>

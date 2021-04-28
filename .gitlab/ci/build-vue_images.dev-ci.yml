@@ -1,0 +1,21 @@
+# 编译vue
+vue-build:
+  image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/node:13.2-alpine
+  stage: build
+  before_script:
+    - cd src/yoyocmstemplate-vue/
+    - npm set progress=false && npm config set depth 0 && npm cache clean --force
+  script:
+    - npm i
+    - npm run build
+  after_script:
+    - echo "删除dist文件夹"
+    - rm -rf src/yoyocmstemplate-vue/dist
+  only:
+    refs:
+      - develop
+      - develop-mooc
+    changes:
+      - src/yoyocmstemplate-vue/**/**
+  tags:
+    - "vue"

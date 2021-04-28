@@ -1,0 +1,72 @@
+﻿@using Abp.Timing
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Models.Common.Modals
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.TopBarProfile.UserLoginAttemptModalViewModel
+@await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("LoginAttempts")))
+<div class="modal-body">
+    <form id="loginAttemptsModalForm" class="form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    @foreach (var loginAttempt in Model.LoginAttempts)
+                    {
+                        <div class=" alert @(loginAttempt.Result == "Success" ?"alert-secondary":"alert-danger")" role="alert">
+                            <div class="mt-auto">
+                                <img src="@(loginAttempt.Result == "Success" ?
+                                                "/Profile/GetProfilePicture?v="+Clock.Now.Ticks :
+                                                "/Common/Images/default-52abp-picture.jpg")" class="" width="50" height="50">
+                                <span></span>
+                                <p class="text-center"> @(loginAttempt.Result == "Success" ? L("Success") : L("Failed")) </p>
+                            </div>
+                            <div class="alert-text">
+                                @if (!string.IsNullOrEmpty(loginAttempt.ClientIpAddress))
+                                {
+                                    <div class="row">
+                                        <label class="control-label col-sm-3 text-right">@L("IpAddress")</label>
+                                        <div class="col-sm-9">
+                                            <p class="form-control-static">
+                                                @loginAttempt.ClientIpAddress
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(loginAttempt.ClientName))
+                                {
+                                    <div class="row">
+                                        <label class="control-label col-sm-3 text-right">@L("Client")</label>
+                                        <div class="col-sm-9">
+                                            <p class="form-control-static">
+                                                @loginAttempt.ClientName
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(loginAttempt.BrowserInfo))
+                                {
+                                    <div class="row">
+                                        <label class="control-label col-sm-3 text-right">@L("Browser")</label>
+                                        <div class="col-sm-9">
+                                            <p class="form-control-static">
+                                                @loginAttempt.BrowserInfo
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="row">
+                                    <label class="control-label col-sm-3 text-right">@L("Time")</label>
+                                    <div class="col-sm-9">
+                                        <p class="form-control-static login-attempt-date" data-date="@loginAttempt.CreationTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")">
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Modals/_ModalFooterWithClose.cshtml")
+ 

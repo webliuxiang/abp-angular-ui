@@ -1,0 +1,42 @@
+:host {
+  ::ng-deep {
+
+    .alain-pro__sider-logo {
+      height: 46px;
+      line-height: 46px;
+    }
+
+    .alain-pro__sider-logo {
+      box-shadow: none !important;
+    }
+
+    :host-context(.alain-pro__light) {
+      .alain-pro__sider-logo {
+        img {
+          filter: invert(0.8);
+        }
+      }
+    }
+
+    :host-context(.alain-pro__dark) {
+
+      background-color: #001529;
+
+      .alain-pro__header-item {
+        color: rgba(255, 255, 255, 0.65);
+
+        &:hover {
+          color: #fff;
+        }
+      }
+
+      .alain-pro__nav-item {
+        color: rgba(255, 255, 255, 0.65);
+
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+}

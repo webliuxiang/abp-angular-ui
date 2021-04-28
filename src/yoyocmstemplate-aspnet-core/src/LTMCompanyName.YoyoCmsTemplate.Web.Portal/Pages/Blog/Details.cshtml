@@ -1,0 +1,116 @@
+@page  
+@model DetailsModel
+
+@{
+    ViewData["Title"] = Model.PostDetailsDto.Title;
+
+}
+
+@section Styles{
+    <link href="~/Front/assets/css/docs.css" rel="stylesheet" asp-append-version="true"/>
+
+
+    <style>
+        /*img {
+            max-width: 100%;
+        }*/
+    </style>
+
+}
+
+ <!-- Article Section -->
+<div class="container space-top-1">
+    <div class="row">
+
+        <div class="col-md-8 col-lg-9 mb-6  ">
+
+            <div class="w-lg-100 mx-lg-auto">
+                <div class="mb-4">
+                    <h1 class="h2 font-weight-medium text-center">@Model.PostDetailsDto.Title</h1>
+                </div>
+
+
+                <!-- Author -->
+                <div class="border-top border-bottom py-4 mb-5">
+                    <div class="row align-items-md-center">
+                        <div class="col-md-7 mb-5 mb-md-0">
+                            <div class="media align-items-center">
+                                <div class="avatar avatar-circle">
+                                    <img class="avatar-img" src="@Url.Action("GetProfilePictureById", "Profile", new {id = Model.PostDetailsDto.Writer.ProfilePictureId})" alt="Author Image  ">
+                                </div>
+
+                                <div class="media-body font-size-1 ml-3">
+                                    <span class="h6">
+                                        @Model.PostDetailsDto.Writer?.UserName
+
+                                        <span class="d-block text-muted right">@Model.PostDetailsDto.CreationTime.ToLongDateString()   </span>
+                                        <span  class="btn btn-xs btn-soft-primary font-weight-bold transition-3d-hover py-1 px-2 ml-1"> 阅读数： @Model.PostDetailsDto.ReadCount</span>
+                                    </span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="d-md-flex justify-content-md-end align-items-md-center">
+                                @*<h2 class="text-secondary font-size-1 font-weight-medium text-uppercase mb-0">@L("Share")</h2>*@
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Author -->
+
+
+                @Html.Raw(Model.PostDetailsDto.Content)
+
+                <div class="mt-5">
+
+                    @foreach (var tag in Model.PostDetailsDto.Tags)
+                    {
+                        <span class="d-inline-block mr-1 mb-2">
+                            <a class="btn btn-xs btn-soft-secondary" href="#">@tag.Name</a>
+                        </span>
+                    }
+
+
+                </div>
+
+
+                <!-- Related Articles -->
+                @*<div class="mb-4">
+                    <h3 class="h5 font-weight-medium">Related articles</h3>
+                </div>
+
+                <ul class="list-unstyled">
+                    <li class="pb-3"><a class="link-muted" href="help.html">Troubleshoot connection issues</a></li>
+                    <li class="pb-3"><a class="link-muted" href="help.html">Getting started for workspace creators</a></li>
+                    <li class="pb-3"><a class="link-muted" href="help.html">Edit your profile</a></li>
+                </ul>*@
+                <!-- End Related Articles -->
+
+            </div>
+
+        </div>
+
+
+        @* @await Component.InvokeAsync(typeof(BlogRelatedCategoryViewComponent), new GetBlogRelatedInput { BlogShortName = ViewBag.BlogShortName }) *@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+</div>
+<!-- End Article Section -->

@@ -1,0 +1,60 @@
+﻿@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Models.Account.RegisterResultViewModel
+
+
+<div class="account-login">
+    
+    <div class="kt-login-v2__title">
+        <h3> @L("SuccessfullyRegistered")</h3>
+    </div>
+
+   
+
+    <form class="kt-login-v2__form kt-form  login-form">
+        <ul class="nav flex-column card card-body">
+            <li ><span class="text-muted">@L("NameSurname"):</span> @Model.NameAndSurname</li>
+            <li><span class="text-muted">@L("TenancyName"):</span> @Model.TenancyName</li>
+            <li><span class="text-muted">@L("UserName"):</span> @Model.UserName</li>
+            <li><span class="text-muted">@L("EmailAddress"):</span> @Model.EmailAddress</li>
+        </ul>
+        <div class="mt-2">
+            @if (Model.IsEmailConfirmationRequiredForLogin)
+            {
+                <div class="alert alert-warning  m-3" role="alert">
+                    <div class="alert-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="alert-text">
+                        @L("ConfirmationMailSentPleaseClickLinkInTheEmail", Model.EmailAddress)
+                    </div>
+               
+                </div>
+            
+            }
+            @if (!Model.IsActive)
+            {
+                
+                <div class="alert alert-warning  m-3" role="alert">
+                 <div class="alert-icon">
+                     <i class="fas fa-exclamation-triangle"></i>
+                 </div>
+                 <div class="alert-text">
+                     @L("YourAccountIsWaitingToBeActivatedByAdmin")
+                 </div>
+               
+             </div>
+ 
+            }
+        </div>
+        
+        
+        
+        
+        <a asp-action="Login" asp-controller="Account" class="btn btn-primary btn-elevate  btn-block btn-pill  ">
+            @L("Back")
+        </a>
+    </form>
+
+
+
+
+    </div>    

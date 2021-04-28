@@ -1,0 +1,15 @@
+@inherits DefaultLayoutComponentBase
+
+<CascadingValue Value=this Name="Default">
+    @*<Header @ref="Header" Icon="@Model.Icon" @bind-DisplayName="DisplayName" @bind-WebTitle="WebTitle" />
+    <SideBar @ref="SideBar" Model=@Model @bind-DisplayName="DisplayName" @bind-WebTitle="WebTitle" />
+    @Body
+    <Footer @ref="Footer" IsDemo=@Model.IsDemo @bind-Text="WebFooter"></Footer>*@
+</CascadingValue>
+
+
+
+
+
+
+

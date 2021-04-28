@@ -1,0 +1,142 @@
+@page "/"
+@namespace LTMCompanyName.YoyoCmsTemplate.Web.Public.Pages
+@using LTMCompanyName.YoyoCmsTemplate.Localization
+@using LTMCompanyName.YoyoCmsTemplate.Timing
+@inject AppTimes AppTimes
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zh-cn" @(CultureHelper.IsRtl ? "dir=\"rtl\"" : "")>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        Powered By 52ABP
+    </title>
+    <base href="~/" />
+    @*<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />*@
+    <link href="~/view-resources/Views/front-mvc/portal-52abp-pro-libs.min.css" rel="stylesheet" asp-append-version="true" />
+    <environment include="Development">
+        <link href="~/Front/assets/global/css/theme.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/Front/assets/global/css/theme.min.css" rel="stylesheet" asp-append-version="true" />
+
+    </environment>
+
+    <link href="~/view-resources/Views/front-mvc/portal-52abp-pro-plug.min.css" rel="stylesheet" asp-append-version="true" />
+
+   
+
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
+
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            发生了一个错误。
+            此应用程序可能不再响应，直到重新加载。
+        </environment>
+        <environment include="Development">
+            发生了未处理的异常。
+            有关详细信息，请参见浏览器开发工具。
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+
+    <script src="_framework/blazor.server.js" asp-append-version="true"></script>
+
+    <script src="~/view-resources/Views/front-mvc/global-52abp-pro-required.min.js" asp-append-version="true"></script>
+
+
+    <script src="~/view-resources/Views/front-mvc/portal-52abp-pro-libs.min.js" asp-append-version="true"></script>
+
+
+    <script type="text/javascript">
+
+        var abp = abp || {};
+        abp.appPath = '/';
+    </script>
+
+
+    <script src="~/view-resources/Views/front-mvc/portal-52abp-pro-front.min.js" asp-append-version="true"></script>
+
+
+    <script src="~/view-resources/Views/front-mvc/portal-52abp-pro-front-components.min.js" asp-append-version="true"></script>
+
+
+ 
+
+    <!-- JS Plugins Init. -->
+    <script type="text/javascript">
+
+
+        window.jQueryWidgets = {
+
+            load: function () {
+                $('.js-mega-menu').HSMegaMenu({
+                    event: 'hover',
+                    pageContainer: $('.container'),
+                    breakpoint: 767.98,
+                    hideTimeOut: 0
+                });
+
+                // initialization of svg injector module
+                $.HSCore.components.HSSVGIngector.init('.js-svg-injector');
+            },
+            initialize: function () {
+                // initialization of header
+                $.HSCore.components.HSHeader.init($('#header'));
+                // initialization of malihu scrollbar
+                $.HSCore.components.HSMalihuScrollBar.init($('.js-scrollbar'));
+                // initialization of fancybox
+                $.HSCore.components.HSFancyBox.init('.js-fancybox');
+                // initialization of slick carousel
+                $.HSCore.components.HSSlickCarousel.init('.js-slick-carousel');
+
+
+                // initialization of go to
+                $.HSCore.components.HSGoTo.init('.js-go-to');
+            }
+        };
+
+
+
+        $(window).on('load', function () {
+            // initialization of HSMegaMenu component
+            $('.js-mega-menu').HSMegaMenu({
+                event: 'hover',
+                pageContainer: $('.container'),
+                breakpoint: 767.98,
+                hideTimeOut: 0
+            });
+
+            // initialization of svg injector module
+            $.HSCore.components.HSSVGIngector.init('.js-svg-injector');
+        });
+
+
+        $(document).on('DOMSubtreeModified', function () {
+           
+
+        });
+
+       
+
+
+
+
+    </script>
+
+
+
+</body>
+</html >

@@ -1,0 +1,37 @@
+<page-header [title]="l('OrganizationUnits')"></page-header>
+
+<nz-row nzGutter="8">
+  <!-- 左边组织机构树 -->
+  <nz-col nzSpan="8">
+    <app-organization-unit-tree-panel
+      #ouTree
+      (selectedChange)="ouMembers.organizationUnit = $event; ouRoles.organizationUnit = $event"
+    >
+    </app-organization-unit-tree-panel>
+  </nz-col>
+
+  <!-- 右边组织机构成员 -->
+  <nz-col nzSpan="16">
+    <nz-card [nzTitle]="nzTitleTemplate">
+      <ng-template #nzTitleTemplate>
+        <ellipsis lines="1" style="width: 400px">
+          <i class="iconfont icon-team "></i>
+          <span *ngIf="ouMembers.organizationUnit">{{ ouMembers.organizationUnit.title }}</span>
+        </ellipsis>
+      </ng-template>
+
+      <nz-tabset>
+        <nz-tab [nzTitle]="l('Users')">
+          <app-organization-unit-members-panel
+            #ouMembers
+            (membersAdded)="ouTree.membersAdded($event)"
+            (memberRemoved)="ouTree.memberRemoved($event)"
+          ></app-organization-unit-members-panel>
+        </nz-tab>
+        <nz-tab [nzTitle]="l('Roles')">
+          <app-organization-unit-role-panel #ouRoles></app-organization-unit-role-panel>
+        </nz-tab>
+      </nz-tabset>
+    </nz-card>
+  </nz-col>
+</nz-row>

@@ -1,0 +1,170 @@
+﻿@using LTMCompanyName.YoyoCmsTemplate.Authorization
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Startup
+
+@{
+    ViewBag.CurrentPageName = AppAdminPageNames.Common.OrganizationUnits;
+}
+@section Styles
+    {
+    <link rel="stylesheet" href="/view-resources/Areas/AreasAdminName/Views/OrganizationUnits/Index.css" asp-append-version="true" />
+}
+@section Scripts
+    {
+    <script src="/view-resources/Areas/AreasAdminName/Views/OrganizationUnits/Index.js" asp-append-version="true"></script>
+
+}
+
+						<div class="subheader py-6 py-lg-8 subheader-transparent" id="kt_subheader">
+							<div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="kt-subheader__main">
+            <h3 class="text-dark font-weight-bold my-1 mr-5">
+                @L("OrganizationUnits")
+            </h3>
+            <span class="kt-subheader__separator kt-hidden"></span>
+            <div class="kt-subheader__breadcrumbs">
+                <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                <span class="kt-subheader__breadcrumbs-separator"></span>
+                <a class="kt-subheader__breadcrumbs-link" href="javascript:void(0)">
+                    @L("OrganizationUnitsHeaderInfo")
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__head">
+
+                    <div class="kt-portlet__head-label">
+                        <span class="kt-portlet__head-icon">
+                            <i class="flaticon-map"></i>
+                        </span>
+                        <h3 class="kt-portlet__head-title">
+                            @L("OrganizationTree")
+                        </h3>
+                        <small>  @L("OrganizationUnitsHeaderInfo")</small>
+                    </div>
+
+                    <div class="kt-portlet__head-toolbar">
+                        @if (IsGranted(YoyoSoftPermissionNames.Pages_Administration_OrganizationUnits_ManageOrganizationTree))
+                        {
+                            <button type="button" id="AddRootUnitButton" class="btn btn-primary">
+                                <i class="la la-plus"></i> @L("AddRootUnit")
+                            </button>
+                        }
+                    </div>
+                </div>
+                <div class="kt-portlet__body">
+                    <div id="OrganizationUnitEditTree"></div>
+                    <div id="OrganizationUnitTreeEmptyInfo" ng-if="!vm.organizationTree.unitCount" class="text-muted">
+                        @L("NoOrganizationUnitDefinedYet")
+                    </div>
+                    <div class="label kt-link" ></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <div class="kt-portlet__head-title">
+                            <h3 class="kt-portlet__head-text">
+                                <span id="SelectedOuRightTitle"></span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kt-portlet__body">
+                    <div id="SettingsTabPanel" class=" kt-portlet__head-toolbar">
+                        <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-success" role="tablist">
+                            <li class="nav-item ">
+                                <a href="#MembersTab" aria-expanded="true" class="nav-link  active" data-toggle="tab" role="tab">
+                                    @L("Members")
+                                </a>
+                            </li>
+
+                            <li class="nav-item ">
+                                <a href="#RolesTab" aria-expanded="true" class="nav-link " data-toggle="tab" role="tab">
+                                    @L("Roles")
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active kt-portlet kt-portlet--tabs" id="MembersTab">
+                                <div class="kt-portlet__body">
+                                    <div class=" kt-section">
+                                        @if (IsGranted(YoyoSoftPermissionNames.Pages_Administration_OrganizationUnits_ManageUsers))
+                                        {
+                                            <div class="kt-section__info">
+                                                <button type="button" id="AddUserToOuButton" class="btn btn-primary " style="display: none">
+                                                    <i class="la la-plus"></i> @L("AddMember")
+                                                </button>
+                                            </div>
+
+                                        }
+
+                                        <div id="OuMembersTable" class="">
+                                            <table class="organization-members-table table table-striped- table-bordered table-hover table-checkablep">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>@L("Delete")</th>
+                                                        <th>@L("UserName")</th>
+                                                        <th>@L("AddedTime")</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                        <div id="OuMembersEmptyInfo" class="text-muted">
+                                            @L("SelectAnOrganizationUnitToSeeMembers")
+                                        </div>
+                                    </div>
+                                </div>
+
+                              
+                            </div>
+
+                            <div class="tab-pane kt-portlet kt-portlet--tabs" id="RolesTab">
+                                <div class="kt-portlet__body">
+                                    <div class=" kt-section">
+
+                                        @if (IsGranted(YoyoSoftPermissionNames.Pages_Administration_OrganizationUnits_ManageRoles))
+                                        {
+                                            <div class="kt-section__info">
+                                                <button type="button" id="AddRoleToOuButton" class="btn btn-primary " style="display: none">
+                                                    <i class="la la-plus"></i> @L("AddRole")
+                                                </button>
+                                            </div>
+
+                                        }
+
+                                        <div id="OuRolesTable" style="display: none">
+                                            <table class="organization-roles-table table table-striped- table-bordered table-hover table-checkablep">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>@L("Delete")</th>
+                                                        <th>@L("Role")</th>
+                                                        <th>@L("AddedTime")</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+
+                                        <div id="OuRolesEmptyInfo" class="text-muted">
+                                            @L("SelectAnOrganizationUnitToSeeRoles")
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

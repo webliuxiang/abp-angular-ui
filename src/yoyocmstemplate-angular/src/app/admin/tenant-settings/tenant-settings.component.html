@@ -1,0 +1,471 @@
+<page-header [title]="title">
+    <ng-template #title>
+        {{ l('Settings') }}
+        <span class="text-sm text-grey-dark">
+            <nz-divider nzType="vertical"></nz-divider>
+            {{ l('SettingsHeaderInfo') }}
+        </span>
+    </ng-template>
+</page-header>
+
+<nz-card>
+    <form nz-form #validateForm="ngForm" (ngSubmit)="saveAll()" autocomplete="off">
+        <nz-tabset *ngIf="settings" [nzTabBarExtraContent]="extraTemplate">
+            <nz-tab [nzTitle]="l('General')" *ngIf="showTimezoneSelection">
+                <nz-card [nzBordered]="false">
+                    <nz-form-item nz-row>
+                        <nz-form-label nzFor="Timezone">
+                            {{ l('Timezone') }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <timezone-combo [(selectedTimeZone)]="settings.general.timezone"
+                                defaultTimezoneScope="{{ defaultTimezoneScope }}"></timezone-combo>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-card>
+            </nz-tab>
+            <nz-tab [nzTitle]="l('UserManagement')" *ngIf="true">
+                <nz-card [nzBordered]="false">
+                    <h3>{{ l('FormBasedRegistration') }}</h3>
+                    <nz-form-item nz-row>
+                        <div nz-col>
+                            <label nz-checkbox name="AllowSelfRegistration"
+                                [(ngModel)]="settings.userManagement.allowSelfRegistration">{{ l('AllowUsersToRegisterThemselves') }}</label>
+                        </div>
+                        <span>{{ l('AllowUsersToRegisterThemselves_Hint') }}</span>
+                    </nz-form-item>
+                    <nz-form-item nz-row>
+                        <div nz-col>
+                            <label nz-checkbox name="IsNewRegisteredUserActiveByDefault"
+                                [(ngModel)]="settings.userManagement.isNewRegisteredUserActiveByDefault">{{ l('NewRegisteredUsersIsActiveByDefault') }}</label>
+                        </div>
+                        <span>{{ l('NewRegisteredUsersIsActiveByDefault_Hint') }}</span>
+                    </nz-form-item>
+                    <!-- 租户用户注册使用验证码 -->
+                    <nz-form-item nz-row>
+                        <div nz-col>
+                            <label nz-checkbox name="useCaptchaOnUserRegistration"
+                                [(ngModel)]="settings.userManagement.useCaptchaOnUserRegistration">
+                                {{ l('UseCaptchaOnUserRegistration') }}
+                            </label>
+                        </div>
+                    </nz-form-item>
+                    <!--  租户用户注册验证码类型 -->
+                    <nz-form-item nz-row *ngIf="settings.userManagement.useCaptchaOnUserRegistration">
+                        <nz-form-label nzFor="captchaOnUserRegistrationType">
+                            {{ l('CaptchaOnUserRegistrationType') }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <nz-select style="width: 120px;" name="captchaOnUserRegistrationType"
+                                [(ngModel)]="settings.userManagement.captchaOnUserRegistrationType">
+                                <nz-option *ngFor="let option of validateCodeTypes" [nzValue]="option.value"
+                                    [nzLabel]="option.displayText"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <!--  租户用户注册验证码长度 -->
+                    <nz-form-item nz-row *ngIf="settings.userManagement.useCaptchaOnUserRegistration">
+                        <nz-form-label nzFor="captchaOnUserRegistrationLength">
+                            {{ l('CaptchaOnUserRegistrationLength') }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <nz-input-number name="captchaOnUserRegistrationLength"
+                                [(ngModel)]="settings.userManagement.captchaOnUserRegistrationLength" [nzMin]="4"
+                                [nzMax]="10" [nzStep]="1"></nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+
+                    <!-- 租户用户登陆使用验证码 -->
+                    <nz-form-item nz-row>
+                        <div nz-col>
+                            <label nz-checkbox name="useCaptchaOnLogin"
+                                [(ngModel)]="settings.userManagement.useCaptchaOnUserLogin">
+                                {{ l('UseCaptchaOnUserLogin') }}
+                            </label>
+                        </div>
+                    </nz-form-item>
+                    <!--  租户用户登陆验证码类型 -->
+                    <nz-form-item nz-row *ngIf="settings.userManagement.useCaptchaOnUserLogin">
+                        <nz-form-label nzFor="captchaOnUserLoginType">
+                            {{ l('CaptchaOnUserLoginType') }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <nz-select style="width: 120px;" name="captchaOnUserLoginType"
+                                [(ngModel)]="settings.userManagement.captchaOnUserLoginType">
+                                <nz-option *ngFor="let option of validateCodeTypes" [nzValue]="option.value"
+                                    [nzLabel]="option.displayText"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <!--  租户用户登陆验证码长度 -->
+                    <nz-form-item nz-row *ngIf="settings.userManagement.useCaptchaOnUserLogin">
+                        <nz-form-label nzFor="captchaOnUserLoginLength">
+                            {{ l('CaptchaOnUserLoginLength') }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <nz-input-number name="captchaOnUserLoginLength"
+                                [(ngModel)]="settings.userManagement.captchaOnUserLoginLength" [nzMin]="4" [nzMax]="10"
+                                [nzStep]="1">
+                            </nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+
+                    <div *ngIf="!isMultiTenancyEnabled && settings.ldap.isModuleEnabled">
+                        <h3 class="">{{ l('LdapSettings') }}</h3>
+                        <nz-form-item nz-row>
+                            <div nz-col>
+                                <label nz-checkbox name="LdapIsEnabled" [(ngModel)]="settings.ldap.isEnabled">{{
+                                    l('EnableLdapAuthentication')
+                                    }}</label>
+                            </div>
+                            <span>{{ l('EnableLdapAuthentication') }}</span>
+                        </nz-form-item>
+                        <nz-form-item nz-row *ngIf="!settings.ldap.isEnabled">
+                            <nz-form-label nzFor="LdapDomainName">
+                                {{ l('DomainName') }}
+                            </nz-form-label>
+                            <nz-form-control nzHasFeedback>
+                                <input nz-input #ldapDomainNameInput="ngModel" name="LdapDomainName"
+                                    [(ngModel)]="settings.ldap.domain" [placeholder]="l('DomainName')"
+                                    maxlength="128" />
+                                <nz-form-control nzExtra
+                                    *ngIf="ldapDomainNameInput.control.dirty && ldapDomainNameInput.control.errors">
+                                    <ng-container *ngIf="ldapDomainNameInput.control.hasError('required')">
+                                        {{ l('ThisFieldIsRequired') }}
+                                    </ng-container>
+                                    <ng-container *ngIf="ldapDomainNameInput.control.hasError('minlength')">
+                                        {{ l('MinLength') }}
+                                    </ng-container>
+                                    <ng-container *ngIf="ldapDomainNameInput.control.hasError('maxlength')">
+                                        {{ l('MaxLength') }}
+                                    </ng-container>
+                                </nz-form-control>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item nz-row *ngIf="!settings.ldap.isEnabled">
+                            <nz-form-label nzFor="LdapUserName">
+                                {{ l('UserName') }}
+                            </nz-form-label>
+                            <nz-form-control nzHasFeedback>
+                                <input nz-input #ldapUserNameInput="ngModel" name="LdapUserName"
+                                    [(ngModel)]="settings.ldap.userName" [placeholder]="l('UserName')"
+                                    maxlength="128" />
+                                <nz-form-control nzExtra
+                                    *ngIf="ldapUserNameInput.control.dirty && ldapUserNameInput.control.errors">
+                                    <ng-container *ngIf="ldapUserNameInput.control.hasError('required')">
+                                        {{ l('ThisFieldIsRequired') }}
+                                    </ng-container>
+                                    <ng-container *ngIf="ldapUserNameInput.control.hasError('minlength')">
+                                        {{ l('MinLength') }}
+                                    </ng-container>
+                                    <ng-container *ngIf="ldapUserNameInput.control.hasError('maxlength')">
+                                        {{ l('MaxLength') }}
+                                    </ng-container>
+                                </nz-form-control>
+                            </nz-form-control>
+                        </nz-form-item>
+                        <nz-form-item nz-row *ngIf="!settings.ldap.isEnabled">
+                            <nz-form-label nzFor="LdapPassword">
+                                {{ l('Password') }}
+                            </nz-form-label>
+                            <nz-form-control nzHasFeedback>
+                                <input nz-input #ldapPasswordInput="ngModel" name="LdapPassword"
+                                    [(ngModel)]="settings.ldap.password" [placeholder]="l('Password')"
+                                    maxlength="128" />
+                                <nz-form-control nzExtra
+                                    *ngIf="ldapPasswordInput.control.dirty && ldapPasswordInput.control.errors">
+                                    <ng-container *ngIf="ldapPasswordInput.control.hasError('required')">
+                                        {{ l('ThisFieldIsRequired') }}
+                                    </ng-container>
+                                    <ng-container *ngIf="ldapPasswordInput.control.hasError('minlength')">
+                                        {{ l('MinLength') }}
+                                    </ng-container>
+                                    <ng-container *ngIf="ldapPasswordInput.control.hasError('maxlength')">
+                                        {{ l('MaxLength') }}
+                                    </ng-container>
+                                </nz-form-control>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div>
+                        <h3>{{ l('OtherSettings') }}</h3>
+                        <div nz-row>
+                            <label nz-checkbox name="IsEmailConfirmationRequiredForLogin"
+                                [(ngModel)]="settings.userManagement.isEmailConfirmationRequiredForLogin">{{ l('EmailConfirmationRequiredForLogin') }}</label>
+                        </div>
+                    </div>
+                </nz-card>
+            </nz-tab>
+            <nz-tab [nzTitle]="l('Security')" *ngIf="true">
+                <nz-card [nzBordered]="false">
+                    <h3>{{ l('PasswordComplexity') }}</h3>
+                    <div nz-row>
+                        <label nz-checkbox name="Setting_PasswordComplexity_UseDefaultSettings"
+                            [(ngModel)]="settings.security.useDefaultPasswordComplexitySettings">{{ l('UseDefaultSettings') }}</label>
+                    </div>
+                    <div nz-row>
+                        <label nz-checkbox name="Setting_PasswordComplexity_RequireDigit"
+                            [(ngModel)]="settings.security.passwordComplexity.requireDigit"
+                            [nzDisabled]="settings.security.useDefaultPasswordComplexitySettings">{{ l('PasswordComplexity_RequireDigit') }}</label>
+                    </div>
+                    <div nz-row>
+                        <label nz-checkbox name="Setting_PasswordComplexity_RequireLowercase"
+                            [(ngModel)]="settings.security.passwordComplexity.requireLowercase"
+                            [nzDisabled]="settings.security.useDefaultPasswordComplexitySettings">{{ l('PasswordComplexity_RequireLowercase') }}</label>
+                    </div>
+                    <div nz-row>
+                        <label nz-checkbox name="Setting_PasswordComplexity_RequireNonAlphanumeric"
+                            [(ngModel)]="settings.security.passwordComplexity.requireNonAlphanumeric"
+                            [nzDisabled]="settings.security.useDefaultPasswordComplexitySettings">{{ l('PasswordComplexity_RequireNonAlphanumeric') }}</label>
+                    </div>
+                    <div nz-row>
+                        <label nz-checkbox name="Setting_PasswordComplexity_RequireUppercase"
+                            [(ngModel)]="settings.security.passwordComplexity.requireUppercase"
+                            [nzDisabled]="settings.security.useDefaultPasswordComplexitySettings">{{ l('PasswordComplexity_RequireUppercase') }}</label>
+                    </div>
+                    <div nz-row>
+                        <label
+                            [ngClass]="{ 'text-disabled-color': settings.security.useDefaultPasswordComplexitySettings }">{{
+                            l('PasswordComplexity_RequiredLength')
+                            }}</label>
+                        <input nz-input type="number" name="RequiredLength" class="form-control"
+                            [(ngModel)]="settings.security.passwordComplexity.requiredLength"
+                            *ngIf="!settings.security.useDefaultPasswordComplexitySettings" />
+                        <input nz-input type="number" name="RequiredLength" class="form-control"
+                            [(ngModel)]="settings.security.defaultPasswordComplexity.requiredLength"
+                            *ngIf="settings.security.useDefaultPasswordComplexitySettings" disabled />
+                    </div>
+                    <h3>{{ l('UserLockOut') }}</h3>
+                    <nz-form-item nz-row class="m0">
+                        <label nz-checkbox name="Setting_UserLockOut_IsEnabled"
+                            [(ngModel)]="settings.security.userLockOut.isEnabled">{{ l('EnableUserAccountLockingOnFailedLoginAttemts') }}</label>
+                    </nz-form-item>
+                    <nz-form-item nz-row *ngIf="settings.security.userLockOut.isEnabled">
+                        <nz-form-label nzFor="MaxFailedAccessAttemptsBeforeLockout">
+                            {{ l('MaxFailedAccessAttemptsBeforeLockout') }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <input nz-input type="number" name="MaxFailedAccessAttemptsBeforeLockout"
+                                [(ngModel)]="settings.security.userLockOut.maxFailedAccessAttemptsBeforeLockout" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-row *ngIf="settings.security.userLockOut.isEnabled">
+                        <nz-form-label nzFor="DefaultAccountLockoutSeconds">
+                            {{ l('DefaultAccountLockoutDurationAsSeconds') }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <input nz-input type="number" name="DefaultAccountLockoutSeconds"
+                                [(ngModel)]="settings.security.userLockOut.defaultAccountLockoutSeconds" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <div *ngIf="!isMultiTenancyEnabled || settings.security.twoFactorLogin.isEnabledForApplication">
+                        <h3>{{ l('TwoFactorLogin') }}</h3>
+                        <div nz-row>
+                            <label nz-checkbox name="Setting_TwoFactorLogin_IsEnabled"
+                                [(ngModel)]="settings.security.twoFactorLogin.isEnabled">{{ l('EnableTwoFactorLogin') }}</label>
+                        </div>
+                        <div nz-row *ngIf="settings.security.twoFactorLogin.isEnabled && !isMultiTenancyEnabled">
+                            <label nz-checkbox name="Setting_TwoFactorLogin_IsEmailProviderEnabled"
+                                [(ngModel)]="settings.security.twoFactorLogin.isEmailProviderEnabled">{{ l('IsEmailVerificationEnabled') }}</label>
+                        </div>
+                        <div nz-row *ngIf="settings.security.twoFactorLogin.isEnabled && !isMultiTenancyEnabled">
+                            <label nz-checkbox name="Setting_TwoFactorLogin_IsSmsProviderEnabled"
+                                [(ngModel)]="settings.security.twoFactorLogin.isSmsProviderEnabled">{{ l('IsSmsVerificationEnabled') }}</label>
+                        </div>
+                        <div nz-row *ngIf="settings.security.twoFactorLogin.isEnabled && !isMultiTenancyEnabled">
+                            <label nz-checkbox name="Setting_TwoFactorLogin_IsGoogleAuthenticatorEnabled"
+                                [(ngModel)]="settings.security.twoFactorLogin.isGoogleAuthenticatorEnabled">{{ l('IsGoogleAuthenticatorEnabled') }}</label>
+                        </div>
+                        <div nz-row *ngIf="settings.security.twoFactorLogin.isEnabled && !isMultiTenancyEnabled">
+                            <label nz-checkbox name="Setting_TwoFactorLogin_IsRememberBrowserEnabled"
+                                [(ngModel)]="settings.security.twoFactorLogin.isRememberBrowserEnabled">{{ l('AllowToRememberBrowserForTwoFactorLogin') }}</label>
+                        </div>
+                    </div>
+                </nz-card>
+            </nz-tab>
+            <nz-tab [nzTitle]="l('EmailSmtp')" *ngIf="!isMultiTenancyEnabled">
+                <nz-card [nzBordered]="false">
+                    <nz-form-item nz-row>
+                        <nz-form-label nzFor="DefaultFromAddress">
+                            {{ l('DefaultFromAddress') }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback>
+                            <input nz-input #defaultFromAddressInput="ngModel" name="DefaultFromAddress"
+                                [(ngModel)]="settings.email.defaultFromAddress" email maxlength="128" />
+                            <nz-form-control nzExtra
+                                *ngIf="defaultFromAddressInput.control.dirty && defaultFromAddressInput.control.errors">
+                                <ng-container *ngIf="defaultFromAddressInput.control.hasError('required')">
+                                    {{ l('ThisFieldIsRequired') }}
+                                </ng-container>
+                                <ng-container *ngIf="defaultFromAddressInput.control.hasError('minlength')">
+                                    {{ l('MinLength') }}
+                                </ng-container>
+                                <ng-container *ngIf="defaultFromAddressInput.control.hasError('maxlength')">
+                                    {{ l('MaxLength') }}
+                                </ng-container>
+                            </nz-form-control>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-row>
+                        <nz-form-label nzFor="DefaultFromDisplayName">
+                            {{ l('DefaultFromDisplayName') }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback>
+                            <input nz-input #defaultFromDisplayNameInput="ngModel" name="DefaultFromDisplayName"
+                                [(ngModel)]="settings.email.defaultFromDisplayName" maxlength="128" />
+                            <nz-form-control nzExtra
+                                *ngIf="defaultFromDisplayNameInput.control.dirty && defaultFromDisplayNameInput.control.errors">
+                                <ng-container *ngIf="defaultFromDisplayNameInput.control.hasError('required')">
+                                    {{ l('ThisFieldIsRequired') }}</ng-container>
+                                <ng-container *ngIf="defaultFromDisplayNameInput.control.hasError('minlength')">
+                                    {{ l('MinLength') }}
+                                </ng-container>
+                                <ng-container *ngIf="defaultFromDisplayNameInput.control.hasError('maxlength')">
+                                    {{ l('MaxLength') }}
+                                </ng-container>
+                            </nz-form-control>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-row>
+                        <nz-form-label nzFor="SmtpHost">
+                            {{ l('SmtpHost') }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback>
+                            <input nz-input #smtpHostInput="ngModel" name="SmtpHost"
+                                [(ngModel)]="settings.email.smtpHost" maxlength="64" />
+                            <nz-form-control nzExtra
+                                *ngIf="smtpHostInput.control.dirty && smtpHostInput.control.errors">
+                                <ng-container *ngIf="smtpHostInput.control.hasError('required')">
+                                    {{ l('ThisFieldIsRequired') }}
+                                </ng-container>
+                                <ng-container *ngIf="smtpHostInput.control.hasError('minlength')">{{ l('MinLength') }}
+                                </ng-container>
+                                <ng-container *ngIf="smtpHostInput.control.hasError('maxlength')">{{ l('MaxLength') }}
+                                </ng-container>
+                            </nz-form-control>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-row>
+                        <nz-form-label nzFor="SmtpPort">
+                            {{ l('SmtpPort') }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <input nz-input type="number" #smtpPortInput="ngModel" name="SmtpPort"
+                                [(ngModel)]="settings.email.smtpPort" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-row>
+                        <div nz-col>
+                            <label nz-checkbox name="SmtpEnableSsl" [(ngModel)]="settings.email.smtpEnableSsl">{{
+                                l('UseSsl')
+                                }}</label>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-row>
+                        <div nz-col>
+                            <label nz-checkbox name="SmtpUseDefaultCredentials"
+                                [(ngModel)]="settings.email.smtpUseDefaultCredentials">{{ l('UseDefaultCredentials') }}</label>
+                        </div>
+                    </nz-form-item>
+                    <nz-form-item nz-row [hidden]="settings.email.smtpUseDefaultCredentials">
+                        <nz-form-label nzFor="SmtpDomainName">
+                            {{ l('DomainName') }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback>
+                            <input nz-input #smtpDomainNameInput="ngModel" name="SmtpDomainName"
+                                [(ngModel)]="settings.email.smtpDomain" maxlength="128" />
+                            <nz-form-control nzExtra
+                                *ngIf="smtpDomainNameInput.control.dirty && smtpDomainNameInput.control.errors">
+                                <ng-container *ngIf="smtpDomainNameInput.control.hasError('required')">
+                                    {{ l('ThisFieldIsRequired') }}
+                                </ng-container>
+                                <ng-container *ngIf="smtpDomainNameInput.control.hasError('minlength')">
+                                    {{ l('MinLength') }}
+                                </ng-container>
+                                <ng-container *ngIf="smtpDomainNameInput.control.hasError('maxlength')">
+                                    {{ l('MaxLength') }}
+                                </ng-container>
+                            </nz-form-control>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-row [hidden]="settings.email.smtpUseDefaultCredentials">
+                        <nz-form-label nzFor="SmtpUserName">
+                            {{ l('UserName') }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback>
+                            <input nz-input #smtpUserNameInput="ngModel" name="SmtpUserName"
+                                [(ngModel)]="settings.email.smtpUserName" maxlength="128" />
+                            <nz-form-control nzExtra
+                                *ngIf="smtpUserNameInput.control.dirty && smtpUserNameInput.control.errors">
+                                <ng-container *ngIf="smtpUserNameInput.control.hasError('required')">
+                                    {{ l('ThisFieldIsRequired') }}
+                                </ng-container>
+                                <ng-container *ngIf="smtpUserNameInput.control.hasError('minlength')">{{
+                                    l('MinLength')
+                                    }}</ng-container>
+                                <ng-container *ngIf="smtpUserNameInput.control.hasError('maxlength')">{{
+                                    l('MaxLength')
+                                    }}</ng-container>
+                            </nz-form-control>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-row [hidden]="settings.email.smtpUseDefaultCredentials">
+                        <nz-form-label nzFor="SmtpPassword">
+                            {{ l('Password') }}
+                        </nz-form-label>
+                        <nz-form-control nzHasFeedback>
+                            <input nz-input type="password" #smtpPasswordInput="ngModel" name="SmtpPassword"
+                                [(ngModel)]="settings.email.smtpPassword" maxlength="128" />
+                            <nz-form-control nzExtra
+                                *ngIf="smtpPasswordInput.control.dirty && smtpPasswordInput.control.errors">
+                                <ng-container *ngIf="smtpPasswordInput.control.hasError('required')">
+                                    {{ l('ThisFieldIsRequired') }}
+                                </ng-container>
+                                <ng-container *ngIf="smtpPasswordInput.control.hasError('minlength')">{{
+                                    l('MinLength')
+                                    }}</ng-container>
+                                <ng-container *ngIf="smtpPasswordInput.control.hasError('maxlength')">{{
+                                    l('MaxLength')
+                                    }}</ng-container>
+                            </nz-form-control>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <hr />
+                    <h3>{{ l('TestEmailSettingsHeader') }}</h3>
+                    <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+                        <input type="text" nz-input [(ngModel)]="testEmailAddress" name="TestEmailAddress" />
+                    </nz-input-group>
+                    <ng-template #suffixButton>
+                        <button nz-button nzType="primary" nzSearch
+                            (click)="sendTestEmail()">{{ l('SendTestEmail') }}</button>
+                    </ng-template>
+                </nz-card>
+            </nz-tab>
+            <nz-tab [nzTitle]="l('Theme')">
+                <nz-card [nzBordered]="false">
+                    <nz-form-item nz-row>
+                        <nz-form-label nzFor="Timezone">
+                            {{ l('Layout') }}
+                        </nz-form-label>
+                        <nz-form-control>
+                            <nz-radio-group name="themeLayout" #themeLayoutInput="ngModel"
+                                [(ngModel)]="settings.theme.layout">
+                                <label nz-radio [nzValue]="layoutValue.default">{{l('Layout.Default')}}</label>
+                                <label nz-radio
+                                    [nzValue]="layoutValue.top_navigation_menu">{{l('Layout.TopNavigationMenu')}}</label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </nz-card>
+            </nz-tab>
+        </nz-tabset>
+        <ng-template #extraTemplate>
+            <button nz-button [nzType]="'primary'" type="submit">
+                <!-- <i nz-icon type="save"></i>  -->
+                <i class="iconfont icon-save"></i>
+
+                {{ l('SaveAll') }}
+            </button>
+        </ng-template>
+    </form>
+</nz-card>

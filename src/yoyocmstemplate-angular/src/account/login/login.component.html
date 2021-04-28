@@ -1,0 +1,102 @@
+<!-- 表单输入错误模板 -->
+<ng-template #errorTpl let-control>
+  <validation-messages [formCtrl]="control"></validation-messages>
+</ng-template>
+
+<nz-spin [nzTip]="l('LogIningWithThreeDot')" [nzSpinning]="saving">
+  <!-- 租户切换 -->
+  <div *ngIf="isMultiTenancyEnabled">
+    <tenant-change></tenant-change>
+  </div>
+
+  <!-- <ng-container *ngIf="loginService.authentSuccessModel">
+    <a routerLink="/account/register">注册账号,绑定登录</a>
+  </ng-container> -->
+  <!--  输入框  -->
+  <form nz-form #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off">
+    <br />
+    <!-- 账号 -->
+    <nz-form-item>
+      <nz-form-control [nzErrorTip]="errorTpl">
+        <nz-input-group [nzPrefix]="nzPrefixIconUser">
+          <input
+            nz-input
+            name="userNameOrEmailAddress"
+            #userNameOrEmailAddressInput="ngModel"
+            [(ngModel)]="loginService.authenticateModel.userNameOrEmailAddress"
+            [placeholder]="l('UserNameOrEmail')"
+            required
+            maxlength="255"
+          />
+        </nz-input-group>
+        <ng-template #nzPrefixIconUser>
+          <span class="iconfont icon-user" style="color: rgba(0, 0, 0, 0.25)"></span>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 密码 -->
+    <nz-form-item>
+      <nz-form-control [nzErrorTip]="errorTpl">
+        <nz-input-group [nzPrefix]="nzPrefixIconLock">
+          <input
+            nz-input
+            name="password"
+            #passwordInput="ngModel"
+            [(ngModel)]="loginService.authenticateModel.password"
+            [placeholder]="l('Password')"
+            type="password"
+            required
+            maxlength="32"
+          />
+        </nz-input-group>
+        <ng-template #nzPrefixIconLock>
+          <span class="iconfont icon-lock" style="color: rgba(0, 0, 0, 0.25)"></span>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 验证码-->
+    <nz-form-item *ngIf="useCaptcha">
+      <nz-form-control [nzErrorTip]="errorTpl">
+        <!-- <yoyo-captcha
+          name="verificationCode"
+          #verificationCodeInput="ngModel"
+          [(ngModel)]="loginService.authenticateModel.verificationCode"
+          [key]="loginService.authenticateModel.userNameOrEmailAddress"
+          [timestamp]="captchaTimestamp"
+          required
+        >
+        </yoyo-captcha> -->
+        <nz-col [nzSpan]="12">
+          <nz-input-group [nzPrefix]="nzPrefixIconPicture">
+            <input
+              nz-input
+              name="verificationCode"
+              #verificationCodeInput="ngModel"
+              [(ngModel)]="loginService.authenticateModel.verificationCode"
+              [placeholder]="l('CAPTCHA')"
+              type="text"
+              (click)="initImg()"
+              (keyup)="onKey($event)"
+              required
+              maxlength="32"
+            />
+          </nz-input-group>
+          <ng-template #nzPrefixIconPicture>
+            <span class="iconfont icon-image" style="color: rgba(0, 0, 0, 0.25)"></span>
+          </ng-template>
+          <!-- </nz-col>
+        <nz-col [nzSpan]="12" class="text-right"> -->
+          <img (click)="clearimg()" [src]="verificationImgUrl" />
+        </nz-col>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 登陆按钮 -->
+    <button nz-button [nzType]="'primary'" class="yoyo__block" [disabled]="!loginForm.form.valid || submitting">
+      <i class="iconfont icon-login"></i>
+      <span>{{ l('LogIn') }}</span>
+    </button>
+  </form>
+</nz-spin>

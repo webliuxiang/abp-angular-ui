@@ -1,0 +1,41 @@
+@using Abp.Collections.Extensions
+@using Abp.Extensions
+@model Abp.Web.Mvc.Models.ErrorViewModel
+@{
+    Layout = "_Layout";
+
+    ViewBag.DisableTenantChange = true;
+
+    var errorMessage = Model.ErrorInfo.Message;
+    var errorDetails = Model.ErrorInfo.Details;
+    if (errorDetails.IsNullOrEmpty())
+    {
+        errorDetails = errorMessage;
+        errorMessage = L("Error");
+    }
+}
+
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+               
+                <h3 class="text-center text-danger">
+                    Oops:  <small>@errorMessage </small>
+                </h3> 
+            
+            </div>
+            <div class="card-body">
+                <h6 class="card-title">     <a href="@Url.Action("Index", "Home")" class="link">返回 @L("HomePage")</a></h6>
+                <p class="card-text">错误详情 @errorDetails</p>
+            </div>          
+        </div>
+    </div>
+    <div class="col-md-2">
+
+    </div>
+</div>
+
+

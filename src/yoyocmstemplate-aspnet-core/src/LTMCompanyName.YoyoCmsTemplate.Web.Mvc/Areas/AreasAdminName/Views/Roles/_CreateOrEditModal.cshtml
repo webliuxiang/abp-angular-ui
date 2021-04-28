@@ -1,0 +1,61 @@
+﻿@using Abp.Extensions
+@using LTMCompanyName.YoyoCmsTemplate.Authorization.Roles
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Models.Common.Modals
+
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.Roles.CreateOrEditRoleModalViewModel
+
+@await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(Model.IsEditMode ? (L("EditRole") + ": " + Model.Role.DisplayName) : L("CreateNewRole")))
+
+<div class="modal-body">
+
+    <ul class="nav nav-tabs  kt-tabs-line" role="tablist">
+        <li class="nav-item kt-tabs__item">
+            <a href="#RoleInformationsTab" class="nav-link kt-tabs__link active" data-toggle="tab" role="tab">
+                @L("RoleProperties")
+            </a>
+        </li>
+        <li class="nav-item kt-tabs__item">
+            <a href="#PermissionsTab" class="nav-link kt-tabs__link" data-toggle="tab" role="tab">
+                @L("Permissions")
+            </a>
+        </li>
+    </ul>
+
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="RoleInformationsTab" role="tabpanel">
+            <form name="RoleInformationsForm" role="form" novalidate class="form-validation">
+
+                @if (Model.IsEditMode)
+                {
+                    <input type="hidden" name="Id" value="@Model.Role.Id"/>
+                }
+
+                <div class="form-group">
+                    <label for="RoleName">@L("RoleName")</label>
+                    <input id="RoleName" class="form-control@(Model.Role.DisplayName.IsNullOrEmpty() ? "" : " edited")" type="text" name="DisplayName" value="@Model.Role.DisplayName" required maxlength="@Role.MaxDisplayNameLength">
+                </div>
+                
+                <div class="kt-checkbox-list">
+                    <label class="kt-checkbox">
+                        <input id="EditRole_IsDefault" type="checkbox" name="IsDefault" value="true" @Html.Raw(Model.Role.IsDefault ? "checked=\"checked\"" : "")>
+                        @L("Default")
+                        <span></span>
+                    </label>
+                    <span class="help-block">@L("DefaultRole_Description")</span>
+                </div>
+
+            </form>
+        </div>
+        <div class="tab-pane" id="PermissionsTab" role="tabpanel">
+            @await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Trees/_PermissionTree.cshtml", Model)
+        </div>
+    </div>
+
+
+    <div class="alert alert-warning" style="margin-top: 30px;">
+        <em>@L("Note_RefreshPageForPermissionChanges")</em>
+    </div>
+</div>
+
+@await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

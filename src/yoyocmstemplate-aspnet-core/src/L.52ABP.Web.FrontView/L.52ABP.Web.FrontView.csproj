@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+	<Import Project="..\..\abpversion.props"></Import>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <RootNamespace>L._52ABP.Web.FrontView</RootNamespace>
+
+
+
+ <Description>52ABP框架Web类库的视图库</Description>
+    <copyright>Copyright © 52ABP.com All Rights Reserved</copyright>
+<Summary>52ABP框架中WebCore层的一些公共方法和内容</Summary>
+<PackageIcon>icon.png</PackageIcon>
+
+
+<Authors>梁桐铭</Authors>
+<Company>YoyoSoft</Company>
+<Product>52ABP-PRO</Product>
+<licenseUrl>https://github.com/52ABP/Yoyosoft-abp-modules/blob/dev/LICENSE</licenseUrl>
+<projectUrl>https://www.52abp.com/</projectUrl>
+<PackageProjectUrl>https://github.com/52ABP/Yoyosoft-abp-modules</PackageProjectUrl>
+<PackageLicenseExpression>MIT</PackageLicenseExpression>
+<PublishRepositoryUrl>true</PublishRepositoryUrl>
+<IncludeSymbols>false</IncludeSymbols>
+<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+
+  </PropertyGroup>
+ <ItemGroup>
+    <None Include="icon.png" Pack="true" Visible="false" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LTMCompanyName.YoyoCmsTemplate.Web.Core\LTMCompanyName.YoyoCmsTemplate.Web.Core.csproj" />
+  </ItemGroup>
+
+
+</Project>

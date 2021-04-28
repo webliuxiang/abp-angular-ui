@@ -1,0 +1,27 @@
+<nz-date-picker
+        [nzAllowClear]="nzAllowClear"
+        [nzAutoFocus]="nzAutoFocus"
+        [nzClassName]="nzClassName"
+        [nzDateRender]="nzDateRender"
+        [nzDisabled]="nzDisabled"
+        [nzDisabledDate]="nzDisabledDate"
+        [nzLocale]="nzLocale"
+        [nzPopupStyle]="nzPopupStyle"
+        [nzDropdownClassName]="nzDropdownClassName"
+        [nzSize]="nzSize"
+        [nzStyle]="nzStyle"
+
+
+        [nzDisabledTime]="nzDisabledTime"
+        [nzFormat]="nzFormat"
+        [nzRenderExtraFooter]="nzRenderExtraFooter"
+        [nzShowTime]="nzShowTime"
+        [nzShowToday]="nzShowToday"
+        [nzPlaceHolder]="nzPlaceHolder"
+
+        [(ngModel)]="value"
+        (nzOnOk)="onNzOk($event)"
+        (ngModelChange)="onNgModelChangeChange($event)"
+        (nzOnOpenChange)="onNzOnOpenChange($event)">
+
+</nz-date-picker>

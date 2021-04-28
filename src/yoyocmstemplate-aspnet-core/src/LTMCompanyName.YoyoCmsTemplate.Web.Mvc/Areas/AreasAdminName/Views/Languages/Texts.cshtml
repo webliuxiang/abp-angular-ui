@@ -1,0 +1,119 @@
+﻿@using System.Threading.Tasks
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Startup
+
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.Languages.LanguageTextsViewModel
+@{
+    ViewBag.CurrentPageName = AppAdminPageNames.Common.Languages;
+}
+
+@section Scripts
+{
+    <script src="~/view-resources/Areas/AreasAdminName/Views/languages/Texts.js"asp-append-version="true"></script>
+ }
+						<div class="subheader py-6 py-lg-8 subheader-transparent" id="kt_subheader">
+							<div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="kt-subheader__main">
+            <h3 class="text-dark font-weight-bold my-1 mr-5">
+                <span>@L("LanguageTexts")</span>
+            </h3>
+            <span class="kt-subheader__separator kt-hidden"></span>
+            <div class="kt-subheader__breadcrumbs">
+                <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+                <span class="kt-subheader__breadcrumbs-separator"></span>
+                <a class="kt-subheader__breadcrumbs-link" href="javascript:void(0)">
+                    @L("LanguageTextsHeaderInfo")
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__body">
+            <div class="kt-form kt-form--label-align-right" id="TextsFilterForm">
+                <div class="row align-items-center kt-margin-b-10">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label for="TextBaseLanguageSelectionCombobox">@L("BaseLanguage")</label>
+                            <select id="TextBaseLanguageSelectionCombobox" name="BaseLanguage"
+                                    class="form-control bs-select"
+                                    data-live-search="true">
+                                @foreach (var language in Model.Languages)
+                                {
+                                    <option data-icon="@language.Icon" value="@language.Name" selected="@(language.Name==Model.BaseLanguageName)">
+                                        <i class="@language.Icon"></i>@language.DisplayName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label for="TextTargetLanguageSelectionCombobox">@L("TargetLanguage")</label>
+                            <select id="TextTargetLanguageSelectionCombobox" name="TargetLanguage"
+                                    class="form-control bs-select"
+                                    data-live-search="true">
+                                @foreach (var language in Model.Languages)
+                                {
+                                    <option data-icon="@language.Icon" value="@language.Name" selected="@(language.Name==Model.LanguageName)">
+                                        <i class="@language.Icon"></i>@language.DisplayName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label for="TextSourceSelectionCombobox">@L("Source")</label>
+                            @Html.DropDownList(
+                                    "SourceName",
+                                    Model.Sources,
+                                    new
+                                    {
+                                        @class = "form-control selectpicker",
+                                        data_live_search = "true",
+                                        id = "TextSourceSelectionCombobox"
+                                    })
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <label for="TargetValueFilterSelectionCombobox">@L("TargetValue")</label>
+                            <select id="TargetValueFilterSelectionCombobox" class="form-control bs-select" name="TargetValue">
+                                <option value="ALL" selected="@(Model.TargetValueFilter == "ALL")">@L("All")</option>
+                                <option value="EMPTY" selected="@(Model.TargetValueFilter == "EMPTY")">@L("EmptyOnes")</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center kt-margin-b-10">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <input id="TextFilter" value="@Model.FilterText" class="form-control" placeholder="@L("SearchWithThreeDot")" type="text">
+                            <span class="input-group-btn">
+                                <button id="RefreshTextsButton" class="btn btn-primary" type="submit"><i class="icon-refresh"></i> @L("Refresh")</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                <table id="TextsTable" class="table table-striped- table-bordered table-hover table-checkable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@L("Key")</th>
+                            <th>@L("BaseValue")</th>
+                            <th>@L("TargetValue")</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+      
+        </div>
+    </div>
+</div>

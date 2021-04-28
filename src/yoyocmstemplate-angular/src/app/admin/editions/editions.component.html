@@ -1,0 +1,87 @@
+<page-header [title]="l('Editions')"> </page-header>
+
+<!-- <full-content (fullscreenChange)="fullChange($event)"> -->
+<!-- 表格部分 -->
+<nz-card [nzBordered]="false">
+  <!-- 操作部分 -->
+  <nz-row nzGutter="8">
+    <nz-col nzMd="20" nzSm="12" class="btn-gutter">
+      <button nz-button [nzType]="'primary'" *ngIf="isGranted('Pages.Editions.Create')" (click)="create()">
+        <i class="iconfont icon-plus"></i>
+        <span>
+          {{ l('CreateNewEdition') }}
+        </span>
+      </button>
+      <button nz-button [nzType]="'danger'" *ngIf="isGranted('Pages.Editions.Delete')" (click)="batchDelete()">
+        <i class="iconfont icon-delete"></i>
+        <span>
+          {{ l('BatchDelete') }}
+        </span>
+      </button>
+    </nz-col>
+  </nz-row>
+  <!-- 复选框提示的内容数据部分 -->
+  <table-checkbox-panel [selectLength]="selectedDataItems.length" (onClear)="restCheckStatus(dataList)"
+    (onRefresh)="refreshGoFirstPage()"></table-checkbox-panel>
+
+  <nz-table #nzDataTable [nzFrontPagination]="false" [nzShowPagination]="false" [nzData]="dataList"
+    [nzLoading]="isTableLoading" [nzNoResult]="noDataTemplate">
+    <!-- 暂无数据 -->
+    <ng-template #noDataTemplate>
+      <no-data></no-data>
+    </ng-template>
+    <!-- 表头 -->
+    <thead (nzSortChange)="gridSort($event)">
+      <tr>
+        <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled"
+          [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
+        <th nzShowSort nzSortKey="name">
+          <span>{{ l('Edition') }}</span>
+        </th>
+        <th nzShowSort nzSortKey="editionName">
+          <span>{{ l('EditionName') }}</span>
+        </th>
+        <th nzShowSort nzSortKey="creationTime" class="text-center">
+          <span>{{ l('CreationTime') }}</span>
+        </th>
+        <th nzWidth="240px" class="text-center">
+          <span>{{ l('Actions') }}</span>
+        </th>
+      </tr>
+    </thead>
+    <!-- 表格内容 -->
+    <tbody>
+      <tr *ngFor="let item of nzDataTable.data">
+        <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+        <td>
+          {{ item.name }}
+        </td>
+        <td>
+          {{ item.displayName }}
+        </td>
+        <td class="text-center">
+          {{ item.creationTime | _moment: 'YYYY-MM-DD' }}
+        </td>
+        <td class="text-center">
+          <!-- 编辑 -->
+          <ng-container *ngIf="isGranted('Pages.Editions.Edit')">
+            <a (click)="edit(item.id)">
+              <i class="iconfont icon-edit mr-sm"></i>
+              <span>{{ l('Edit') }}</span>
+            </a>
+            <nz-divider nzType="vertical"></nz-divider>
+          </ng-container>
+          <!-- 删除 -->
+          <ng-container *ngIf="isGranted('Pages.Editions.Delete')">
+            <a nz-popconfirm [nzPopconfirmTitle]="l('ConfirmDeleteWarningMessage')" (nzOnConfirm)="delete(item)"
+              [nzOkText]="l('Ok')" [nzCancelText]="l('Cancel')">
+              <i class="iconfont icon-delete mr-sm"></i>
+              <span>{{ l('Delete') }}</span>
+            </a>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+</nz-card>

@@ -1,0 +1,89 @@
+# 从编译项目通过、构建包内容
+
+# 编译项目为docker镜像，然后推送到仓库中
+
+# 定义stages
+stages:
+  - pre
+  - build
+  - build_images_dev
+  - build_images_latest
+  - deploy
+
+# variables:
+#   DOCKER_HOST: tcp://docker:2375/
+#   DOCKER_DRIVER: overlay2
+#   # See https://github.com/docker-library/docker/pull/166
+#   DOCKER_TLS_CERTDIR: ""
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - src/yoyocmstemplate-angular/node_modules
+    - src/yoyocmstemplate-vue/node_modules
+
+# 准备前流水线 操作流程
+# pre-project-build:
+#   image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/alpine:latest
+#   stage: pre
+#   before_script:
+#     - echo 'now we will pre build project'
+#   script:
+#     - echo '开始执行脚本'
+#   after_script:
+#     - echo "开始收尾工作。。开了初始化项目编译通过了。现在开始大戏吧"
+
+#   tags:
+#     - "ltm"
+#   except:
+#     - "master"
+
+# test-docker:
+#   image: docker:19.03.12
+#   stage: pre
+#   variables:
+#     DOCKER_HOST: tcp://docker:2375/
+#     DOCKER_DRIVER: overlay2
+#     # See https://github.com/docker-library/docker/pull/166
+#     DOCKER_TLS_CERTDIR: ""
+#   services:
+#     - name: docker:19.03.12-dind
+#   before_script:
+#     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+#   script:
+#     - echo "开始制作docker镜像"
+#   tags:
+#     - vue
+
+# test-docker2:
+#   image: docker:19.03.12
+#   stage: pre
+#   services:
+#     - name: docker:19.03.12-dind
+#   before_script:
+#     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+#   script:
+#     - echo "开始制作docker镜像"
+#   tags:
+#     - docker
+
+# test-docker3:
+#   image: docker:19.03.12
+#   stage: pre
+#   services:
+#     - name: docker:19.03.12-dind
+#   before_script:
+#     - echo $CI_REGISTRY_aliyun
+#     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY_aliyun
+#   script:
+#     - echo "开始制作docker镜像"
+#   tags:
+#     - dotnet
+
+include:
+  - local: ".gitlab/ci/build-dotnet_images.dev-ci.yml"
+  - local: ".gitlab/ci/build-vue_images.dev-ci.yml"
+  - local: ".gitlab/ci/build-angular_images.dev-ci.yml"
+  - local: ".gitlab/ci/docker-images.dev-ci.yml"
+  - local: ".gitlab/ci/docker-images.latest-ci.yml" # master分支触发编译为latest的docker镜像内容
+# build-images.dev-ci

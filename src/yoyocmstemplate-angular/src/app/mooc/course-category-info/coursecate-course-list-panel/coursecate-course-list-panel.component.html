@@ -1,0 +1,113 @@
+<nz-card>
+  <ng-container *ngIf="courseCatedto">
+    <!-- 表格的检索功能 -->
+    <form nz-form [nzLayout]="'inline'" (ngSubmit)="refresh()" autocomplete="off">
+      <nz-form-control>
+        <nz-row nzGutter="24">
+          <!-- 左边搜索框 -->
+          <nz-col nzSpan="12" class="mr-2">
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+              <input type="text" nz-input [(ngModel)]="filterText" (keyup.enter)="refresh()" name="filterText"
+                [placeholder]="l('SearchWithThreeDot')" />
+              <ng-template #suffixButton>
+                <button nz-button nzType="primary" nzSearch type="submit">
+                  <i class="iconfont icon-search"></i>
+                </button>
+              </ng-template>
+            </nz-input-group>
+          </nz-col>
+          <!-- 右边弹框 -->
+          <nz-col nzSpan="12">
+            <ng-container *ngIf="courseCatedto">
+              <ng-container *ngIf="isGranted('Pages.CourseCategory.ManageCourse')">
+                <a (click)="addCourse()">
+                  <i class="iconfont icon-plus"></i>
+
+                  {{ l('AddNewCourse') }}
+                </a>
+                <nz-divider nzType="vertical"></nz-divider>
+              </ng-container>
+              <!-- todo  ManageRoles权限 -->
+              <ng-container *ngIf="isGranted('Pages.CourseCategory.ManageCourse')">
+                <a (click)="batchDelete()">
+                  <i class="iconfont icon-delete"></i>
+
+                  {{ l('BatchDelete') }}
+                </a>
+                <nz-divider nzType="vertical"></nz-divider>
+              </ng-container>
+              <a class="ml-sm" (click)="refreshGoFirstPage()">
+                <i class="iconfont icon-reload" nz-tooltip [nzTooltipTitle]="l('Refresh')"></i>
+                {{ l('Refresh') }}
+              </a>
+            </ng-container>
+          </nz-col>
+        </nz-row>
+      </nz-form-control>
+    </form>
+    <!-- 已选择及checkbox的操作 -->
+    <!-- 复选框提示的内容数据部分 -->
+    <table-checkbox-panel [selectLength]="selectedDataItems.length" (onClear)="restCheckStatus(dataList)"
+      (onRefresh)="refreshGoFirstPage()"></table-checkbox-panel>
+
+    <!-- 表格的内容操作 -->
+
+    <nz-table #ajaxTable [nzFrontPagination]="false" [nzShowQuickJumper]="true" [nzShowSizeChanger]="true"
+      [nzData]="dataList" [nzTotal]="totalItems" [nzLoading]="isTableLoading" [(nzPageIndex)]="pageNumber"
+      [(nzPageSize)]="pageSize" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()"
+      [nzNoResult]="noDataTemplate" [nzShowTotal]="showTotalTemplate">
+      <!-- 暂无数据 -->
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+      <ng-template #showTotalTemplate let-total let-range="range">
+        {{ l('GridFooterDisplayText', pageNumber, totalPages, total, range[0], range[1]) }}
+      </ng-template>
+      <!-- 表头 -->
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled"
+            [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th nzWidth="150px" class="text-center">
+            <span>{{ l('Actions') }}</span>
+          </th>
+          <th nzShowSort nzSortKey="name">
+            <span>{{ l('CourseTitle') }}</span>
+          </th>
+          <th nzShowSort nzSortKey="addedTime" class="text-center">
+            <span>{{ l('AddedTime') }}</span>
+          </th>
+        </tr>
+      </thead>
+      <!-- 表格内容 -->
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data">
+          <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+          <td class="text-center">
+            <!-- 删除 -->
+            <ng-container>
+              <!-- todo RemoveUserFromOuWarningMessage提示  -->
+              <a nz-popconfirm [nzPopconfirmTitle]="l('ConfirmDeleteXItemsWarningMessage', item.name)"
+                (nzOnConfirm)="removeCourse(item)" [nzOkText]="l('Ok')" [nzCancelText]="l('Cancel')">
+                <i class="iconfont icon-delete mr-sm"></i>
+                <!-- <i class="iconfont icon-delete mr-sm"></i> -->
+                <span>{{ l('Delete') }}</span>
+              </a>
+            </ng-container>
+          </td>
+          <td>
+            {{ item.name }}
+          </td>
+          <td class="text-center">
+            {{ item.addedTime | _moment }}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+  </ng-container>
+  <div class="text-center" *ngIf="!courseCatedto">
+    <no-data [text]="l('SelectAnCategoryToSeeMembers')"></no-data>
+  </div>
+</nz-card>

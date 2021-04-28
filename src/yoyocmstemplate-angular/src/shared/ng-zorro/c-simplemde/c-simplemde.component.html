@@ -1,0 +1,8 @@
+<simplemde
+  #simplemde
+  [options]="mdOptions"
+  name="description"
+  [(ngModel)]="value"
+  [disabled]="nzDisabled"
+  (ngOnChanges)="onNgModelChangeChange($event)"
+></simplemde>

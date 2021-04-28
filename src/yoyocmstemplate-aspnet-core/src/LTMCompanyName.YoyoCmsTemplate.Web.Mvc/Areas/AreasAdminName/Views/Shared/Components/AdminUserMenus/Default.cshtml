@@ -1,0 +1,33 @@
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Views.Shared.Components.AdminUserMenus
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Views.Shared.Components.AdminUserMenus.AdminUserMenusViewModel
+    <!-- begin:: Aside Menu -->
+    <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
+        <!--begin::Menu Container-->
+
+        <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
+
+            <ul class="menu-nav ">
+
+                <li class="menu-section">
+                    <h4 class="menu-text">@L("Administration")</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md "></i>
+                </li>
+
+            
+
+                @for (var i = 0; i < Model.Menu.Items.Count; i++)
+                {
+                    var menuItem = Model.Menu.Items[i];
+                    @await Html.PartialAsync("Components/AdminUserMenus/_UserMenuItem", new UserMenuItemViewModel
+                    {
+                        MenuItem = menuItem,
+                        MenuItemIndex = i,
+                        RootLevel = true,
+                        CurrentPageName = Model.CurrentPageName
+                    })
+                }
+            </ul>
+        </div>
+    </div>
+
+    <!-- end:: Aside Menu -->

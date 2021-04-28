@@ -1,0 +1,207 @@
+
+@using Abp.Web.Security.AntiForgery
+@using LTMCompanyName.YoyoCmsTemplate.Localization
+@using LTMCompanyName.YoyoCmsTemplate.Timing
+@inject AppTimes AppTimes
+
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+
+@{
+    Layout = null;
+    AbpAntiForgeryManager.SetCookie(Context);
+}
+<!DOCTYPE html>
+<html lang="zh-cn" @(CultureHelper.IsRtl ? "dir=\"rtl\"" : "")>
+<head>
+    <base href="~/" />
+    <title>
+        @ViewBag.Title - YoYoMooc 网站提供针对初学者和中级程序员免费的C#、ASP.NET Core、Entity Framework Core、SqlServer、Docker的视频教程， Powered By 52ABP
+    </title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="keywords" content="开发者,ASP.NET,MVC,Angular,Vue,.NET Core,Docker,SqlServer,Entity Framework Core,EF Core,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,技术社区" />
+    <meta name="description" content="YoYoMooc是一个面向开发者供针对初学者和中级程序员免费的C#、ASP.NET Core、Entity Framework Core、SqlServer、Docker的知识分享社区，我们的目前是打造一套符合中国人开发习惯的框架。 " />
+
+
+
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-165340233-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() { dataLayer.push(arguments); }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-165340233-1');
+    </script>
+
+
+    <!-- Google Fonts -->
+    <!-- Web Fonts -->
+    @*<link href="//fonts.loli.net/css?family=Poppins:300,400,500,600,700" rel="stylesheet">*@
+    <link href="~/view-resources/Views/front-mvc/portal-52abp-pro-libs.min.css" rel="stylesheet" asp-append-version="true" />
+    <environment include="Development">
+        <link href="~/Front/assets/global/css/theme.css" rel="stylesheet" asp-append-version="true" />
+
+    </environment>
+    <environment exclude="Development">
+        <link href="~/Front/assets/global/css/theme.min.css" rel="stylesheet" asp-append-version="true" />
+
+    </environment>
+
+    <link href="~/view-resources/Views/front-mvc/portal-52abp-pro-plug.min.css" rel="stylesheet" asp-append-version="true" />
+    @*<link href="~/Front/assets/vendor/prismjs/prism.css" rel="stylesheet" asp-append-version="true" />*@
+
+    @* 子页面样式 *@
+    @RenderSection("Styles", false)
+
+
+
+</head>
+<body>
+    <!-- Alert Info 顶部公告内容-->
+    @*@await Html.PartialAsync("~/Pages/Layout/_Announcement.cshtml")*@
+
+    @*<partial name="~/Pages/Shared/_abc.cshtml" />*@
+
+    <!-- End Alert Info -->
+    @* 内容 *@
+
+
+    <partial name="~/Pages/Layout/_Announcement.cshtml" />
+    <partial name="~/Pages/Layout/_Header.cshtml" />
+
+
+
+    <main id="content" role="main">
+
+
+        @RenderBody()
+
+
+    </main>
+
+    <!-- ========== END MAIN CONTENT ========== -->
+    <partial name="~/Pages/Layout/_Footer.cshtml" />
+    @*<partial name="~/Pages/Shared/Common/Modals/_AccountSidebarNavigation.cshtml" />*@
+
+
+    <partial name="~/Pages/Layout/_GoToTop.cshtml" />
+
+    <!-- End Go to Top -->
+    @* 开发模式脚本 *@
+    @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+
+    @* jquery优先 *@
+
+    <script src="~/view-resources/Views/front-mvc/global-52abp-pro-required.min.js" asp-append-version="true"></script>
+
+
+    <script src="~/view-resources/Views/front-mvc/portal-52abp-pro-libs.min.js" asp-append-version="true"></script>
+    @*<script src="~/Front/assets/vendor/prismjs/prism.js" asp-append-version="true"></script>*@
+    <script type="text/javascript">
+
+    var abp = abp || {};
+    abp.appPath = '@ApplicationPath';
+    </script>
+    <script src="~/view-resources/Views/front-mvc/portal-52abp-pro-front-required.min.js" asp-append-version="true"></script>
+
+
+    <script src="~/view-resources/Views/front-mvc/portal-52abp-pro-front-components.min.js" asp-append-version="true"></script>
+
+
+    @*<script src="~/view-resources/Views/front-mvc/account-layout-libs.min.js" asp-append-version="true"></script>*@
+
+
+
+
+    @* ABP动态WEBAPI处理 *@
+
+    <!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
+<script src="~/AbpServiceProxies/GetAll?type=jquery&minify=true&v=@(AppTimes.StartupTime.Ticks)" type="text/javascript"></script>
+<script src="~/AbpScripts/GetScripts?minify=true&v=@AppTimes.StartupTime.Ticks" type="text/javascript"></script>
+    <script type="text/javascript">
+    abp.localization.defaultSourceName = '@LocalizationSourceName';
+    abp.security.antiForgery.tokenCookieName = "Portal-XSRF-TOKEN";
+    abp.security.antiForgery.tokenHeaderName = "Portal-X-XSRF-TOKEN";
+    </script>
+
+    <!-- JS Plugins Init. -->
+    <script>
+
+
+        $(document).on('ready', function () {
+            // initialization of header
+            var header = new HSHeader($('#header')).init();
+
+            // initialization of mega menu
+            var megaMenu = new HSMegaMenu($('.js-mega-menu'), {
+                desktop: {
+                    position: 'left'
+                }
+            }).init();
+
+
+            // initialization of unfold
+            var unfold = new HSUnfold('.js-hs-unfold-invoker').init();
+
+            // initialization of form validation
+            $('.js-validate').each(function () {
+                $.HSCore.components.HSValidation.init($(this), {
+                    rules: {
+                        confirmPassword: {
+                            equalTo: '#signupPassword'
+                        }
+                    }
+                });
+            });
+
+
+            // initialization of show animations
+            $('.js-animation-link').each(function () {
+                var showAnimation = new HSShowAnimation($(this)).init();
+            });
+
+            // initialization of slick carousel
+            $('.js-slick-carousel').each(function () {
+                var slickCarousel = $.HSCore.components.HSSlickCarousel.init($(this));
+            });
+
+            // initialization of countdowns
+            $('.js-countdown').each(function () {
+                var countdown = $.HSCore.components.HSCountdown.init($(this), {
+                    yearsElSelector: '.js-cd-years',
+                    monthsElSelector: '.js-cd-months',
+                    daysElSelector: '.js-cd-days',
+                    hoursElSelector: '.js-cd-hours',
+                    minutesElSelector: '.js-cd-minutes',
+                    secondsElSelector: '.js-cd-seconds'
+                });
+            });
+
+            // initialization of go to
+            $('.js-go-to').each(function () {
+                var goTo = new HSGoTo($(this)).init();
+            });
+        });
+    </script>
+
+    @* 子页面脚本 *@
+    @RenderSection("Scripts", false)
+    <!-- IE Support -->
+    <script>
+
+        if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) document.write('<script src="~/Front/assets/vendor/polifills.js"><\/script>');
+    </script>
+
+    <script src="_framework/blazor.server.js"></script>
+
+
+</body>
+</html>

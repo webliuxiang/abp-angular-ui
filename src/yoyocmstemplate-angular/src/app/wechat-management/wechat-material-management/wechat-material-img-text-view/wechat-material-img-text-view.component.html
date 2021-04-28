@@ -1,0 +1,20 @@
+<p>
+  wechat-material-img-text-view works!
+</p>
+
+<nz-upload
+  [(nzFileList)]="fileList"
+  [nzBeforeUpload]="beforeUpload"
+  [nzAccept]="accept"
+  [nzShowButton]="fileList.length < 1"
+>
+  <button nz-button>
+    <i class="iconfont icon-upload"></i>
+    <span>{{ l('选择文件') }}</span>
+  </button>
+</nz-upload>
+
+<button nz-button [nzType]="'primary'" type="button" [nzLoading]="uploading" (click)="save()">
+  <i class="iconfont icon-upload"></i>
+  {{ l('提交') }}
+</button>

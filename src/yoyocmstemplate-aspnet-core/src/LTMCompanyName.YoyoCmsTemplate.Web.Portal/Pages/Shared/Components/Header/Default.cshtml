@@ -1,0 +1,97 @@
+<div id="logoAndNav" class="container">
+    <!-- Nav -->
+    <nav class="js-mega-menu navbar navbar-expand-lg">
+        <!-- Logo -->
+        <a class="navbar-brand" href="/" aria-label="Front">
+
+            <img class="u-avatar" style="width:auto;height:60px" src="~/imgs/logos/logo_zi.png" />
+        </a>
+
+
+
+        <!-- End Logo -->
+        <!-- Responsive Toggle Button -->
+        <button type="button" class="navbar-toggler btn btn-icon btn-sm rounded-circle"
+                aria-label="Toggle navigation"
+                aria-expanded="false"
+                aria-controls="navBar"
+                data-toggle="collapse"
+                data-target="#navBar">
+            <span class="navbar-toggler-default">
+                <svg width="14" height="14" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="currentColor" d="M17.4,6.2H0.6C0.3,6.2,0,5.9,0,5.5V4.1c0-0.4,0.3-0.7,0.6-0.7h16.9c0.3,0,0.6,0.3,0.6,0.7v1.4C18,5.9,17.7,6.2,17.4,6.2z M17.4,14.1H0.6c-0.3,0-0.6-0.3-0.6-0.7V12c0-0.4,0.3-0.7,0.6-0.7h16.9c0.3,0,0.6,0.3,0.6,0.7v1.4C18,13.7,17.7,14.1,17.4,14.1z" />
+                </svg>
+            </span>
+            <span class="navbar-toggler-toggled">
+                <svg width="14" height="14" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="currentColor" d="M11.5,9.5l5-5c0.2-0.2,0.2-0.6-0.1-0.9l-1-1c-0.3-0.3-0.7-0.3-0.9-0.1l-5,5l-5-5C4.3,2.3,3.9,2.4,3.6,2.6l-1,1 C2.4,3.9,2.3,4.3,2.5,4.5l5,5l-5,5c-0.2,0.2-0.2,0.6,0.1,0.9l1,1c0.3,0.3,0.7,0.3,0.9,0.1l5-5l5,5c0.2,0.2,0.6,0.2,0.9-0.1l1-1 c0.3-0.3,0.3-0.7,0.1-0.9L11.5,9.5z" />
+                </svg>
+            </span>
+        </button>
+        <!-- End Responsive Toggle Button -->
+        <!-- Navigation -->
+        <div id="navBar" class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+
+                <li class="nav-item header-nav-item  active">
+                    <a class=" nav-link header-nav-link" href="/">
+                        主页
+                    </a>
+                </li>
+                <li class="nav-item header-nav-item   ">
+                    <a class=" nav-link header-nav-link" target="_blank" href="/yoyomooc/aspnet-core-for-beginners-Index">
+                        ASP.NET Core 入门
+                    </a>
+                </li>
+                <li class="nav-item header-nav-item  ">
+                    <a class=" nav-link header-nav-link" target="_blank" href="/yoyomooc/aspnet-core-mvc-in-docker-index">
+                        ASP.NET Core与Docker
+                    </a>
+                </li>
+                <!-- Blog -->
+                <li class="hs-has-sub-menu navbar-nav-item">
+                    <a id="VideoMegaMenu" class="hs-mega-menu-invoker nav-link nav-link-toggle" href="javascript:;" aria-haspopup="true" aria-expanded="false" aria-labelledby="VideoSubMenu">视频仓库</a>
+
+                    <!-- Blog - Submenu -->
+                    <div id="VideoSubMenu" class="hs-sub-menu dropdown-menu" aria-labelledby="VideoMegaMenu" style="min-width: 230px;">
+                        <a class="dropdown-item" href="https://www.bilibili.com/video/av48164112">Bilibili</a>
+                        <a class="dropdown-item" href="https://www.youtube.com/channel/UC-S37IEpc9t2xesHC0LjcDA">Youtube</a>
+                       
+                    </div>
+                    <!-- End Submenu -->
+                </li>
+                <!-- End Blog -->
+                
+                <li class="nav-item header-nav-item  ">
+                    <a class=" nav-link header-nav-link" target="_blank" href="http://code.52abp.com/52abp/qa/yoyomooc">
+                        问答/互动
+                    </a>
+                </li>
+
+                <li class="nav-item header-nav-item  ">
+                    <a class=" nav-link header-nav-link" target="_blank" href="http://code.52abp.com/">
+                        代码仓库
+                    </a>
+                </li>
+
+
+                <li class="nav-item header-nav-item  ">
+                    <a class="btn btn-sm btn-primary transition-3d-hover" href="https://www.52abp.com/">
+                        52ABP企业框架
+                    </a>
+
+                </li>
+                @*@foreach (var menuItem in Model.Menu.Items)
+        {
+            var portalMenuItem = new PortalMenuItemViewModel(menuItem, 0, Model.CurrentPageName);
+            <partial name="Components/Header/_PortalMenuItem" model="portalMenuItem" />
+        }*@
+
+
+
+            </ul>
+        </div>
+        <!-- End Navigation -->
+    </nav>
+    <!-- End Nav -->
+</div>

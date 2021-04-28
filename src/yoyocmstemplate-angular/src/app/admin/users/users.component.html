@@ -1,0 +1,262 @@
+<page-header [title]="l('Users')"></page-header>
+
+<!-- 表格部分 -->
+
+<nz-card [nzBordered]="false">
+  <div class="mb-md">
+    <!-- 模糊搜索框 -->
+    <nz-row nzGutter="8">
+      <nz-col nzSm="24">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixSearchButton">
+              <input type="text" nz-input [(ngModel)]="filterText" name="filterText" (keyup.enter)="refresh()"
+                [placeholder]="l('SearchWithThreeDot')" />
+              <ng-template #suffixSearchButton>
+                <button nz-button nzType="primary" nzSearch (click)="onSearch()">
+                  <!-- <i class="iconfont icon-search"></i> -->
+                  <i class="iconfont icon-search"></i>
+                </button>
+              </ng-template>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+
+    <!-- 高级过滤 -->
+
+    <nz-row nzGutter="8" *ngIf="advancedFiltersVisible">
+      <nz-col nzSm="12">
+        <app-permission-combox [multiple]="true" [dropDownStyle]="{ 'max-height': '500px' }"
+          [(selectedPermission)]="selectedPermission" (selectedPermissionChange)="refreshGoFirstPage()">
+        </app-permission-combox>
+      </nz-col>
+      <nz-col nzSm="12">
+        <app-role-combox [(selectedRole)]="role" (selectedRoleChange)="refreshGoFirstPage()"></app-role-combox>
+      </nz-col>
+    </nz-row>
+  </div>
+
+  <!-- 操作常规按钮部分 -->
+
+  <nz-row nzGutter="8">
+    <nz-col nzMd="20" nzSm="12" class="btn-gutter">
+      <button nz-button [nzType]="'primary'" *ngIf="isGranted('Pages.Administration.Users.Create')"
+        (click)="createOrEdit()">
+        <i class="iconfont icon-plus"></i>
+
+        <span>
+          {{ l('CreateNewUser') }}
+        </span>
+      </button>
+      <button nz-button [nzType]="'danger'" *ngIf="isGranted('Pages.Administration.Users.Delete')"
+        (click)="batchDelete()">
+        <i class="iconfont icon-delete"></i>
+
+        <span>
+          {{ l('BatchDelete') }}
+        </span>
+      </button>
+
+      <button nz-button nzType="default" *ngIf="isGranted('Pages.Administration.Users.ExportToExcel')"
+        (click)="exportToExcel()">
+        <i class="iconfont icon-file-excel"></i>
+        <!-- <i class="iconfont icon-file-excel"></i> -->
+        <span>
+          {{ l('ExportToExcel') }}
+        </span>
+      </button>
+
+      <button nz-button *ngIf="isGranted('Pages.Administration.Users.Impersonation')" nzType="default"
+        (click)="ImportUsersSampleFile()" file-name="ImportUsersSampleFile">
+        <i class="iconfont icon-file-excel"></i>
+        <!-- <i class="iconfont icon-file-excel"></i> -->
+        <span>
+          {{ l('ImportToExcelTemplate') }}
+        </span>
+      </button>
+
+      <nz-upload nzAction="{{ importFromExcelUrl }}" [nzHeaders]="uploadHeaders"
+        (nzChange)="uploadPictureChange($event)" nzWithCredentials="false" nzAccept="xls/*">
+        <button nz-button nzType="default" *ngIf="isGranted('Pages.Administration.Users.Impersonation')">
+          <!-- <i class="iconfont icon-file-excel" nzType="upload"></i> -->
+          <i class="iconfont icon-file-excel"></i>
+          <span>
+            {{ l('ImportFromExcel') }}
+          </span>
+        </button>
+      </nz-upload>
+    </nz-col>
+    <nz-col nzMd="4" nzSm="12" class="text-right">
+      <a (click)="advancedFiltersVisible = !advancedFiltersVisible">
+        {{ advancedFiltersVisible ? l('HideAdvancedFilters') : l('ShowAdvancedFilters') }}
+        <!-- <i class="anticon" [class.anticon-down]="!advancedFiltersVisible"
+          [class.anticon-up]="advancedFiltersVisible"></i> -->
+
+        <i class="iconfont" [class.icon-down]="!advancedFiltersVisible" [class.icon-up]="advancedFiltersVisible"></i>
+      </a>
+    </nz-col>
+  </nz-row>
+  <!-- 数据部分 -->
+  <!-- 复选框提示的内容数据部分 -->
+  <table-checkbox-panel [selectLength]="selectedDataItems.length" (onClear)="restCheckStatus(dataList)"
+    (onRefresh)="refreshGoFirstPage()"></table-checkbox-panel>
+  <!-- 表格内容 -->
+
+  <nz-table #ajaxTable [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize"
+    [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()"
+    [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzNoResult]="noDataTemplate"
+    [nzShowTotal]="showTotalTemplate" [nzFrontPagination]="false">
+    <!-- 暂无数据 -->
+    <ng-template #noDataTemplate>
+      <no-data></no-data>
+    </ng-template>
+    <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+    <ng-template #showTotalTemplate let-total let-range="range">
+      {{ l('GridFooterDisplayText', pageNumber, totalPages, total, range[0], range[1]) }}
+    </ng-template>
+    <!-- 表头 -->
+    <thead (nzSortChange)="gridSort($event)">
+      <tr>
+        <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled"
+          [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
+
+        <th nzShowSort nzSortKey="userName">
+          <span>{{ l('UserName') }}</span>
+        </th>
+        <th>
+          <span>{{ l('Roles') }}</span>
+        </th>
+
+        <th nzShowSort nzSortKey="emailAddress">
+          <span>{{ l('EmailAddress') }}</span>
+        </th>
+        <th nzShowSort nzSortKey="isEmailConfirmed" nzShowFilter [nzFilterMultiple]="false"
+          [nzFilters]="booleanFilterList" (nzFilterChange)="isEmailConfirmedFilter($event)" class="text-center">
+          <span>{{ l('EmailConfirm') }}</span>
+        </th>
+        <th nzShowSort nzSortKey="isActive" nzShowFilter [nzFilterMultiple]="false" [nzFilters]="booleanFilterList"
+          (nzFilterChange)="isActiveFilter($event)" class="text-center">
+          <span>{{ l('Active') }}</span>
+        </th>
+        <th nzShowSort nzSortKey="lastLoginTime" class="text-center">
+          <span>{{ l('LastLoginTime') }}</span>
+        </th>
+        <th nzShowSort nzSortKey="creationTime" class="text-center">
+          <span>{{ l('CreationTime') }}</span>
+        </th>
+        <th nzWidth="230px" class="text-center">
+          <span>{{ l('Actions') }}</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of ajaxTable.data">
+        <td nzShowCheckbox [(nzChecked)]="item.checked" [nzDisabled]="isAdmin(item)"
+          (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+        <td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.userName">
+              {{ item.userName }}
+            </span>
+          </ellipsis>
+        </td>
+        <td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="getRolesAsString(item.roles)">
+              <nz-tag *ngFor="let role of item.roles">
+                {{ role.roleName }}
+              </nz-tag>
+            </span>
+          </ellipsis>
+        </td>
+        <td>
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.emailAddress">
+              {{ item.emailAddress }}
+            </span>
+          </ellipsis>
+        </td>
+        <td class="text-center" [innerHTML]="item.isEmailConfirmed | yn"></td>
+        <td class="text-center" [innerHTML]="item.isActive | yn"></td>
+        <td class="text-center">
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.lastLoginTime ? (item.lastLoginTime | _moment) : '—'">
+              {{ item.lastLoginTime ? (item.lastLoginTime | _moment) : '—' }}
+            </span>
+          </ellipsis>
+        </td>
+        <td class="text-center">
+          <ellipsis lines="1">
+            <span nz-tooltip [nzTooltipTitle]="item.creationTime | _moment">
+              {{ item.creationTime | _moment }}
+            </span>
+          </ellipsis>
+        </td>
+        <td>
+          <!-- 编辑 -->
+          <ng-container *ngIf="isGranted('Pages.Administration.Users.Edit')">
+            <a (click)="createOrEdit(item.id)">
+              <i class="iconfont icon-edit mr-sm"></i>
+              <span>{{ l('Edit') }}</span>
+            </a>
+            <nz-divider nzType="vertical"></nz-divider>
+          </ng-container>
+          <!-- 删除 -->
+          <ng-container *ngIf="isGranted('Pages.Administration.Users.Delete') && !isAdmin(item)">
+            <a nz-popconfirm [nzPopconfirmTitle]="l('ConfirmDeleteWarningMessage')" (nzOnConfirm)="delete(item)"
+              [nzOkText]="l('Ok')" [nzCancelText]="l('Cancel')">
+              <i class="iconfont icon-delete mr-sm"></i>
+              <span>{{ l('Delete') }}</span>
+            </a>
+          </ng-container>
+          <!-- 更多 -->
+          <ng-container *ngIf="
+                isGrantedAny(
+                  'Pages.Administration.Users.Impersonation',
+                  'Pages.Administration.Users.ChangePermissions',
+                  'Pages.Administration.Users.Unlock'
+                )
+              ">
+            <nz-divider nzType="vertical"></nz-divider>
+            <a nz-dropdown [nzDropdownMenu]="menu">
+              {{ l('Actions') }}
+              <i class="iconfont icon-down"></i>
+              <!-- <i nz-icon nzType="down"></i> -->
+            </a>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <a nz-dropdown>
+                <i class="iconfont icon-down"></i>
+                <!-- <i class="iconfont icon-down"></i> -->
+                <span>{{ l('More') }}</span>
+              </a>
+              <ul nz-menu>
+                <li nz-menu-item>
+                  <a *ngIf="isGranted('Pages.Administration.Users.Impersonation') && item.id !== appSession.userId"
+                    (click)="_impersonationService.impersonate(item.id, appSession.tenantId)">{{ l('LoginAsThisUser') }}</a>
+                </li>
+                <li nz-menu-item *ngIf="isGranted('Pages.Administration.Users.Edit')"
+                  (click)="editUserPermissions(item)">
+                  <a>
+                    <i class="iconfont icon-safety mr-sm"></i>
+                    <!-- <i class="iconfont icon-safety mr-sm"></i> -->
+                    <span>{{ l('Permissions') }}</span>
+                  </a>
+                </li>
+                <li nz-menu-item *ngIf="enabledUnlock" (click)="unlockUser(item)">
+                  <a>
+                    <i class="iconfont icon-unlock mr-sm"></i>
+                    <!-- <i class="iconfont icon-unlock mr-sm"></i> -->
+                    <span>{{ l('Unlock') }}</span>
+                  </a>
+                </li>
+              </ul>
+            </nz-dropdown-menu>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+</nz-card>

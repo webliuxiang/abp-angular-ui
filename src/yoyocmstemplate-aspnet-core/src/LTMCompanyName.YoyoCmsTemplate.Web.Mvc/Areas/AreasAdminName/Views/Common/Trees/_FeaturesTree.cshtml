@@ -1,0 +1,6 @@
+﻿@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.Common
+
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.Common.IFeatureEditViewModel
+<div class="feature-tree">
+    @await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Trees/_FeaturesTreeItem.cshtml", new FeatureTreeItemModel(Model, null))
+</div>

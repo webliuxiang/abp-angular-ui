@@ -1,0 +1,16 @@
+# 编译dotnet
+dotnet-build:
+  image: registry.cn-hangzhou.aliyuncs.com/yoyosoft/dotnet/core/sdk:3.1
+  stage: build
+  before_script:
+    - cd src/yoyocmstemplate-aspnet-core/
+  script:
+    - dotnet build LTMCompanyName.YoyoCmsTemplate.sln
+  tags:
+    - "dotnet"
+  only:
+    refs:
+      - develop
+      - develop-mooc
+    changes:
+      - src/yoyocmstemplate-aspnet-core/**/**

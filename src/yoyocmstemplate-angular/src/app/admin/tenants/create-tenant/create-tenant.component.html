@@ -1,0 +1,178 @@
+<div class="modal-header">
+    <div class="modal-title">{{l('CreateNewTenant')}}</div>
+</div>
+
+<nz-spin [nzSpinning]="saving">
+    <form nz-form #validateForm="ngForm" (ngSubmit)="save()" nzLayout="vertical">
+
+        <!-- 租户名称(租户代码) -->
+        <nz-form-item>
+            <nz-form-label nzFor="tenancyName" nzRequired>{{l('TenancyName')}}</nz-form-label>
+            <nz-form-control nzHasFeedback>
+                <input nz-input name="tenancyName" #tenancyName="ngModel" [(ngModel)]="model.tenancyName"
+                       [placeholder]="l('TenancyName')" required>
+                <nz-form-control nzExtra *ngIf="tenancyName.control.dirty&&tenancyName.control.errors">
+                    <ng-container
+                            *ngIf="tenancyName.control.hasError('required')">{{l('ThisFieldIsRequired')}}</ng-container>
+                </nz-form-control>
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- 名称 -->
+        <nz-form-item>
+            <nz-form-label nzFor="Name" nzRequired>{{l('DisplayTenancyName')}}</nz-form-label>
+            <nz-form-control nzHasFeedback>
+                <input nz-input name="name" #name="ngModel" [(ngModel)]="model.name" [placeholder]="l('Name')" required>
+                <nz-form-control nzExtra *ngIf="name.control.dirty&&name.control.errors">
+                    <ng-container *ngIf="name.control.hasError('required')">{{l('ThisFieldIsRequired')}}</ng-container>
+                </nz-form-control>
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- 租户管理员使用默认密码 -->
+        <nz-form-control>
+            <label nz-checkbox name="useHostDatabase" #useHostDatabaseInput="ngModel"
+                   [(ngModel)]="useHostDatabase">{{l("UseHostDatabase")}}</label>
+        </nz-form-control>
+
+        <!-- 自定义数据库链接字符串 -->
+        <nz-form-item *ngIf="!useHostDatabase">
+            <nz-form-label nzFor="connectionString" nzRequired>{{l('DatabaseConnectionString')}}</nz-form-label>
+            <nz-form-control nzHasFeedback>
+                <input nz-input name="connectionString" #connectionString="ngModel" [(ngModel)]="model.connectionString"
+                       [placeholder]="l('DatabaseConnectionString')+l('Optional')">
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- 租户管理员邮箱 -->
+        <nz-form-item>
+            <nz-form-label nzFor="adminEmailAddress" nzRequired>{{l('AdminEmailAddress')}}</nz-form-label>
+            <nz-form-control nzHasFeedback>
+                <input nz-input type="email" name="adminEmailAddress" #adminEmailAddress="ngModel"
+                       [(ngModel)]="model.adminEmailAddress" [placeholder]="l('EmailAddress')" required email>
+                <nz-form-control nzExtra *ngIf="adminEmailAddress.control.dirty&&adminEmailAddress.control.errors">
+                    <ng-container *ngIf="adminEmailAddress.control.hasError('email')">{{l('NotEmail')}}</ng-container>
+                    <ng-container *ngIf="adminEmailAddress.control.hasError('required')">{{l('ThisFieldIsRequired')}}
+                    </ng-container>
+                </nz-form-control>
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- 租户管理员使用默认密码 -->
+        <nz-form-control>
+
+            <nz-form-control>
+                <label nz-checkbox name="useDefaultPassword" #useDefaultPasswordInput="ngModel"
+                       [(ngModel)]="useDefaultPassword">{{l("UseDefaultPassword", "123qwe")}}</label>
+            </nz-form-control>
+
+        </nz-form-control>
+
+        <!-- 租户管理员密码 -->
+        <nz-form-item *ngIf="!useDefaultPassword">
+            <nz-form-label nzFor="password" nzRequired>{{l('Password')}}</nz-form-label>
+            <nz-form-control nzHasFeedback>
+                <input nz-input name="password" #passwordInput="ngModel"
+                       [(ngModel)]="model.adminPassword"
+                       [placeholder]="l('Password')"
+                       type="password"
+                       required
+                       minlength="6" maxlength="32">
+                <nz-form-control nzExtra *ngIf="passwordInput.control.dirty&&passwordInput.control.errors">
+                    <ng-container *ngIf="passwordInput.control.hasError('minlength')">{{l('minlength')}}</ng-container>
+                    <ng-container *ngIf="passwordInput.control.hasError('maxlength')">{{l('maxlength')}}</ng-container>
+                    <ng-container
+                            *ngIf="passwordInput.control.hasError('required')">{{l('ThisFieldIsRequired')}}</ng-container>
+                </nz-form-control>
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- 租户管理员确认密码 -->
+        <nz-form-item *ngIf="!useDefaultPassword">
+            <nz-form-label nzFor="password" nzRequired>{{l('ConfirmPassword')}}</nz-form-label>
+            <nz-form-control nzHasFeedback>
+                <input nz-input name="confirmPassword" #confirmPasswordInput='ngModel' [(ngModel)]="confirmPassword"
+                       [placeholder]="l('ConfirmPassword')"
+                       type="password"
+                       [validateEqual]="model.adminPassword"
+                       required>
+                <nz-form-control nzExtra
+                                 *ngIf="confirmPasswordInput.control.dirty&&confirmPasswordInput.control.errors">
+                    <ng-container *ngIf="confirmPasswordInput.control.hasError('required')">{{l('ThisFieldIsRequired')}}
+                    </ng-container>
+                    <ng-container
+                            *ngIf="confirmPasswordInput.control.hasError('validateEqual')">{{l('PasswordInconsistent')}}
+                    </ng-container>
+                </nz-form-control>
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- 版本 -->
+        <nz-form-item>
+            <nz-form-label>{{l('Edition')}}</nz-form-label>
+            <nz-form-control nzHasFeedback>
+                <edition-combo [(selectedEdition)]="edition" (selectedEditionChange)="selectedEditionChange($event)"
+                               [placeholder]="l('PleaseSelect')"></edition-combo>
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- 无限时间订阅 -->
+        <nz-form-control *ngIf="model.editionId">
+            <label nz-checkbox name="isUnlimited" #isUnlimitedInput="ngModel"
+                   [(ngModel)]="isUnlimited">{{l("IsUnlimited")}}</label>
+        </nz-form-control>
+
+        <!-- 结束时间 -->
+        <nz-form-item *ngIf="model.editionId&&!isUnlimited">
+            <nz-form-label nzFor="edition" nzRequired>{{l('SubscriptionEndDateUtc')}}</nz-form-label>
+            <nz-form-control nzHasFeedback nzRequired>
+                <nz-date-picker name="subscriptionEndUtc" #subscriptionEndUtcInput="ngModel"
+                                [(ngModel)]="model.subscriptionEndUtc" required></nz-date-picker>
+                <nz-form-control nzExtra
+                                 *ngIf="subscriptionEndUtcInput.control.dirty&&subscriptionEndUtcInput.control.errors">
+                    <ng-container
+                            *ngIf="subscriptionEndUtcInput.control.hasError('required')">{{l('ThisFieldIsRequired')}}
+                    </ng-container>
+                </nz-form-control>
+            </nz-form-control>
+        </nz-form-item>
+
+        <!-- 是否试用 -->
+        <nz-form-control>
+            <label nz-checkbox name="isInTrialPeriod" #isInTrialPeriodInput="ngModel"
+                   [(ngModel)]="model.isInTrialPeriod"
+                   [nzDisabled]="edition&&edition.isFree">{{l("IsInTrialPeriod")}}</label>
+        </nz-form-control>
+
+        <!-- 下次登陆需要修改密码 -->
+        <nz-form-control>
+            <label nz-checkbox name="shouldChangePasswordOnNextLogin" #shouldChangePasswordOnNextLoginInput="ngModel"
+                   [(ngModel)]="model.shouldChangePasswordOnNextLogin">{{l("ShouldChangePasswordOnNextLogin")}}</label>
+        </nz-form-control>
+
+        <!-- 发送激活邮件 -->
+        <nz-form-control>
+            <label nz-checkbox name="sendActivationEmail" #sendActivationEmailInput="ngModel"
+                   [(ngModel)]="model.sendActivationEmail">{{l("SendActivationEmail")}}</label>
+        </nz-form-control>
+
+        <!-- 激活 -->
+        <nz-form-control>
+            <label nz-checkbox name="isActive" #isActiveInput="ngModel"
+                   [(ngModel)]="model.isActive">{{l("IsActive")}}</label>
+        </nz-form-control>
+
+
+        <!-- 功能按钮 -->
+        <div class="modal-footer">
+            <button nz-button type="button" [disabled]="saving" (click)="close()">
+                {{l("Cancel")}}
+            </button>
+            <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.valid||saving">
+                {{l("Save")}}
+            </button>
+        </div>
+
+
+    </form>
+</nz-spin>

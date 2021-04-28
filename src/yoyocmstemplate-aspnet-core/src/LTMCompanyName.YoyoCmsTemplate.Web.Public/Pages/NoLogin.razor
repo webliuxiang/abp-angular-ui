@@ -1,0 +1,23 @@
+﻿@page "/no-login"
+@inject NavigationManager Navigation
+
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+<h3>a: @returnurl</h3>
+<h1>未登录到系统！   123</h1>
+
+
+
+@code
+{
+    public string returnurl { get; set; }
+
+    protected override void OnInitialized()
+    {
+        returnurl= Navigation.Uri.ToString();
+       
+    }
+
+}

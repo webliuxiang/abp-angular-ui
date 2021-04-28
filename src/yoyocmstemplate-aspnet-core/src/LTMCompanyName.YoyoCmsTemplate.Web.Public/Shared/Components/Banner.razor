@@ -1,0 +1,85 @@
+ @using LTMCompanyName.YoyoCmsTemplate.Modules.WebSiteSetting.BannerAds.Dtos;
+
+ @inherits BannerBase
+ 
+ 
+    <h3>@L("CookiesInfoTips")</h3>
+ <!-- Hero Section -->
+    <div class="position-relative">
+        <!-- Main Slider -->
+        <div id="heroSlider" class="js-slick-carousel u-slick u-slick--equal-height bg-light"
+             data-fade="true"
+             data-infinite="true"
+             data-autoplay-speed="5000"
+             data-arrows-classes="d-none d-lg-inline-block u-slick__arrow u-slick__arrow--flat-white u-slick__arrow-centered--y shadow-soft rounded-circle"
+             data-arrow-left-classes="fas fa-arrow-left u-slick__arrow-inner u-slick__arrow-inner--left ml-lg-5"
+             data-arrow-right-classes="fas fa-arrow-right u-slick__arrow-inner u-slick__arrow-inner--right mr-lg-5"
+             data-nav-for="#heroSliderNav">
+            @foreach (var item in Model)
+            {
+                <!-- Slide -->
+                <div class="js-slide">
+                    <div class="container space-top-2 space-bottom-3">
+                        <div class="row align-items-lg-center">
+                            <div class="col-lg-5 order-lg-2 mb-7 mb-lg-0">
+                                <div class="mb-6">
+                                    <h1 class="display-4 font-size-md-down-5 font-weight-semi-bold mb-4">@item.Title</h1>
+                                    <p>@item.Description</p>
+                                </div>
+                                <a class="btn btn-primary btn-pill transition-3d-hover px-5 mr-2" href="@item.Url">查看</a>
+
+                            </div>
+                            <div class="col-lg-6 order-lg-1">
+                                <div class="w-85 mx-auto">
+                                    <img class="img-fluid" src="@item.ImageUrl" alt="@item.Description">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Slide -->
+            }
+
+
+
+
+        </div>
+        <!-- End Main Slider -->
+        <!-- Slider Nav -->
+        <div class="position-absolute bottom-0 w-100">
+            <div class="container space-bottom-1">
+                <div id="heroSliderNav" class="js-slick-carousel u-slick u-slick--transform-off max-width-27 mx-auto"
+                     data-slides-show="@Model.Count"
+                     data-autoplay-speed="5000"
+                     data-infinite="true"
+                     data-is-thumbs="true"
+                     data-is-thumbs-progress="true"
+                     data-thumbs-progress-options='{
+                 "color": "#377dff",
+                 "width": 8
+               }'
+                     data-thumbs-progress-container=".js-slick-thumb-progress"
+                     data-nav-for="#heroSlider">
+
+                    @foreach (var dto in Model)
+                    {
+
+                        <div class="js-slide p-1">
+                            <a class="js-slick-thumb-progress position-relative d-block u-avatar border rounded-circle p-1" href="javascript:;">
+                                <img class="img-fluid rounded-circle" src="@dto.ThumbImgUrl" alt="@dto.Description">
+                            </a>
+                        </div>
+                    }
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+        <!-- End Slider Nav -->
+    </div>
+    <!-- End Hero Section -->
+     

@@ -1,0 +1,69 @@
+﻿@using Abp.MultiTenancy
+@using LTMCompanyName.YoyoCmsTemplate.Authorization
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Startup
+
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.Languages.LanguagesIndexViewModel
+@{
+    ViewBag.CurrentPageName = AppAdminPageNames.Common.Languages;
+}
+
+@section Scripts
+{
+    <script src="/view-resources/Areas/AreasAdminName/Views/languages/index.js" asp-append-version="true"></script>
+}
+
+						<div class="subheader py-6 py-lg-8 subheader-transparent" id="kt_subheader">
+    <div class="row align-items-center">
+        <div class="kt-subheader__main">
+            <h3 class="text-dark font-weight-bold my-1 mr-5">
+               <span>@L("Languages")</span>
+            </h3>
+
+        </div>
+
+    </div>
+</div>
+ 
+
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">
+                    <span>@L("Languages")</span>
+
+                    <small>    @L("LanguagesHeaderInfo")</small>
+                </h3>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+               @if (IsGranted(YoyoSoftPermissionNames.Pages_Administration_Languages_Create) && AbpSession.MultiTenancySide == MultiTenancySides.Host)
+            {
+                <button id="CreateNewLanguageButton" class="btn btn-primary"><i class="fa fa-plus"></i> @L("CreateNewLanguage")</button>
+            }
+            </div>
+        </div>
+        <div class="kt-portlet__body">
+         
+                <table id="LanguagesTable" class="table table-striped- table-bordered table-hover table-checkable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@L("Actions")</th>
+                            <th>@L("Name")</th>
+                            <th>@L("Code")</th>
+                            <th>@L("Default")</th>
+                            <th>@L("CreationTime")</th>
+                            <th>@L("IsEnabled")</th>
+                        </tr>
+                    </thead>
+                </table>
+                @if (Model.IsTenantView)
+                {
+                    <p class="margin-top-20">
+                        @("* " + L("CanNotEditOrDeleteDefaultLanguages"))
+                    </p>
+                }
+            
+        </div>
+    </div>
+</div>

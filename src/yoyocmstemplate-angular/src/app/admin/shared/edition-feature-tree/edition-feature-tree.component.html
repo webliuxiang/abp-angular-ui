@@ -1,0 +1,45 @@
+<nz-tree [nzData]="treeData" [nzCheckStrictly]="true" [nzMultiple]="true">
+  <ng-template #nzTreeTemplate let-node>
+    <!-- {{outData(node)}} -->
+    <!-- 这里是前面的展示符号 -->
+    <!-- 展开 -->
+    <span class="ant-tree-switcher ant-tree-switcher_open" *ngIf="isLeaf(node)&&node.isExpanded"
+      (click)="setNodeIsExpanded(node,false)">
+      <!-- <i class="anticon ant-tree-switcher-icon  anticon-caret-down"></i> -->
+      <i class="iconfont ant-tree-switcher-icon icon-caret-down"></i>
+    </span>
+    <!-- 收起 -->
+    <span class="ant-tree-switcher ant-tree-switcher_close" *ngIf="isLeaf(node)&&!node.isExpanded"
+      (click)="setNodeIsExpanded(node,true)">
+      <!-- <i class="anticon ant-tree-switcher-icon anticon-caret-down"></i> -->
+      <i class="iconfont ant-tree-switcher-icon icon-caret-down"></i>
+    </span>
+    <!-- 占位 -->
+    <span class="ant-tree-switcher ant-tree-switcher_close" *ngIf="!isLeaf(node)"> </span>
+
+    <!-- 下面的才是对数据的操作 -->
+
+
+    <!-- 特性名称 -->
+    <span style="margin-right: 5px;">{{node.title}}</span>
+
+    <!-- 如果是输入框 -->
+    <div class="ant-tree-checkbox" *ngIf="node?.origin?.inputType.name === 'SINGLE_LINE_STRING'">
+      <input nz-input [(ngModel)]="node.origin.value" [attr.name]="node?.origin?.name">
+    </div>
+
+    <!-- 如果是checkbox -->
+    <span class="ant-tree-checkbox" *ngIf="node?.origin?.inputType.name==='CHECKBOX'">
+      <label nz-checkbox [attr.name]="node?.origin?.name" [(ngModel)]="node.origin.value"></label>
+    </span>
+
+    <!-- 如果是下拉框 -->
+    <select class="ant-tree-checkbox" [attr.name]="node?.origin?.name"
+      *ngIf="node?.origin?.inputType.name === 'COMBOBOX'" [(ngModel)]="node.origin.value">
+      <option *ngFor="let item of node?.origin?.itemSource.items" [value]="item.value">
+        {{item.displayName}}
+      </option>
+    </select>
+
+  </ng-template>
+</nz-tree>

@@ -1,0 +1,16 @@
+﻿@using LTMCompanyName.YoyoCmsTemplate
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Models.Common.Modals
+
+@await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel(L("ChangeProfilePicture")))
+
+<div class="modal-body">
+    <form id="ChangeProfilePictureModalForm" method="POST" action="@(ApplicationPath + "Profile/UploadProfilePicture")">
+        <div class="form-group">
+            <input type="file" name="ProfilePicture" />
+            <p >@L("ProfilePicture_Change_Info", AppConsts.MaxProfilePictureBytesUserFriendlyValue)</p>
+        </div>
+    </form>
+    <img id="ProfilePictureResize" src="" />
+</div>
+
+@await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Modals/_ModalFooterWithSaveAndCancel.cshtml")

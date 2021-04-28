@@ -1,0 +1,45 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    "strict": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "es2020",
+    "lib": ["es2018", "dom"],
+    "paths": {
+      "@appshared/*": ["src/app/shared/*"],
+      "@testing": ["src/testing"],
+      "@testing/*": ["src/testing/*"],
+      "@env": ["src/environments"],
+      "@env/*": ["src/environments/*"],
+      "@shared/*": ["src/shared/*"],
+      "@app/*": ["src/app/*"],
+      "@layout/*": ["src/layout/*"],
+      "abpPro/*": ["src/abpPro/*"]
+    },
+    "plugins": [
+      {
+        "name": "typescript-lit-html-plugin"
+      },
+      { "name": "typescript-tslint-plugin" }
+    ]
+  },
+  "allowSyntheticDefaultImports": true,
+
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  }
+}

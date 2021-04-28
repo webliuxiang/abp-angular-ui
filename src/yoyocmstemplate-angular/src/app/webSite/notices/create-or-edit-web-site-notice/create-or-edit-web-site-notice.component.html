@@ -1,0 +1,74 @@
+<form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+  <!-- 模态框头部 -->
+  <div class="modal-header">
+    <div class="modal-title">
+      <i class="iconfont icon-medicine-box mr-sm"></i>
+      <span *ngIf="entity.id">{{ l('Edit') }}</span>
+      <span *ngIf="!entity.id">{{ l('Create') }}</span>
+    </div>
+  </div>
+  <!-- 模态框内容 -->
+  <fieldset>
+    <!-- 提示信息 -->
+    <!-- <nz-alert nzType="info" nzCloseable [nzShowIcon]="true" nzMessage="l('我想提示点什么内容给你说')"></nz-alert> -->
+    <!-- 标题 : Title 的控件范围=Start= -->
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="title">
+        {{ l('WebSiteNoticeTitle') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+        <!--  控件位置 -->
+        <input nz-input name="title" #title="ngModel" [(ngModel)]="entity.title"
+          [placeholder]="l('WebSiteNoticeTitleInputDesc')" required />
+
+        <!-- 校验 -->
+        <nz-form-control nzExtra *ngIf="title.control.dirty && title.control.errors">
+          <ng-container *ngIf="title.control.hasError('required')">{{ l('ThisFieldIsRequired') }}</ng-container>
+        </nz-form-control>
+      </nz-form-control>
+    </nz-form-item>
+    <!--标题 : Title 的控件范围结束=END= -->
+    <!-- 内容 : Content 的控件范围=Start= -->
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="content">
+        {{ l('WebSiteNoticeContent') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+        <!--  控件位置 -->
+
+        <textarea rows="4" nz-input name="content" #content="ngModel" [(ngModel)]="entity.content"
+          [placeholder]="l('WebSiteNoticeContentInputDesc')" required maxlength="3000"></textarea>
+
+        <!-- 校验 -->
+        <nz-form-control nzExtra *ngIf="content.control.dirty && content.control.errors">
+          <ng-container *ngIf="content.control.hasError('maxlength')">{{ l('MaxLength') + 3000 }}</ng-container>
+          <ng-container *ngIf="content.control.hasError('required')">{{ l('ThisFieldIsRequired') }}</ng-container>
+        </nz-form-control>
+      </nz-form-control>
+    </nz-form-item>
+    <!--内容 : Content 的控件范围结束=END= -->
+    <!-- ViewCount : ViewCount 的控件范围=Start= -->
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="viewCount">
+        {{ l('ViewCount') }}
+      </nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+        <!--  控件位置 -->
+
+        <nz-input-number name="viewCount" #viewCount="ngModel" [(ngModel)]="entity.viewCount" [nzMin]="0"
+          [nzMax]="1000000" [nzStep]="1"></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+    <!--ViewCount : ViewCount 的控件范围结束=END= -->
+  </fieldset>
+  <!-- 模态框底部 -->
+  <div class="modal-footer">
+    <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">
+      <i class="iconfont icon-close-circle"></i> {{ l('Cancel') }}
+    </button>
+    <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid || saving"
+      [nzLoading]="saving">
+      <i class="iconfont icon-save" *ngIf="!saving"></i> {{ l('Save') }}
+    </button>
+  </div>
+</form>

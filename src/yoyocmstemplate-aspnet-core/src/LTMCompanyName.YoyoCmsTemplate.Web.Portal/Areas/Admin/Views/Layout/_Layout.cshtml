@@ -1,0 +1,205 @@
+
+@using Abp.Web.Security.AntiForgery
+@using LTMCompanyName.YoyoCmsTemplate.Localization
+@using LTMCompanyName.YoyoCmsTemplate.Timing
+@inject AppTimes AppTimes
+
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+
+@{
+    Layout = null;
+    AbpAntiForgeryManager.SetCookie(Context);
+}
+<!DOCTYPE html>
+<html lang="zh-cn" @(CultureHelper.IsRtl ? "dir=\"rtl\"" : "")>
+<head>
+    <title>
+        @ViewBag.Title   - Powered By 52ABP
+    </title>
+
+    <!-- Google Fonts -->
+    <!-- Web Fonts -->
+    @*<link href="//fonts.loli.net/css?family=Poppins:300,400,500,600,700" rel="stylesheet">*@
+    <link href="~/view-resources/Views/front-mvc/portal-52abp-pro-libs.min.css" rel="stylesheet" asp-append-version="true" />
+    <environment include="Development">
+        <link href="~/Front/assets/global/css/theme.css" rel="stylesheet" asp-append-version="true" />
+
+    </environment>
+    <environment exclude="Development">
+        <link href="~/Front/assets/global/css/theme.min.css" rel="stylesheet" asp-append-version="true" />
+
+    </environment>
+
+        <link href="~/view-resources/Views/front-mvc/portal-52abp-pro-plug.min.css" rel="stylesheet" asp-append-version="true" />
+
+        @* 子页面样式 *@
+        @RenderSection("Styles", false)
+
+
+
+</head>
+<body>
+    <!-- Alert Info 顶部公告内容-->
+    @await Html.PartialAsync("~/Views/Layout/_Announcement.cshtml")
+    <!-- End Alert Info -->
+    @* 内容 *@
+
+    <partial name="~/Views/Layout/_Header.cshtml" />
+
+
+    <main id="content" role="main">
+
+
+        @RenderBody()
+
+
+    </main>
+
+    <!-- ========== END MAIN CONTENT ========== -->
+    <partial name="~/Views/Layout/_Footer.cshtml" />
+    <partial name="~/Views/Common/Modals/_AccountSidebarNavigation.cshtml" />
+
+
+    <!-- Go to Top -->
+    <a class="js-go-to u-go-to" href="#"
+       data-position='{"bottom": 15, "right": 15 }'
+       data-type="fixed"
+       data-offset-top="400"
+       data-compensation="#header"
+       data-show-effect="slideInUp"
+       data-hide-effect="slideOutDown">
+        <span class="fas fa-arrow-up u-go-to__inner"></span>
+    </a>
+    <!-- End Go to Top -->
+    @* 开发模式脚本 *@
+    @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+
+@* jquery优先 *@
+
+<script src="~/view-resources/Views/front-mvc/global-52abp-pro-required.min.js" asp-append-version="true"></script>
+
+
+<script src="~/view-resources/Views/front-mvc/portal-52abp-pro-libs.min.js" asp-append-version="true"></script>
+
+<script type="text/javascript">
+
+    var abp = abp || {};
+    abp.appPath = '@ApplicationPath';
+    </script>
+    <script src="~/view-resources/Views/front-mvc/portal-52abp-pro-front.min.js" asp-append-version="true"></script>
+
+
+    <script src="~/view-resources/Views/front-mvc/portal-52abp-pro-front-components.min.js" asp-append-version="true"></script>
+ 
+
+  @*<script src="~/view-resources/Views/front-mvc/account-layout-libs.min.js" asp-append-version="true"></script>*@
+
+ 
+
+
+    @* ABP动态WEBAPI处理 *@
+
+    <!-- Dynamic scripts of ABP system (They are created on runtime and can not be bundled) -->
+<script src="~/AbpServiceProxies/GetAll?type=jquery&minify=true&v=@(AppTimes.StartupTime.Ticks)" type="text/javascript"></script>
+<script src="~/AbpScripts/GetScripts?minify=true&v=@AppTimes.StartupTime.Ticks" type="text/javascript"></script>
+    <script type="text/javascript">
+    abp.localization.defaultSourceName = '@LocalizationSourceName';
+    abp.security.antiForgery.tokenCookieName = "Portal-XSRF-TOKEN";
+    abp.security.antiForgery.tokenHeaderName = "Portal-X-XSRF-TOKEN";
+    </script>
+
+    <!-- JS Plugins Init. -->
+    <script>
+        $(window).on('load', function () {
+            // initialization of HSMegaMenu component
+            $('.js-mega-menu').HSMegaMenu({
+                event: 'hover',
+                pageContainer: $('.container'),
+                breakpoint: 767.98,
+                hideTimeOut: 0
+            });
+   // initialization of HSMegaMenu component
+      $('.js-breadcrumb-menu').HSMegaMenu({
+        event: 'hover',
+        pageContainer: $('.container'),
+        breakpoint: 991.98,
+        hideTimeOut: 0
+      });
+            // initialization of svg injector module
+            $.HSCore.components.HSSVGIngector.init('.js-svg-injector');
+        });
+
+        $(document).on('ready', function () {
+            // initialization of header
+            $.HSCore.components.HSHeader.init($('#header'));
+
+            // initialization of unfold component
+            $.HSCore.components.HSUnfold.init($('[data-unfold-target]'), {
+                afterOpen: function () {
+                    //$(this).find('input[type="search"]').focus();
+                }
+            });
+
+            // initialization of malihu scrollbar
+            $.HSCore.components.HSMalihuScrollBar.init($('.js-scrollbar'));
+
+            // initialization of forms
+             $.HSCore.components.HSFocusState.init();
+
+               // initialization of range datepicker
+                   $.HSCore.components.HSRangeDatepicker.init('.js-range-datepicker');
+
+             
+            // initialization of form validation
+        $.HSCore.components.HSValidation.init('.js-validate');
+ // initialization of datatables
+      $.HSCore.components.HSDatatables.init('.js-datatable');
+            // initialization of show animations
+            //   $.HSCore.components.HSShowAnimation.init('.js-animation-link');
+
+            // initialization of fancybox
+            $.HSCore.components.HSFancyBox.init('.js-fancybox');
+            // initialization of select picker
+               $.HSCore.components.HSSelectPicker.init('.js-select');
+
+            //// initialization of text animation (typing)
+            //var typed = new Typed(".u-text-animation.u-text-animation--typing", {
+            //    strings: [".NET CORE","Dokcer","Jenkins","PostgreSql"
+            //        ,"Entity Framework Core"
+            //        ,"NPM"
+            //        ,"yarn"
+            //        ,"Angular"
+            //        ,"Redis"
+            //        ,"RabbitMQ"
+            //        , "Bootstrap", "领域驱动设计", "多层架构体系"
+            //        ],
+            //    typeSpeed: 50,
+            //    loop: true,
+            //    backSpeed: 25,
+            //    backDelay: 1000
+            //});
+
+            // initialization of slick carousel
+            $.HSCore.components.HSSlickCarousel.init('.js-slick-carousel');
+
+            // initialization of go to
+            $.HSCore.components.HSGoTo.init('.js-go-to');
+
+            // initialization of autonomous popups
+            //$.HSCore.components.HSModalWindow.init('[data-modal-target]', '.js-modal-window', {
+            //    autonomous: true
+            //});
+
+        //    初始化页面内容，启用闭包
+            if (window.CurrentPage) {
+                CurrentPage.init();
+            }
+            
+        });
+    </script>
+
+    @* 子页面脚本 *@
+    @RenderSection("Scripts", false)
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<div class="modal-header">
+  <div class="modal-title">
+    {{l('EditTenant')}}:
+    <span *ngIf="entity">{{entity.tenancyName}}</span>
+  </div>
+</div>
+
+<nz-spin [nzSpinning]="saving">
+  <form nz-form #validateForm="ngForm" (ngSubmit)="save()" nzLayout="vertical">
+
+    <!-- 名称 -->
+    <nz-form-item>
+      <nz-form-label nzFor="Name" nzRequired>{{l('DisplayTenancyName')}}</nz-form-label>
+      <nz-form-control nzHasFeedback>
+        <input nz-input name="name" #name="ngModel" [(ngModel)]="entity.name" [placeholder]="l('Name')" required>
+        <nz-form-control nzExtra *ngIf="name.control.dirty&&name.control.errors">
+          <ng-container *ngIf="name.control.hasError('required')">{{l('ThisFieldIsRequired')}}</ng-container>
+        </nz-form-control>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 自定义数据库链接字符串 -->
+    <nz-form-item *ngIf="connectionString">
+      <nz-form-label nzFor="connectionString" nzRequired>{{l('DatabaseConnectionString')}}</nz-form-label>
+      <nz-form-control nzHasFeedback>
+        <input nz-input name="connectionString" #connectionString="ngModel" [(ngModel)]="entity.connectionString"
+          [placeholder]="l('DatabaseConnectionString')+l('Optional')" required>
+        <nz-form-control nzExtra *ngIf="connectionString.control.dirty&&connectionString.control.errors">
+          <ng-container *ngIf="connectionString.control.hasError('required')">{{l('ThisFieldIsRequired')}}
+          </ng-container>
+        </nz-form-control>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 版本 -->
+    <nz-form-item>
+      <nz-form-label>{{l('Edition')}}</nz-form-label>
+      <nz-form-control>
+        <edition-combo [editionId]="entity.editionId" [placeholder]="l('PleaseSelect')"
+          (selectedEditionChange)="selectedEditionChange($event)"></edition-combo>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 无限时间订阅 -->
+    <nz-form-control *ngIf="entity.editionId">
+      <label nz-checkbox name="isUnlimited" #isUnlimitedInput="ngModel"
+        [(ngModel)]="isUnlimited">{{l("IsUnlimited")}}</label>
+    </nz-form-control>
+
+    <!-- 结束时间 -->
+    <nz-form-item *ngIf="entity.editionId&&!isUnlimited">
+      <nz-form-label nzFor="subscriptionEndUtc" nzRequired>{{l('SubscriptionEndDateUtc')}}</nz-form-label>
+      <nz-form-control nzHasFeedback nzRequired>
+        <nz-date-picker name="subscriptionEndUtc" #subscriptionEndUtcInput="ngModel" [(ngModel)]="subscriptionEndUtc"
+          required></nz-date-picker>
+        <nz-form-control nzExtra *ngIf="subscriptionEndUtcInput.control.dirty&&subscriptionEndUtcInput.control.errors">
+          <ng-container *ngIf="subscriptionEndUtcInput.control.hasError('required')">{{l('ThisFieldIsRequired')}}
+          </ng-container>
+        </nz-form-control>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 是否试用 -->
+    <nz-form-control>
+      <label nz-checkbox name="isInTrialPeriod" #isInTrialPeriodInput="ngModel" [(ngModel)]="entity.isInTrialPeriod"
+        [nzDisabled]="edition&&edition.isFree">{{l("IsInTrialPeriod")}}</label>
+    </nz-form-control>
+
+    <!-- 激活 -->
+    <nz-form-control>
+      <label nz-checkbox name="isActive" #isActiveInput="ngModel"
+        [(ngModel)]="entity.isActive">{{l("IsActive")}}</label>
+    </nz-form-control>
+
+
+    <!-- 功能按钮 -->
+    <div class="modal-footer">
+      <button nz-button type="button" [disabled]="saving" (click)="close()">
+        {{l("Cancel")}}
+      </button>
+      <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.valid||saving">
+        {{l("Save")}}
+      </button>
+    </div>
+
+
+  </form>
+</nz-spin>

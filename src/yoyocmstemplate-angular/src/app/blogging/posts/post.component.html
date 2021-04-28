@@ -1,0 +1,74 @@
+<page-header [title]="l('ManagePost')"></page-header>
+
+<nz-card [nzBordered]="false">
+  <div class="mb-md">
+    <div nz-row nzGutter="8">
+      <!-- 模糊搜索框 -->
+      <div nz-col nzSpan="8" nzMd="12" nzXs="24" nzSm="24">
+        <input
+          type="text"
+          nz-input
+          [(ngModel)]="filterText"
+          (keyup.enter)="refresh()"
+          [placeholder]="l('SearchWithThreeDot')"
+        />
+      </div>
+      <!-- 查询和刷新按钮 -->
+      <div nz-col nzSpan="8" nzMd="12" nzXs="24" nzSm="24">
+        <button nz-button nzType="primary" type="submit" (click)="refresh()">
+          <span>{{ l('Search') }}</span>
+        </button>
+        <button nz-button nzType="default" type="submit" (click)="refreshGoFirstPage()">
+          {{ l('Reset') }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mb-md">
+    <!-- 增强型功能按钮位置 如： 添加、批量删除、导出Excel表 -->
+    <div nz-row nzGutter="8">
+      <div nz-col nzSpan="8" nzMd="12" nzXs="24" nzSm="24" class="btn-gutter">
+        <!-- <button
+          nz-button
+          [nzType]="'primary'"
+          *ngIf="isGranted('Pages.Post.Create')"
+          routerLink="../create-or-edit-post"
+        >
+          <i class="iconfont icon-plus"></i>
+          <span>
+            {{ l('Create') }}
+          </span>
+        </button> -->
+        <button nz-button nzType="default" *ngIf="isGranted('Pages.Post.ExportExcel')" (click)="exportToExcel()">
+          <i class="iconfont icon-file-excel"></i>
+          <span>
+            {{ l('ExportToExcel') }}
+          </span>
+        </button>
+        <ng-container *ngIf="selectedDataItems.length > 0">
+          <button nz-button [nzType]="'danger'" *ngIf="isGranted('Pages.Post.BatchDelete')" (click)="batchDelete()">
+            <i class="iconfont icon-delete"></i>
+            <span>
+              {{ l('BatchDelete') }}
+            </span>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <!-- 复选框提示的内容数据部分 -->
+  <table-checkbox-panel
+    [selectLength]="selectedDataItems.length"
+    (onClear)="restCheckStatus(dataList)"
+    (onRefresh)="refreshGoFirstPage()"
+  ></table-checkbox-panel>
+
+  <!-- 实体的表格内容 -->
+  <div nz-row nzGutter="8" class="my-md">
+    <st #st [data]="dataList" [columns]="columns" (change)="STChange($event)" style="width: 100%">
+      <ng-template st-row="description" let-item let-index="index">
+        <span nz-tooltip [nzTooltipTitle]="item.description">{{ item.description }}</span>
+      </ng-template>
+    </st>
+  </div>
+</nz-card>

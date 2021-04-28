@@ -1,0 +1,10 @@
+﻿@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.Common
+
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.Common.IOrganizationUnitsEditViewModel
+
+<div class="form-group">
+    <input id="OrganizationTreeFilter" type="text" class="form-control" placeholder="@L("SearchWithThreeDot")">
+</div>
+<div class="organization-tree">
+    @await Html.PartialAsync("~/Areas/AreasAdminName/Views/Common/Trees/_OrganizationUnitTreeItem.cshtml", new OrganizationUnitTreeItemModel(Model, null))
+</div>

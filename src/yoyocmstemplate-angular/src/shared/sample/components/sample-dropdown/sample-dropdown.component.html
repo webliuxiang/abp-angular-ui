@@ -1,0 +1,14 @@
+<ng-container [ngSwitch]="onlyShowText">
+    <ng-container *ngSwitchCase="true">
+        <span>
+            {{getDisplayValue(modelValue)}}
+        </span>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+        <nz-select nzShowSearch nzAllowClear [(ngModel)]="modelValue" [nzSize]="size" [nzDisabled]="disabled"
+            [nzPlaceHolder]="emptyText" (ngModelChange)="onChange($event)" style="width: 100%;">
+
+            <nz-option *ngFor="let option of options" [nzLabel]="option.name_TX" [nzValue]="option.id"></nz-option>
+        </nz-select>
+    </ng-container>
+</ng-container>

@@ -1,0 +1,370 @@
+@using System.Globalization
+@using Abp.Configuration
+@using Abp.Configuration.Startup
+@using Abp.Web.Mvc.Alerts
+@using Abp.Web.Security.AntiForgery
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Views.Shared.Components.AdminToolbarQuick
+@using LTMCompanyName.YoyoCmsTemplate
+@using LTMCompanyName.YoyoCmsTemplate.Configuration
+@using LTMCompanyName.YoyoCmsTemplate.Localization
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Views.Shared.Components.AdminDemoPanel
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Views.Shared.Components.AdminQuickPanel
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Views.Shared.Components.AdminTopBar
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Views.Shared.Components.AdminUserMenus
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Resources
+
+@inject LTMCompanyName.YoyoCmsTemplate.Timing.AppTimes AppTimes
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@inject IMultiTenancyConfig MultiTenancyConfig
+@inject IWebResourceManager WebResourceManager
+@inject ISettingManager SettingManager
+@inject IAlertManager AlertManager
+
+@{
+    Layout = null;
+    AbpAntiForgeryManager.SetCookie(Context);
+    //var uiTheme = await SettingManager.GetSettingValueAsync(AppSettingNames.UiTheme); //无换肤功能
+}
+
+<!DOCTYPE html>
+<html lang="en" dir=@(CultureHelper.IsRtl ? "rtl" : "")>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="YoyoCmsTemplate- Powered By YoyoSoft">
+    <meta name="author" content="YoyoCmsTemplate- Powered By YoyoSoft">
+    <meta name="keywords" content="YoyoCmsTemplate- Powered By YoyoSoft">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+    <link rel="shortcut icon" href="~/favicon.ico">
+
+    <title>YoyoCmsTemplate- Powered By YoyoSoft </title>
+
+    @* 必备组件 *@
+    @*<link href="~/lib/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/tether/css/tether.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/bootstrap-datetime-picker/css/bootstrap-datetimepicker.css" rel="stylesheet"
+              type="text/css" asp-append-version="true" />
+        <link href="~/lib/bootstrap-timepicker/css/bootstrap-timepicker.css" rel="stylesheet"
+              type="text/css" asp-append-version="true" />
+        <link href="~/lib/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet"
+              type="text/css" asp-append-version="true" />
+
+        <link href="~/lib/nouislider/nouislider.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/OwlCarousel2/assets/owl.carousel.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/OwlCarousel2/assets/owl.theme.default.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/dropzone/dropzone.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/animate.css/animate.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/toastr/build/toastr.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/morris.js/morris.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/socicon/css/socicon.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/jquery-jcrop/css/Jcrop.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/famfamfam-flags/dist/sprite/famfamfam-flags.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/jstree/themes/default/style.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/select2/css/select2.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/select2-bootstrap4-theme/dist/select2-bootstrap4.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+        <link href="~/lib/blueimp-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css" asp-append-version="true" />*@
+
+    <link href="~/keen/assets/plugins/global/plugins.bundle.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/keen/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" asp-append-version="true" />
+
+    <link href="~/keen/assets/css/style.bundle.min.css" rel="stylesheet" asp-append-version="true" />
+
+    <link href="~/keen/assets/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/keen/assets/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/keen/assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/keen/assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+
+
+    <link href="~/view-resources/Common/Styles/common-styles.min.css" rel="stylesheet" asp-append-version="true" />
+
+    @* Common文件夹中的组件 *@
+
+    <link href="~/yoyosoft/yoyosoftApp.css" rel="stylesheet" asp-append-version="true" />
+
+    @* 应用程序自己的APP-Common文件夹中的组件 *@
+
+    @* Keen-css组件 *@
+
+
+    <!-- View specific styles -->
+    @RenderSection("styles", required: false)
+
+    <script type="text/javascript">
+        @*     用于从javascript获取应用程序的根路径。
+如果您正在IIS下的虚拟目录中运行应用程序，那么它将非常有用。 *@
+        var abp = abp || {};
+        abp.appPath = '@ApplicationPath';
+    </script>
+</head>
+@* 采用的双向绑定 *@
+
+<script id="linkedAccountsSubMenuTemplate" type="x-tmpl-mustache">
+    {{#items}}
+    <li class="m-nav__item">
+        <a href="" data-user-id="{{id}}" data-tenant-id="{{tenantId}}" class="recently-linked-user m-nav__link">
+            <span class="m-nav__link-bullet m-nav__link-bullet--dot">
+                <span></span>
+            </span>
+            <span class="m-nav__link-text">
+                {{shownUserName}}
+            </span>
+        </a>
+    </li>
+    {{/items}}
+</script>
+<script id="headerNotificationBarTemplate" type="x-tmpl-mustache">
+    <a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon_not">
+        <span class="m-nav__link-badge m-badge m-badge--dot m-badge--dot-small {{#unreadMessageExists}}m-badge--danger{{/unreadMessageExists}}"></span>
+        <span class="m-nav__link-icon">
+            <i class="flaticon-alarm" aria-label="@L("Notifications")"></i>
+        </span>
+    </a>
+    <div class="m-dropdown__wrapper">
+        <span class="m-dropdown__arrow m-dropdown__arrow--center"></span>
+        <div class="m-dropdown__inner">
+            <div class="m-dropdown__header m--align-center">
+                <span class="m-dropdown__header-title">
+                    {{unreadCount}} @L("NewNotifications")
+                </span>
+            </div>
+            <div class="m-dropdown__body">
+                <div class="m-dropdown__content">
+                    <div class="row">
+                        <div class="text-left col-md-8">
+                            {{#unreadCount}}
+                            <a href="" id="setAllNotificationsAsReadLink">@L("SetAllAsRead")</a>
+                            {{/unreadCount}}
+                        </div>
+                        <div class="text-right col-md-4">
+                            <a id="openNotificationSettingsModalLink" class="text-right" href="">@L("Settings")</a>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="m-scrollable" data-scrollable="true" data-max-height="250" data-mobile-max-height="200">
+                        <div class="m-list-timeline m-list-timeline--skin-light m-nav">
+                            <div class="m-list-timeline__items {{^notifications.length}}empty{{/notifications.length}}">
+                                {{#notifications}}
+                                <div class="m-list-timeline__item user-notification-item {{#url}}user-notification-item-clickable{{/url}} {{#isUnread}}user-notification-item-unread{{/isUnread}}" " data-url="{{url}}">
+                                    <span class="m-list-timeline__badge m-list-timeline__badge--success"></span>
+                                    <span class="m-list-timeline__icon {{icon}}"></span>
+                                    <span class="m-list-timeline__text">
+                                        {{text}}
+                                    </span>
+                                    <span class="m-list-timeline__time">
+                                        {{timeAgo}}
+                                        {{#isUnread}}
+                                        <span>
+                                            <a href="javascript:;" data-notification-id="{{userNotificationId}}" class="m-link set-notification-as-read">@L("SetAsRead")</a>
+                                        </span>
+                                        {{/isUnread}}
+                                    </span>
+                                </div>
+                                {{/notifications}}
+                                {{^notifications.length}}
+                                <span class="notification-empty-text">
+                                    @L("ThereIsNoNotification")
+                                </span>
+                                {{/notifications.length}}
+                            </div>
+                            {{#notifications.length}}
+                            <div class="m-nav__separator m-nav__separator--fit"></div>
+                            <div class="external notifications-footer">
+                                <div class="text-center">
+                                    @L("SeeAllNotifications")</a>
+                                </div>
+                            </div>
+                            {{/notifications.length}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<body id="kt_body" class="quick-panel-right demo-panel-right offcanvas-right header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+
+    <!-- begin:: Header Mobile -->
+    <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
+        <!--begin::Logo-->
+        <a href="/">
+            <img src="~/images/logo/logo-txt-white.svg" height="30" />
+        </a>
+        <!--end::Logo-->
+        <!--begin::Toolbar-->
+    							<div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Aside Mobile Toggle-->
+            <button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
+                <span></span>
+            </button>
+            <!--end::Aside Mobile Toggle-->
+            <!--begin::Header Menu Mobile Toggle-->
+            <button class="btn p-0 burger-icon ml-5" id="kt_header_mobile_toggle">
+                <span></span>
+            </button>
+            <!--end::Header Menu Mobile Toggle-->
+            <!--begin::Topbar Mobile Toggle-->
+            <button class="btn btn-hover-text-primary p-0 ml-3" id="kt_header_mobile_topbar_toggle">
+                <span class="svg-icon svg-icon-xl">
+                    <!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <polygon points="0 0 24 0 24 24 0 24" />
+                            <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                            <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </span>
+            </button>
+            <!--end::Topbar Mobile Toggle-->
+        </div>
+
+        <!--end::Toolbar-->
+
+    </div>
+    <!-- end:: Header Mobile -->
+    <!-- begin:: Root -->
+    <div class="d-flex flex-column flex-root">
+        <!-- begin:: Page -->
+        <div class="d-flex flex-row flex-column-fluid page">
+
+            <!-- begin:: Aside -->
+            <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
+
+
+                <!-- begin::Aside Brand -->
+                <div class="brand flex-column-auto" id="kt_brand">
+                    <a href="/" class="brand-logo">
+                        <img alt="Logo" src="~/images/logo/logo-txt-white.svg" height="50" />
+                    </a>
+
+                    <!--end::Logo-->
+                    <!--begin::Toggle-->
+                    <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
+                        <span class="svg-icon svg-icon svg-icon-xl">
+                            <!--begin::Svg Icon | path:assets/media/svg/icons/Text/Toggle.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path d="M2 11.5C2 12.3284 2.67157 13 3.5 13H20.5C21.3284 13 22 12.3284 22 11.5V11.5C22 10.6716 21.3284 10 20.5 10H3.5C2.67157 10 2 10.6716 2 11.5V11.5Z" fill="black" />
+                                    <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M9.5 20C8.67157 20 8 19.3284 8 18.5C8 17.6716 8.67157 17 9.5 17H20.5C21.3284 17 22 17.6716 22 18.5C22 19.3284 21.3284 20 20.5 20H9.5ZM15.5 6C14.6716 6 14 5.32843 14 4.5C14 3.67157 14.6716 3 15.5 3H20.5C21.3284 3 22 3.67157 22 4.5C22 5.32843 21.3284 6 20.5 6H15.5Z" fill="black" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                    </button>
+                    <!--end::Toolbar-->
+                </div>
+
+                <!-- end:: Aside Brand -->
+                <!--begin::Aside Menu-->
+
+                @await Component.InvokeAsync(typeof(AdminUserMenusViewComponent), new { currentPageName = ViewBag.CurrentPageName })
+                <!--end::Aside Menu-->
+                @*<vc:admin-user-menus-footer></vc:admin-user-menus-footer>*@
+            </div>
+
+            <!-- end:: Aside -->
+            <!-- begin:: Wrapper -->
+            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+
+                @* 顶部菜单栏 *@
+
+                @await Component.InvokeAsync(typeof(AdminTopBarViewComponent))
+
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    @RenderBody()
+                </div>
+                <vc:admin-footer></vc:admin-footer>
+            </div>
+
+            <!-- end:: Wrapper -->
+        </div>
+
+        <!-- end:: Page -->
+    </div>
+
+    <!-- end:: Root -->
+    @*@await Component.InvokeAsync(typeof(AdminToolbarQuickViewComponent))*@
+
+    @*@await Component.InvokeAsync(typeof(AdminQuickPanelViewComponent))*@
+
+    <!-- begin:: Scrolltop -->
+    <div id="kt_scrolltop" class="kt-scrolltop">
+        <i class="la la-arrow-up"></i>
+    </div>
+
+    <!-- end:: Scrolltop -->
+    @* 必备组件 *@
+
+
+    <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3E97FF", "secondary": "#E5EAEE", "success": "#08D1AD", "info": "#844AFF", "warning": "#F5CE01", "danger": "#FF3D60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#DEEDFF", "secondary": "#EBEDF3", "success": "#D6FBF4", "info": "#6125E1", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
+
+    <script src="~/keen/assets/plugins/global/plugins.bundle.js" asp-append-version="true"></script>
+    <script src="~/keen/assets/plugins/custom/prismjs/prismjs.bundle.js" asp-append-version="true"></script>
+    <script src="~/keen/assets/js/scripts.bundle.min.js" asp-append-version="true"></script>
+
+    @* KeenJS组件 *@
+    <script src="~/keen/js/demo1/scripts.bundle.js" asp-append-version="true"></script>
+    <script src="~/keen/plugins/datatables/datatables.bundle.js" asp-append-version="true"></script>
+    <script src="~/yoyosoft/yoyosoftApp.js" asp-append-version="true"></script>
+
+    @* ABP框架的生成的动态脚本API,&minify=true 可进行压缩 *@
+    <script src="~/AbpServiceProxies/GetAll?v=@(AppTimes.StartupTime.Ticks)&minify=true&type=jquery" type="text/javascript"></script>
+    <script src="~/AbpScripts/GetScripts?v=@(AppTimes.StartupTime.Ticks)&minify=true" type="text/javascript"></script>
+    <script>
+    abp.localization.currentCulture = $.extend({}, abp.localization.currentCulture, { displayNameEnglish: '@CultureInfo.CurrentUICulture.EnglishName' });
+
+    // Localizing momentjs
+    moment.locale('@CultureInfo.CurrentUICulture.Name');
+    </script>
+
+    @* Common文件夹中的组件 *@
+    <script src="~/Common/js/Datatables/datatables.ajax.js" asp-append-version="true"></script>
+    <script src="~/Common/js/Datatables/datatables-translations.js" asp-append-version="true"></script>
+    <script src="~/Common/js/Datatables/datatables.record-actions.js" asp-append-version="true"></script>
+
+    @* 应用程序自己的APP-Common文件夹中的组件 *@
+    @if (CultureInfo.CurrentUICulture.Name != "en")
+    {
+        if (CultureInfo.CurrentUICulture.Name == "zh-Hans")
+        {
+
+            <script src="~/lib/jquery-validation/dist/localization/messages_zh.min.js"></script>
+        }
+        else
+        {
+
+            <script src="~/lib/jquery-validation/dist/localization/messages_@Html.Raw(CultureInfo.CurrentUICulture.Name.Replace("-", "_") + ".js")" asp-append-version="true"></script>
+        }
+
+    }
+
+    <script src="~/keen/js/customer-layout.min.js" asp-append-version="true"></script>
+
+    <script src="~/view-resources/Views/Areas/AppAreaName/_Bundles/common-scripts.min.js" asp-append-version="true"></script>
+
+
+
+    @* 布局也必备的JS *@
+    <script src="~/view-resources/Areas/AreasAdminName/Views/Layout/_Header.js" asp-append-version="true"></script>
+
+
+    @WebResourceManager.RenderScripts()
+
+    <!-- 节点，用于接收每个页面的内容-->
+    @RenderSection("Scripts", false)
+    <script>
+        jQuery(document).ready(function () {
+            if (window.CurrentPage) {
+                CurrentPage.init();
+            }
+        });
+    </script>
+</body>
+</html>

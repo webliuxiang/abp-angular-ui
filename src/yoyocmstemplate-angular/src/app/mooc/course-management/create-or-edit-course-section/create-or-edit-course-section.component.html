@@ -1,0 +1,93 @@
+<div class="modal-header">
+    <div class="modal-title">
+        <!-- <i class="iconfont icon-user mr-sm"></i> -->
+        <i class="iconfont icon-user mr-sm"></i>
+        <span *ngIf="entity.id">{{ l('编辑章节') }}:{{ entity.name }}</span>
+        <span *ngIf="!entity.id">{{ l('创建章节') }}</span>
+    </div>
+</div>
+
+<!-- 表单输入错误模板 -->
+<ng-template #errorTpl let-control>
+    <validation-messages [formCtrl]="control"></validation-messages>
+</ng-template>
+
+
+<form nz-form #validateForm="ngForm" (ngSubmit)="save()" autocomplete="off">
+
+    <!--  章节名称/序号  -->
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSm]="3" nzXs="0"></div>
+        <div nz-col [nzSm]="9" [nzXs]="24">
+            <nz-form-item>
+                <nz-form-label nzFor="nameInput" nzRequired>
+                    {{l('章节名称')}}
+                </nz-form-label>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                    <input nz-input name="nameInput" #nameInput="ngModel"
+                           [placeholder]="l('请输入')"
+                           [(ngModel)]="entity.name"
+                           required>
+                </nz-form-control>
+
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="9" [nzXs]="24">
+            <nz-form-item>
+                <!-- BBB -->
+                <nz-form-label nzFor="indexInput" nzRequired>
+                    {{l('序号')}}
+                </nz-form-label>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                    <nz-input-number style="width: 100%;" [nzMin]="0" [nzMax]="9999" [nzStep]="1"
+                                     name="indexInput"
+                                     #indexInput="ngModel" [(ngModel)]="entity.index"
+                                     [nzPlaceHolder]="l('请输入')" required>
+                    </nz-input-number>
+                </nz-form-control>
+
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="3" nzXs="0"></div>
+    </div>
+
+
+    <!--  章节简介  -->
+    <div nz-row [nzGutter]="24">
+        <div nz-col [nzSm]="3" nzXs="0"></div>
+        <div nz-col [nzSm]="18" [nzXs]="24">
+            <nz-form-item>
+                <!-- AAA -->
+                <nz-form-label nzFor="introInput">
+                    {{ l('章节简介') }}
+                </nz-form-label>
+                <nz-form-control [nzErrorTip]="errorTpl">
+                    <textarea nz-input #introInput="ngModel" name="introInput"
+                              [(ngModel)]="entity.intro"
+                              [placeholder]="l('请输入')"
+                              [nzAutosize]="{ minRows: 3, maxRows: 5 }"
+                              maxlength="300">
+                    </textarea>
+                </nz-form-control>
+
+            </nz-form-item>
+        </div>
+        <div nz-col [nzSm]="3" nzXs="0"></div>
+    </div>
+
+</form>
+
+
+<div class="modal-footer">
+    <button nz-button [nzType]="'default'" type="button" (click)="close($event)" [disabled]="saving">
+        <i class="iconfont icon-close-circle"></i>
+        {{ l('Cancel') }}
+    </button>
+
+    <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid || saving"
+            (click)="save()"
+            [nzLoading]="saving">
+        <i class="iconfont icon-save" *ngIf="!saving"></i>
+        {{ l('Save') }}
+    </button>
+</div>

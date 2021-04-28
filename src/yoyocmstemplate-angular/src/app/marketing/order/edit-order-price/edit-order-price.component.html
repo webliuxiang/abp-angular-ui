@@ -1,0 +1,33 @@
+<!-- header -->
+<div class='modal-header'>
+    <div class='modal-title'>{{l('Statistics')}}</div>
+</div>
+
+
+<!-- body -->
+<form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+    <nz-form-item nz-row>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name">{{ l('ActualPayment') }}</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+            <input nz-input name="actualPaymentInput" #actualPaymentInput="ngModel" [(ngModel)]="actualPayment"
+                [placeholder]="l('ActualPayment')" required />
+            <nz-form-control nzExtra *ngIf="actualPaymentInput.control.dirty && actualPaymentInput.control.errors">
+                <ng-container *ngIf="actualPaymentInput.control.hasError('required')">
+                    {{ l('ThisFieldIsRequired') }}
+                </ng-container>
+            </nz-form-control>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+
+<!-- 功能按钮 -->
+<div class='modal-footer'>
+    <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">
+        <i class="iconfont icon-close-circle-o"></i> {{ l('Cancel') }}
+    </button>
+    <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid || saving"
+        [nzLoading]="saving">
+        <i class="iconfont icon-save" *ngIf="!saving"></i> {{ l('Save') }}
+    </button>
+</div>

@@ -1,0 +1,97 @@
+﻿@using Abp.Web.Security.AntiForgery
+@using LTMCompanyName.YoyoCmsTemplate.Authorization
+@using LTMCompanyName.YoyoCmsTemplate.Common
+@model LTMCompanyName.YoyoCmsTemplate.Web.Host.ViewModels.MonitorUserInfoViewModel
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@{
+    AbpAntiForgeryManager.SetCookie(Context);
+    ViewBag.Title = "访问监控服务";
+    Layout = "_Layout";
+}
+
+@section CSS{
+
+}
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand" asp-controller="home" asp-action="index">
+        52ABP-PRO监控服务列表
+    </a>
+    <button class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                @*<a class="nav-link" asp-controller="home" asp-action="index">学生列表</a>*@
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+
+            <li class=" text-white">
+                @L("YouAreAlreadyLoggedInWithUser") :
+
+                @Html.Raw(Model.GetShownLoginName())
+            </li>
+            <li class="nav-item">
+                <form method="post" asp-controller="Monitor" asp-action="logout">
+                    <button type="submit" style="width:auto"
+                            class="nav-link btn btn-link text-danger py-0">
+                        @L("Logout")
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="row">
+
+    @if (WebConsts.SwaggerUiEnabled)
+    {
+        <div class="col-md-4 mt-3 mb-3 text-center">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <a href="@WebConsts.SwaggerUiEndPoint" class="btn btn-lg btn-block btn-outline-primary">Swagger UI</a>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (WebConsts.HangfireDashboardEnabled && IsGranted(YoyoSoftPermissionNames.Pages_Administration_HangfireDashboard))
+    {
+        <div class="col-md-4 mt-3 mb-3 text-center">
+
+            <div class="card mb-4 ">
+
+                <div class="card-body">
+                    <a href="@WebConsts.HangfireDashboardEndPoint" class="btn btn-lg btn-block btn-outline-primary">Hangfire</a>
+                </div>
+            </div>
+        </div>
+    }
+    @if (WebConsts.HealthCheckUIEnabled)
+    {
+        <div class="col-md-4 mt-3 mb-3 text-center">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <a href="@WebConsts.HealthCheckUIEndPoint" class="btn btn-lg btn-block btn-outline-primary">系统健康可视化</a>
+                </div>
+            </div>
+        </div>
+    }
+    @if (WebConsts.HealthCheckEnabled)
+    {
+        <div class="col-md-4 mt-3 mb-3 text-center">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <a href="@WebConsts.HealthCheckEndPoint" class="btn btn-lg btn-block btn-outline-primary">健康检查状态</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,28 @@
+<div
+        nz-dropdown
+        [ngClass]="'btnClass'"
+        class="alain-pro__item"
+        nzPlacement="bottomRight"
+        [nzDropdownMenu]="dropdownMenu"
+>
+    <span class="iconfont icon-earth" [ngClass]="'btnIconClass'"></span>
+    <!-- <i nz-icon nzType="global" [ngClass]="'btnIconClass'"></i> -->
+    {{ currentLanguage.displayName }}
+    <!-- <i nz-icon type="down"></i> -->
+    <span class="iconfont icon-down" style="font-size: 14px;"></span>
+</div>
+
+<nz-dropdown-menu #dropdownMenu="nzDropdownMenu">
+    <ul nz-menu>
+        <li
+                nz-menu-item
+                *ngFor="let item of languages"
+                [nzSelected]="item.name == currentLanguage.name"
+                (click)="change(item.name)"
+        >
+            <!-- <span class="iconfont  {{ item.icon }}"></span> -->
+            <i class="anticon {{ item.icon }}"></i>
+            <span>{{ item.displayName }}</span>
+        </li>
+    </ul>
+</nz-dropdown-menu>

@@ -1,0 +1,158 @@
+@using LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.Startup
+@model LTMCompanyName.YoyoCmsTemplate.Web.Mvc.Areas.AreasAdminName.ViewModels.HostDashboard.HostDashboardViewModel
+@{
+    ViewBag.CurrentPageName = AppAdminPageNames.Host.Dashboard;
+}
+@section Styles
+    {
+    <link rel="stylesheet" abp-href="/view-resources/Areas/AreasAdminName/Views/HostDashboard/Index.css" asp-append-version="true" />
+}
+@section Scripts
+    {
+    <script abp-src="/view-resources/Areas/AreasAdminName/Views/_Bundles/host-dashboard-libs.js" asp-append-version="true"></script>
+}
+<!-- begin:: Subheader -->
+						<div class="subheader py-6 py-lg-8 subheader-transparent" id="kt_subheader">
+    <div class="kt-subheader__main">
+        <h3 class="text-dark font-weight-bold my-1 mr-5">Blank Page</h3>
+        <span class="kt-subheader__separator kt-hidden"></span>
+        <div class="kt-subheader__breadcrumbs">
+            <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+            <span class="kt-subheader__breadcrumbs-separator"></span>
+            <a href="" class="kt-subheader__breadcrumbs-link">
+                Features
+            </a>
+            <span class="kt-subheader__breadcrumbs-separator"></span>
+            <a href="" class="kt-subheader__breadcrumbs-link">
+                Misc
+            </a>
+            <span class="kt-subheader__breadcrumbs-separator"></span>
+            <a href="" class="kt-subheader__breadcrumbs-link">
+                Blank Page
+            </a>
+
+            <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+        </div>
+    </div>
+    <div class="kt-subheader__toolbar">
+        <div class="kt-subheader__wrapper">
+            <a href="#" class="btn btn-icon btn btn-label btn-label-brand btn-bold"
+               data-toggle="kt-tooltip" title="Reports" data-placement="top">
+                <i class="flaticon2-writing"></i>
+            </a>
+            <a href="#" class="btn btn-icon btn btn-label btn-label-brand btn-bold"
+               data-toggle="kt-tooltip" title="Calendar" data-placement="top">
+                <i class="flaticon2-hourglass-1"></i>
+            </a>
+            <div class="dropdown dropdown-inline" data-toggle="kt-tooltip" title="Quick actions"
+                 data-placement="top">
+                <a href="#" class="btn btn-icon btn btn-label btn-label-brand btn-bold"
+                   data-toggle="dropdown" data-offset="0px,0px" aria-haspopup="true"
+                   aria-expanded="false">
+                    <i class="flaticon2-add-1"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                    <ul class="kt-nav kt-nav--active-bg" role="tablist">
+                        <li class="kt-nav__item">
+                            <a href="" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-psd"></i>
+                                <span class="kt-nav__link-text">Document</span>
+                            </a>
+                        </li>
+                        <li class="kt-nav__item">
+                            <a class="kt-nav__link" role="tab">
+                                <i class="kt-nav__link-icon flaticon2-supermarket"></i>
+                                <span class="kt-nav__link-text">Message</span>
+                            </a>
+                        </li>
+                        <li class="kt-nav__item">
+                            <a href="" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-shopping-cart"></i>
+                                <span class="kt-nav__link-text">Product</span>
+                            </a>
+                        </li>
+                        <li class="kt-nav__item">
+                            <a class="kt-nav__link" role="tab">
+                                <i class="kt-nav__link-icon flaticon2-chart2"></i>
+                                <span class="kt-nav__link-text">Report</span>
+                                <span class="kt-nav__link-badge">
+                                    <span class="kt-badge kt-badge--danger kt-badge--inline kt-badge--rounded">pdf</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="kt-nav__item">
+                            <a href="" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-sms"></i>
+                                <span class="kt-nav__link-text">Post</span>
+                            </a>
+                        </li>
+                        <li class="kt-nav__item">
+                            <a href="" class="kt-nav__link">
+                                <i class="kt-nav__link-icon flaticon2-avatar"></i>
+                                <span class="kt-nav__link-text">Customer</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <a href="#" class="btn btn-sm btn-elevate btn-brand btn-elevate"
+               id="kt_dashboard_daterangepicker" data-toggle="kt-tooltip" title=""
+               data-placement="left" data-original-title="Select dashboard daterange">
+                <span class="kt-opacity-7"
+                      id="kt_dashboard_daterangepicker_title">Today:</span>&nbsp;
+                <span class="kt-font-bold" id="kt_dashboard_daterangepicker_date">Jan 11</span>
+                <i class="flaticon-calendar-with-a-clock-time-tools kt-padding-l-5 kt-padding-r-0"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- end:: Subheader -->
+ 
+
+<!-- begin:: Content -->
+<div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+    <div class="kt-portlet__body">
+
+
+        <div class="form-group row">
+            <label class="col-form-label col-lg-3 col-sm-12">Live Search</label>
+            <div class="col-lg-4 col-md-9 col-sm-12">
+                <select class="form-control yoyo_select " >
+                    <option>Hot Dog, Fries and a Soda</option>
+                    <option>Burger, Shake and a Smile</option>
+                    <option>Sugar, Spice and all things nice</option>
+                </select>
+                <span class="form-text text-muted">You can add a search input by passing <code>data-live-search="true"</code> attribute</span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-form-label col-lg-3 col-sm-12">Limited Selection</label>
+            <div class="col-lg-4 col-md-9 col-sm-12">
+                <select class="form-control form-control--fixed yoyo_select" multiple
+                        data-max-options="2" data-width="200">
+                    <option>Mustard</option>
+                    <option>Ketchup</option>
+                    <option>Relish</option>
+                </select>
+                <select class="form-control form-control--fixed yoyo_select" multiple
+                        data-width="200">
+                    <optgroup label="Condiments" data-max-options="2">
+                        <option>Mustard</option>
+                        <option>Ketchup</option>
+                        <option>Relish</option>
+                    </optgroup>
+                    <optgroup label="Breads" data-max-options="2">
+                        <option>Plain</option>
+                        <option>Steamed</option>
+                        <option>Toasted</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- end:: Content -->

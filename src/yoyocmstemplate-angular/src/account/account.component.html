@@ -1,0 +1,76 @@
+<app-pro-langs class="pro-passport__langs"></app-pro-langs>
+
+<div nz-row>
+  <div nz-col [nzXs]="0" nzSm="16" class="account-left" [ngStyle]="accountLeftStyle">
+    <app-pro-langs class="pro-passport__langs"></app-pro-langs>
+    <div class="text">
+      <h1>Work with us</h1>
+      <p>
+        Our researchers are embedded in teams across computer science, to discover, invent, and build at the largest
+        scale.
+      </p>
+    </div>
+  </div>
+  <div nz-col [nzXs]="24" nzSm="8" class="account-right">
+    <!-- logo -->
+    <div class="pro-passport__form-logo">
+      <img src="assets/images/logos/logo-txt-color-shield.svg" />
+    </div>
+    <!-- 标题信息 -->
+    <h3 class="pro-passport__form-title">
+      <h2 class="account-slogon-main">欢迎使用WebManagement</h2>
+      <p class="account-slogon-subhead">
+        <span
+          >学 .NET CORE 及ABP框架、DDD就上
+          <a href="http://www.52abp.com/" title="52abp官网网址" target="_blank">52ABP.COM</a>
+        </span>
+      </p>
+    </h3>
+
+    <!-- 渲染器 -->
+    <router-outlet></router-outlet>
+
+    <!-- 底部信息 -->
+    <global-footer [links]="links">
+      Copyright
+      <i class="iconfont icon-copyright"></i>
+      {{ currentYear }}
+      <b>Version </b>{{ versionText }} <a href="http://www.52abp.com/" target="_blank">52ABP.COM</a>出品
+    </global-footer>
+  </div>
+</div>
+
+<!--<div class="ant-col-lg-16 pro-passport__bg" style="background-image: url('./assets/images/img-big/bg-1.jpeg')">-->
+<!--    <div class="pro-passport__bg-overlay"></div>-->
+<!--    <div class="text">-->
+<!--        <h1>Work with us</h1>-->
+<!--        <p>-->
+<!--            Our researchers are embedded in teams across computer science, to discover, invent, and build at the largest-->
+<!--            scale.-->
+<!--        </p>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="ant-col-lg-8 pro-passport__form" style="background-color: #ffffff;">-->
+<!--    <div class="pro-passport__form-logo"><img src="/assets/images/logos/logo-txt-color-shield.svg"/></div>-->
+<!--    &lt;!&ndash; 标题信息 &ndash;&gt;-->
+<!--    <h3 class="pro-passport__form-title">-->
+<!--        <h2 class="account-slogon-main ">欢迎使用WebManagement</h2>-->
+<!--        <p class="account-slogon-subhead">-->
+<!--      <span>学 .NET CORE 及ABP框架、DDD就上-->
+<!--        <a href="http://www.52abp.com/" title="52abp官网网址" target="_blank">52ABP.COM</a>-->
+<!--      </span>-->
+<!--        </p>-->
+<!--    </h3>-->
+
+<!--    &lt;!&ndash; 渲染器 &ndash;&gt;-->
+<!--    <router-outlet></router-outlet>-->
+
+<!--    &lt;!&ndash; 底部信息 &ndash;&gt;-->
+<!--    <global-footer [links]="links">-->
+<!--        Copyright-->
+<!--        <i class="iconfont icon-copyright"></i>-->
+<!--        {{ currentYear }}-->
+<!--        <b>Version </b>{{ versionText }} <a href="http://www.52abp.com/" target="_blank">52ABP.COM</a>出品-->
+<!--    </global-footer>-->
+<!--</div>-->

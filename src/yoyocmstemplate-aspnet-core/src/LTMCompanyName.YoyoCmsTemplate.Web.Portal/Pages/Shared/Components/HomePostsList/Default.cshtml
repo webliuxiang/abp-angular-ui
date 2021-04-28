@@ -1,0 +1,109 @@
+@using LTMCompanyName.YoyoCmsTemplate.Web.Portal.Pages.Shared.Components.BlogRelatedCategory.Dtos
+@using LTMCompanyName.YoyoCmsTemplate.Web.Portal.Models.Home
+@using LTMCompanyName.YoyoCmsTemplate.Modules.Blogging.PortalBlog
+@using LTMCompanyName.YoyoCmsTemplate.Web.Portal.Pages.Shared.Components.BlogRelatedCategory
+@using LTMCompanyName.YoyoCmsTemplate.Blogging
+ 
+@inherits YoyoCmsTemplateRazorPage<PostsAndPopularTags>
+
+ 
+
+<div class="container space-1  ">
+
+        @inject IPortalBlogAppService  _portalBlog
+
+        <div class="row justify-content-between  ">
+            <div class="col-md-8 col-lg-9 mb-6 mb-md-0">
+                <!-- Sorting -->
+                <div class="row align-items-center ">
+                     <h2 class="h3 mb-0">文章列表</h2>
+
+                </div>
+                <!-- End Sorting -->
+                <div class="list-group">
+
+                    @foreach (var item in Model.PostDetailsDtos)
+                    {
+
+                        <div class="list-group-item mb-2 shadow rounded ">
+                            <div class="row">
+                                <div class="col-md-4 pr-0 mt-2">
+                                    <div class=" align-items-center">
+                                        <a asp-page="./Blog/Details" asp-route-blogshortName="@Model.BlogShortName" asp-route-Posturl="@item.Url">
+
+
+                                            <img src="@item.CoverImage"
+                                                 class="img-fluid     " style="max-height:150px">
+                                        </a>
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <h3>
+
+                                        <a asp-page="./Blog/Details" asp-route-blogshortName="@Model.BlogShortName" asp-route-Posturl="@item.Url">@item.Title</a>
+
+                                      
+                                    </h3>
+                                    <p>
+
+                                        @_portalBlog.GetShortContentByHtml(item.Content)
+                                        <a asp-page="./Blog/Details" asp-route-blogshortName="@Model.BlogShortName" asp-route-Posturl="@item.Url">@L("ContinueReading") @item.Writer.ProfilePictureId  </a>
+                                    </p>
+                                    <div class="article-owner">
+                                        <div class="article-infos">
+                                            <div class="user-card">
+                                                <div class="row">
+                                                    <div class="col-auto pr-1">
+                                                        <div class="avatar avatar-circle">
+                  <img class="avatar-img" src="@Url.Action("GetProfilePictureById", "Profile", new { id =item.Writer.ProfilePictureId})"  alt="Image Description">
+                                                        </div>
+ 
+
+                                                    </div>
+                                                    <div class="col pl-1">
+                                                        <h1 class="h6 mb-0">
+                                                            @item.Writer.UserName   <span>@_portalBlog.ConvertDatetimeToTimeAgo(item.CreationTime) </span>
+                                                        </h1>
+
+                                                        <small class="text-secondary"> <i class="fa fa-eye"></i> @item.ReadCount </small>
+                                                        <span class="vs-seperator">|</span>
+                                                        <small class="text-secondary">    <i class="fa fa-comment"></i> @item.CommentCount</small>
+                                                    </div>
+
+
+                                                </div>
+                                                @*<div class="  pt-2">
+
+                                                    @foreach (var tag in Model.tags)
+                                                    {
+                                                        <span class="d-inline-block mr-1 mb-2"><a class="btn btn-xs btn-soft-secondary" href="#">@tag.Name</a></span>
+                                                    }
+
+
+                                                </div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p class="tags">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+
+                </div>
+
+                <!-- Sticky Block End Point -->
+                <div id="stickyBlockEndPoint"></div>
+            </div>
+
+            @await Component.InvokeAsync(typeof(BlogRelatedCategoryViewComponent), new GetBlogRelatedInput { BlogShortName = Model.BlogShortName })
+
+
+        </div>
+    </div>
