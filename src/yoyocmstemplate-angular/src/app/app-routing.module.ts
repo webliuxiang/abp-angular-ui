@@ -20,6 +20,11 @@ const routes: Routes = [
         loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), // Lazy load admin module
         data: { preload: true },
       },
+      {
+        path: 'alert-management',
+        loadChildren: () => import('./alert-management/alert-management.module').then(m => m.AlertManagementModule), // Lazy load admin module
+        data: { preload: true },
+      },
     ],
   },
 ];

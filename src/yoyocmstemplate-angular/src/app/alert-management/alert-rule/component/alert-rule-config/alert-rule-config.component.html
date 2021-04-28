@@ -1,0 +1,179 @@
+<nz-card
+  [nzBordered]="false"
+  [nzExtra]="extra"
+  [nzTitle]="isDetail ? l(alertObject.name) : l('创建告警任务')"
+  [nzLoading]="!showPage"
+>
+  <ng-template #extra>
+    <button nz-button (click)="showModal(alertId)" [nzType]="'primary'" *ngIf="isDetail">
+      <i class="iconfont icon-file-exclamation"></i>
+      <span>&nbsp;{{ l('错误信息') }}</span>
+    </button>
+    <button nz-button (click)="save()" [nzType]="'primary'">
+      <i class="iconfont icon-save"></i>
+      <span>&nbsp;{{ l('保存') }}</span>
+    </button>
+    <!-- <button nz-button (click)="delete()" [nzType]="'primary'" *ngIf="isDetail">
+            <i class="iconfont icon-delete"></i>
+            <span>&nbsp;{{ l('删除') }}</span>
+        </button> -->
+    <button nz-button (click)="back()" [nzType]="'primary'">
+      <i class="iconfont icon-rollback"></i>
+      <span>&nbsp;{{ l('Back') }}</span>
+    </button>
+  </ng-template>
+  <nz-modal
+    [(nzVisible)]="errorIsVisible"
+    nzTitle="错误信息"
+    [nzCancelText]="null"
+    [nzOkText]="null"
+    (nzOnCancel)="handleCancel()"
+  >
+    <div style="height: 500px; overflow: auto">
+      <no-data *ngIf="errorData.length === 0"></no-data>
+      <pre *ngFor="let item of errorData" style="white-space: pre-wrap; word-wrap: break-word">{{ item }}</pre>
+    </div>
+  </nz-modal>
+  <ng-container *ngIf="showPage">
+    <div nz-row [nzGutter]="16">
+      <div nz-col nzSpan="12">
+        <form nz-form [formGroup]="editDataForm">
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">告警名称</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入告警名称!">
+              <input nz-input formControlName="name" id="name" placeholder="请输入告警名称" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">告警描述</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+              <textarea
+                nz-input
+                formControlName="description"
+                id="description"
+                placeholder="请输入告警描述"
+                [nzAutosize]="{ minRows: 2, maxRows: 2 }"
+              ></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="alert_event_type">告警类型</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择告警类型!">
+              <nz-select
+                formControlName="alert_event_type"
+                id="alert_event_type"
+                nzAllowClear
+                nzPlaceHolder="请选择告警类型"
+              >
+                <nz-option nzValue="VPNUserLoginFailureCount" nzLabel="VPN-用户登录失败次数"></nz-option>
+                <nz-option nzValue="VPNSrcIPLoginFailureCount" nzLabel="VPN-IP登录失败次数"></nz-option>
+                <nz-option nzValue="VPNUserAccessIntranetHostCount" nzLabel="VPN-用户访问内部主机数量"> </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="schema_name">数据类型</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择数据类型!">
+              <nz-select
+                formControlName="schema_name"
+                id="schema_name"
+                nzAllowClear
+                nzPlaceHolder="请选择数据类型"
+                (ngModelChange)="getDataSetList(editDataForm.value.schema_name)"
+              >
+                <nz-option *ngFor="let item of datasetSchemaNameList" [nzValue]="item.value" [nzLabel]="item.key">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="related_dataset_id">数据集</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择数据集!">
+              <nz-select
+                formControlName="related_dataset_id"
+                id="related_dataset_id"
+                nzAllowClear
+                nzPlaceHolder="请选择数据集"
+              >
+                <nz-option *ngFor="let item of datasetList" [nzValue]="item.id" [nzLabel]="item.name"> </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="threshold">告警阈值 </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请配置告警阈值!">
+              <nz-input-number
+                formControlName="threshold"
+                id="threshold"
+                [nzMin]="0"
+                [nzStep]="1"
+                nzPlaceHolder="请配置告警阈值"
+                style="width: 100%; border-radius: 0"
+              >
+              </nz-input-number>
+              <!-- <ng-template #addOnAfterTemplate>
+                                    <nz-select formControlName="unitSuffix">
+                                        <nz-option nzLabel="分" nzValue="min"></nz-option>
+                                        <nz-option nzLabel="时" nzValue="hour"></nz-option>
+                                        <nz-option nzLabel="天" nzValue="day"></nz-option>
+                                        <nz-option nzLabel="周" nzValue="week"></nz-option>
+                                        <nz-option nzLabel="月" nzValue="month"></nz-option>
+                                    </nz-select>
+                                </ng-template> -->
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="detection_frequency">告警周期 </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请配置告警周期!">
+              <nz-input-number
+                formControlName="detection_frequency"
+                id="detection_frequency"
+                [nzMin]="0"
+                [nzStep]="1"
+                nzPlaceHolder="请配置告警周期"
+                style="width: 100%; border-radius: 0"
+              >
+              </nz-input-number>
+              <!-- <ng-template #addOnAfterTemplate>
+                                    <nz-select formControlName="unitSuffix">
+                                        <nz-option nzLabel="分" nzValue="min"></nz-option>
+                                        <nz-option nzLabel="时" nzValue="hour"></nz-option>
+                                        <nz-option nzLabel="天" nzValue="day"></nz-option>
+                                        <nz-option nzLabel="周" nzValue="week"></nz-option>
+                                        <nz-option nzLabel="月" nzValue="month"></nz-option>
+                                    </nz-select>
+                                </ng-template> -->
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="alert_reciever_email">告警接收者 </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择告警渠道!">
+              <!-- <nz-select formControlName="alert_reciever_email" id="alert_reciever_email" nzAllowClear
+                                nzPlaceHolder="请选择告警渠道">
+                                <nz-option *ngFor="let item of alertChannelList" [nzValue]="item.value"
+                                    [nzLabel]="item.label">
+                                </nz-option>
+                            </nz-select> -->
+              <textarea
+                nz-input
+                formControlName="alert_reciever_email"
+                id="alert_reciever_email"
+                placeholder="请输入告警接收者"
+                [nzAutosize]="{ minRows: 2, maxRows: 2 }"
+              ></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+      <div nz-col nzSpan="12">
+        <!-- 动态表单 -->
+        <!-- <app-dynamic-form [(form)]="dynamicForm" [formTemplate]="formTemplate"></app-dynamic-form> -->
+      </div>
+    </div>
+  </ng-container>
+</nz-card>

@@ -10,7 +10,7 @@ import { DelonACLModule } from '@delon/acl';
 
 const alainConfig: AlainConfig = {
   st: { modal: { size: 'lg' } },
-  pageHeader: { homeI18n: 'home', recursiveBreadcrumb: true },
+  pageHeader: { homeI18n: 'home', recursiveBreadcrumb: true, autoBreadcrumb: false },
   lodop: {
     license: `A59B099A586B3851E0F0D7FDBF37B603`,
     licenseA: `C94CEE276DB2187AE6B65D56B3FC2848`,

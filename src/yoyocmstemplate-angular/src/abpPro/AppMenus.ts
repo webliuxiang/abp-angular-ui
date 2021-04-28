@@ -14,128 +14,44 @@ export class AppMenus {
       link: '/app/main/dashboard',
       sort: 1,
     },
-    // 	 Saas模块 2
     {
-      // 	 Saas模块
-      text: '',
-      i18n: 'Tenants',
-      acl: 'Pages.Tenants',
-      icon: 'iconfont icon-dashboard ',
-      sort: 2,
+      // 告警管理
+      text: '告警管理',
+      i18n: '告警管理',
+      acl: 'Pages.YSLogDataAlertObject',
+      icon: 'iconfont icon-alert',
+      sort: 6,
+      hideInBreadcrumb: true,
       children: [
         {
-          // 租户管理
-          text: '',
-          i18n: 'TenantManagement',
-          acl: 'Pages.Tenants',
-          icon: 'iconfont icon-team',
-          link: '/app/admin/tenants',
+          // 告警渠道
+          text: '告警渠道',
+          i18n: '告警渠道',
+          acl: '',
+          icon: 'iconfont icon-Partition',
+          link: '/app/alert-management/alert-channel',
           sort: 1,
+          hideInBreadcrumb: true,
         },
+        // {
+        //   // 告警订阅
+        //   text: '告警订阅',
+        //   i18n: '告警订阅',
+        //   acl: '',
+        //   icon: 'iconfont icon-notification',
+        //   link: '/app/alert-management/alert-subscribe',
+        //   sort: 2,
+        //   hideInBreadcrumb: true,
+        // },
         {
-          // 版本管理
-          text: '',
-          i18n: 'VersionManagement',
-          acl: 'Pages.Editions.Query',
-          icon: 'iconfont icon-dashboard ',
-          link: '/app/admin/editions',
-          sort: 2,
-        },
-      ],
-      // link: '/app/blogging/blogs',
-    },
-    {
-      // 多语言
-      text: '',
-      i18n: 'LanguageManagement',
-      acl: 'Pages.Administration.Languages',
-      icon: 'iconfont icon-duoyuyan',
-      link: '/app/admin/languages',
-      sort: 5,
-    },
-    {
-      //
-      text: '',
-      i18n: 'UserModule',
-      acl: 'Pages.Administration.Users',
-      icon: 'iconfont icon-user',
-      sort: 4,
-      children: [
-        {
-          // 用户
-          text: '',
-          i18n: 'Users',
-          acl: 'Pages.Administration.Users',
-          icon: 'iconfont icon-user',
-          link: '/app/admin/users',
-          sort: 1,
-        },
-        {
-          // 角色
-          text: '',
-          i18n: 'Roles',
-          acl: 'Pages.Administration.Roles',
-          icon: 'iconfont icon-safetycertificate',
-          link: '/app/admin/roles',
-          sort: 2,
-        },
-
-        {
-          // 组织机构
-          text: '',
-          i18n: 'OrganizationUnits',
-          acl: 'Pages.Administration.OrganizationUnits',
-          icon: 'iconfont icon-team',
-          link: '/app/admin/organization-units',
+          // 告警规则
+          text: '告警规则',
+          i18n: '告警规则',
+          acl: 'Pages.YSLogDataAlertObject',
+          icon: 'iconfont icon-experiment',
+          link: '/app/alert-management/alert-rule',
           sort: 3,
-        },
-      ],
-    },
-    // 维护与日志 12
-    {
-      // 维护与日志
-      text: '维护与日志',
-      i18n: 'MaintenanceAndLog',
-      acl: 'Pages.Administration',
-      icon: 'iconfont icon-appstore',
-      sort: 12,
-      children: [
-        {
-          // 审计日志
-          text: '',
-          i18n: 'AuditLogs',
-          acl: 'Pages.Administration.AuditLogs',
-          icon: 'iconfont icon-book',
-          link: '/app/admin/auditLogs',
-          sort: 5,
-        },
-
-        {
-          // 宿主机器设置/维护
-          text: '',
-          i18n: 'Maintenance',
-          acl: 'Pages.Administration.Host.Maintenance',
-          icon: 'iconfont icon-setting',
-          link: '/app/admin/maintenance',
-          sort: 6,
-        },
-        {
-          // 租户设置
-          text: '',
-          i18n: 'Settings',
-          acl: 'Pages.Administration.Tenant.Settings',
-          icon: 'iconfont icon-setting',
-          link: '/app/admin/tenant-settings',
-          sort: 7,
-        },
-        {
-          // 宿主设置
-          text: '',
-          i18n: 'Settings',
-          acl: 'Pages.Administration.Host.Settings',
-          icon: 'iconfont icon-setting',
-          link: '/app/admin/host-settings',
-          sort: 8,
+          hideInBreadcrumb: true,
         },
       ],
     },
