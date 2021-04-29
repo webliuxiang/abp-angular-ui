@@ -1,0 +1,38 @@
+<form nz-form [formGroup]="dateHistogramForm">
+    <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="fields">聚合字段</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+            <nz-select formControlName="fields" id="fields" nzAllowClear nzPlaceHolder="" nzShowSearch>
+                <nz-option-group nzLabel="日期">
+                    <nz-option *ngFor="let item of dateKeywordMap" [nzValue]="item" [nzLabel]="item.label"
+                        nzCustomContent>
+                        <span nz-tooltip [nzTooltipTitle]="item.label">{{item.label}}</span>
+                    </nz-option>
+                </nz-option-group>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="min_Interval">最小时间间隔</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+            <nz-select formControlName="min_Interval" id="min_Interval" nzAllowClear nzPlaceHolder="" nzShowSearch
+                (nzOpenChange)="openOptions($event)" nzMode="tags" nzMaxMultipleCount="1">
+                <nz-option nzValue="auto" nzLabel=" 自动"></nz-option>
+                <!-- <nz-option nzValue="1ms" nzLabel=" 毫秒"></nz-option> -->
+                <nz-option nzValue="1s" nzLabel=" 1 秒"></nz-option>
+                <nz-option nzValue="1m" nzLabel=" 1 分钟"></nz-option>
+                <nz-option nzValue="1h" nzLabel=" 1 小时"></nz-option>
+                <nz-option nzValue="1d" nzLabel=" 1 天"></nz-option>
+                <nz-option nzValue="1w" nzLabel=" 1 周"></nz-option>
+                <nz-option nzValue="1M" nzLabel=" 1 月"></nz-option>
+                <nz-option nzValue="1y" nzLabel=" 1 年"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzFor="bucketsLabel">自定义标题</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+            <input nz-input formControlName="bucketsLabel" nzAllowClear placeholder="" id="bucketsLabel" />
+        </nz-form-control>
+    </nz-form-item>
+</form>

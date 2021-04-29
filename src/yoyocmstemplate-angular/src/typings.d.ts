@@ -12,6 +12,9 @@ import { Observable } from 'rxjs';
 declare global {
   export var AliyunUpload: any;
   export var Aliplayer: any;
+  export var G2: any;
+  export var DataSet: any;
+  export var Slider: any;
 }
 
 declare global {

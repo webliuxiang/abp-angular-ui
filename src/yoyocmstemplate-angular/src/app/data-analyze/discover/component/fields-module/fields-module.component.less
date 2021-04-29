@@ -1,0 +1,36 @@
+.keyword-filter {
+  padding-left: 0;
+}
+
+.keyword-filter>li {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.list-item {
+  padding: 5px;
+}
+
+.list-item:hover {
+  background-color: #fafafa;
+  cursor: pointer;
+}
+
+::ng-deep {
+  .ant-popover {
+    width: 200px;
+  }
+
+  .g2-mini-progress__target-item {
+    display: none;
+  }
+}
+
+.title-box {
+  display: inline-block;
+  max-width: 100px;
+  overflow: hidden; //超出的文本隐藏
+  white-space: nowrap; //溢出不换行
+  text-overflow: ellipsis; //溢出用省略号显示
+}

@@ -1,0 +1,143 @@
+<nz-card
+  [nzBordered]="false"
+  [nzExtra]="extra"
+  [nzTitle]="isDetail ? l(reportObject.name) : l('创建数据分析任务')"
+  [nzLoading]="!showPage"
+>
+  <ng-template #extra>
+    <button nz-button (click)="showModal(reportId)" [nzType]="'primary'" *ngIf="isDetail">
+      <i class="iconfont icon-detail"></i>
+      <span>&nbsp;{{ l('运行记录') }}</span>
+    </button>
+    <button nz-button (click)="save()" [nzType]="'primary'">
+      <i class="iconfont icon-save"></i>
+      <span>&nbsp;{{ l('保存') }}</span>
+    </button>
+    <!-- <button nz-button (click)="delete()" [nzType]="'primary'" *ngIf="isDetail">
+            <i class="iconfont icon-delete"></i>
+            <span>&nbsp;{{ l('删除') }}</span>
+        </button> -->
+    <button nz-button (click)="back()" [nzType]="'primary'">
+      <i class="iconfont icon-rollback"></i>
+      <span>&nbsp;{{ l('Back') }}</span>
+    </button>
+  </ng-template>
+  <nz-modal
+    [(nzVisible)]="isVisible"
+    nzTitle="运行记录"
+    [nzCancelText]="null"
+    [nzOkText]="null"
+    nzWidth="760"
+    (nzOnCancel)="handleCancel()"
+  >
+    <div>
+      <nz-table #basicTable [nzData]="recordList" [nzHideOnSinglePage]="true">
+        <thead>
+          <tr>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>任务状态</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td>{{ data.start_time }}</td>
+            <td>{{ data.end_time }}</td>
+            <td>{{ data.success ? '成功' : '失败' }}</td>
+            <td>
+              <button nz-button [disabled]="!data.success" nzType="link" (click)="downLoadFile(data.id)">下载</button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </nz-modal>
+  <ng-container *ngIf="showPage">
+    <div nz-row [nzGutter]="16">
+      <div nz-col nzSpan="12">
+        <form nz-form [formGroup]="editDataForm">
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">任务名称</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入任务名称!">
+              <input nz-input formControlName="name" id="name" placeholder="请输入任务名称" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">任务描述</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+              <textarea
+                nz-input
+                formControlName="description"
+                id="description"
+                placeholder="请输入任务描述"
+                [nzAutosize]="{ minRows: 2, maxRows: 2 }"
+              ></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="schema_name">数据类型</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择数据类型!">
+              <nz-select
+                formControlName="schema_name"
+                id="schema_name"
+                nzAllowClear
+                (ngModelChange)="getDataSetList(editDataForm.value.schema_name)"
+                nzPlaceHolder="请选择数据类型"
+              >
+                <nz-option *ngFor="let item of schemaNameList" [nzValue]="item.value" [nzLabel]="item.key"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="related_dataset">数据集</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择数据集!">
+              <nz-select
+                formControlName="related_dataset"
+                id="related_dataset"
+                nzAllowClear
+                nzPlaceHolder="请选择数据集"
+              >
+                <nz-option *ngFor="let item of datasetList" [nzValue]="item.id" [nzLabel]="item.name"> </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="time_offset">时间偏移</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择时间偏移量!">
+              <nz-select formControlName="time_offset" id="time_offset" nzAllowClear nzPlaceHolder="请选择时间偏移量">
+                <nz-option *ngFor="let item of timeOffsetList" [nzValue]="item.value" [nzLabel]="item.key"> </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="job_type">任务调度方式</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请配置任务调度方式!">
+              <nz-radio-group formControlName="job_type" nzButtonStyle="solid" id="job_type">
+                <label nz-radio-button nzValue="BackgroundJob">手动触发</label>
+                <label nz-radio-button nzValue="RecurringJob">周期触发</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+
+          <ng-container *ngIf="editDataForm.value.job_type === 'RecurringJob'">
+            <nz-form-item>
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="corn_expression">执行周期 </nz-form-label>
+              <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请配置执行周期!">
+                <ys-cron-editor formControlName="corn_expression" id="corn_expression"></ys-cron-editor>
+              </nz-form-control>
+            </nz-form-item>
+          </ng-container>
+        </form>
+      </div>
+      <!-- 动态表单 -->
+      <!-- <div nz-col nzSpan="12">
+                <app-dynamic-form [(form)]="dynamicForm" [formTemplate]="formTemplate"></app-dynamic-form>
+            </div> -->
+    </div>
+  </ng-container>
+</nz-card>

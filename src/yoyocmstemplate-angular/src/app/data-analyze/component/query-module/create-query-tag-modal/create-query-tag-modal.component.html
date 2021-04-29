@@ -1,0 +1,107 @@
+<div class="modal-header modal-header-bg">
+    配置筛选条件
+</div>
+<div class="modal-container">
+    <form nz-form [formGroup]="baseForm">
+        <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired>查询字段</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzErrorTip]="filterFieldErrorTemplate">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请先选择查询字段" formControlName="filterField">
+                    <nz-option *ngFor="let item of filterTerm.fields" [nzLabel]="item.name" [nzValue]="item">
+                    </nz-option>
+                </nz-select>
+                <ng-template #filterFieldErrorTemplate>
+                    <!-- <span *ngIf="form.get('filterField').dirty && form.get('filterField').errors">
+            请先选择筛选字段
+          </span> -->
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired>逻辑关系</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzErrorTip]="queryTypeErrorTemplate">
+                <nz-radio-group formControlName="queryType" nzButtonStyle="solid">
+                    <label nz-radio-button nzValue="must">与</label>
+                    <label nz-radio-button nzValue="should">或</label>
+                    <label nz-radio-button nzValue="must_not">非</label>
+                </nz-radio-group>
+                <ng-template #queryTypeErrorTemplate>
+                    <!-- <span *ngIf="form.get('filterField').dirty && form.get('filterField').errors">
+            请先选择筛选字段
+          </span> -->
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired>查询方式</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzErrorTip]="filterRuleErrorTemplate">
+                <nz-select nzShowSearch nzAllowClear nzPlaceHolder="请选择查询方式" formControlName="queryRule"
+                    (ngModelChange)="changeFilterRules($event)">
+                    <nz-option *ngFor="let item of queryRules" [nzLabel]="item.label" [nzValue]="item"> </nz-option>
+                </nz-select>
+                <ng-template #filterRuleErrorTemplate>
+                    <!-- <span *ngIf="form.get('filterRule').dirty && form.get('filterRule').errors">
+                    请选择筛选规则
+                  </span> -->
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+    <!-- 输入值 -->
+    <form nz-form [formGroup]="formPhraseFilter" *ngIf="selectFilterRule === 'phrase'">
+        <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired>查询内容</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzErrorTip]="filterValueErrorTemplate">
+                <input id="filterValue" nzPlaceHolder="请输入筛选值" type="text" nz-input formControlName="filterValue" />
+                <ng-template #filterValueErrorTemplate>
+                    <!-- <span *ngIf="form.get('filterValue').dirty && form.get('filterValue').errors">
+            请输入筛选值
+          </span> -->
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+
+    <form nz-form [formGroup]="formPhrasesFilter" *ngIf="selectFilterRule === 'phrases'">
+        <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired>查询内容</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzErrorTip]="filterValueErrorTemplate">
+                <!-- <nz-select nzMode="tags" nzPlaceHolder="请输入筛选值" formControlName="filterValue">
+                    <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value">
+                    </nz-option>
+                </nz-select> -->
+                <ng-template #filterValueErrorTemplate>
+                    <!-- <span *ngIf="form.get('filterValue').dirty && form.get('filterValue').errors">
+            请输入筛选值
+          </span> -->
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+
+    <form nz-form [formGroup]="formRangeFilter" *ngIf="selectFilterRule === 'numeric_range'">
+        <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired>查询内容</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzErrorTip]="filterValueErrorTemplate">
+                <nz-input-group nzCompact>
+                    <input type="text" nz-input placeholder="范围起点" style="width: 100px; text-align: center;"
+                        formControlName="filterStartValue" />
+                    <input type="text" disabled nz-input placeholder="~"
+                        style="width: 30px; border-left: 0px; pointer-events: none; background-color: rgb(255, 255, 255);" />
+                    <input type="text" nz-input placeholder="范围终点"
+                        style="width: 100px; text-align: center; border-left: 0px;" formControlName="filterEndValue" />
+                </nz-input-group>
+                <ng-template #filterValueErrorTemplate>
+                    <!-- <span *ngIf="form.get('filterValue').dirty && form.get('filterValue').errors">
+            请输入筛选值
+          </span> -->
+                </ng-template>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>
+<div class="modal-footer">
+    <!-- <button nz-button [nzType]="'default'" (click)="test()">test</button> -->
+    <button nz-button [nzType]="'default'" (click)="cancel()">取消</button>
+    <button nz-button [nzType]="'primary'" [disabled]="!baseForm.valid" (click)="ok()">保存</button>
+</div>

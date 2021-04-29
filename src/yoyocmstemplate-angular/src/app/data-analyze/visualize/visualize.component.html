@@ -1,0 +1,213 @@
+<page-header [title]="l('Visualize')"></page-header>
+
+<nz-card [nzBordered]="false">
+  <div class="mb-md">
+    <!-- 模糊搜索框 -->
+    <nz-row nzGutter="8">
+      <nz-col nzSm="24">
+        <nz-form-item style="margin-bottom: 0;">
+          <nz-form-control>
+            <nz-input-group nzSearch [nzAddOnAfter]="suffixSearchButton">
+              <input
+                type="text"
+                nz-input
+                [(ngModel)]="filterText"
+                (keyup.enter)="refresh()"
+                name="filterText"
+                [placeholder]="l('SearchWithThreeDot')"
+              />
+              <ng-template #suffixSearchButton>
+                <button nz-button nzType="primary" nzSearch (click)="onSearch()">
+                  <!-- <i class="iconfont icon-search"></i> -->
+                  <i class="iconfont icon-search"></i>
+                </button>
+              </ng-template>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </div>
+
+  <!-- 操作部分 -->
+  <nz-row nzGutter="8">
+    <nz-col nzMd="24" nzSm="24" class="btn-gutter">
+      <button
+        nz-button
+        [nzType]="'primary'"
+        *ngIf="isGranted('Pages.YSLogVisualizeObject.Query')"
+        (click)="openCreateChartModal()"
+      >
+        <i class="iconfont icon-plus"></i>
+        <span>
+          {{ l('CreateVisualize') }}
+        </span>
+      </button>
+      <button
+        nz-button
+        [nzType]="'danger'"
+        *ngIf="isGranted('Pages.YSLogVisualizeObject.Delete')"
+        (click)="batchDelete()"
+      >
+        <i class="iconfont icon-delete"></i>
+        <span>
+          {{ l('BatchDelete') }}
+        </span>
+      </button>
+    </nz-col>
+  </nz-row>
+
+  <!-- 数据部分 -->
+  <div class="my-md">
+    <nz-alert [nzType]="'info'" [nzShowIcon]="true" [nzMessage]="message">
+      <ng-template #message>
+        <span [innerHTML]="l('GridSelectedXItemsTips', selectedDataItems.length)"></span>
+        <!-- <a (click)="restCheckStatus(dataList)" class="ml-md">
+                    {{ l('ClearEmpty') }}
+                </a>
+                <nz-divider nzType="vertical"></nz-divider> -->
+        <a (click)="refresh()">
+          {{ l('Refresh') }}
+        </a>
+      </ng-template>
+    </nz-alert>
+  </div>
+
+  <!-- 实体的表格内容 -->
+
+  <nz-row class="my-md">
+    <nz-table
+      #ajaxTable
+      [nzData]="dataList"
+      [nzTotal]="totalItems"
+      [(nzPageIndex)]="pageNumber"
+      [(nzPageSize)]="pageSize"
+      [nzLoading]="isTableLoading"
+      (nzPageIndexChange)="pageNumberChange()"
+      (nzPageSizeChange)="refresh()"
+      [nzShowSizeChanger]="true"
+      [nzShowQuickJumper]="true"
+      [nzShowTotal]="showTotalTemplate"
+      [nzFrontPagination]="false"
+      [nzNoResult]="noDataTemplate"
+    >
+      <!-- 暂无数据组件 -->
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+      <ng-template #showTotalTemplate let-total let-range="range">
+        {{ l('GridFooterDisplayText', pageNumber, totalPages, total, range[0], range[1]) }}
+      </ng-template>
+
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <th
+            nzShowCheckbox
+            [(nzChecked)]="allChecked"
+            [nzDisabled]="allCheckboxDisabled"
+            [nzIndeterminate]="checkboxIndeterminate"
+            (nzCheckedChange)="checkAll($event)"
+            nzWidth="60px"
+          ></th>
+
+          <th nzShowSort nzSortKey="name">
+            <span>{{ l('NameOfThings') }}</span>
+          </th>
+          <!-- <th nz-th>
+                        <span>{{ l('Description') }}</span>
+                    </th> -->
+          <th class="text-center">
+            <span>{{ l('ChartType') }}</span>
+          </th>
+          <th class="text-center">
+            <span>{{ l('DataSet') }}</span>
+          </th>
+          <th nzWidth="280px">
+            <span>{{ l('Actions') }}</span>
+          </th>
+        </tr>
+      </thead>
+      <!-- 表格内容 -->
+      <tbody nz-tbody>
+        <tr *ngFor="let item of ajaxTable.data">
+          <!-- 全选框 -->
+          <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTooltipTitle]="item.name">
+                {{ item.name }}
+              </span>
+            </ellipsis>
+          </td>
+          <!-- <td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTooltipTitle]="item.desc">
+                                {{ item.desc }}
+                            </span>
+                        </ellipsis>
+                    </td> -->
+          <td class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTooltipTitle]="setChartName(item.chart_type)">
+                {{ setChartName(item.chart_type) }}
+              </span>
+            </ellipsis>
+          </td>
+          <td class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTooltipTitle]="item.dataset_name">
+                {{ item.dataset_name }}
+              </span>
+            </ellipsis>
+          </td>
+
+          <!-- <td class="text-center" [innerHTML]="!item.isDisabled | yn"></td> -->
+
+          <td>
+            <!-- 编辑 -->
+            <ng-container *ngIf="isGranted('Pages.YSLogVisualizeObject.Query')">
+              <a (click)="editVisualize(item.id)">
+                <i class="iconfont icon-edit mr-sm"></i>
+                <span>{{ l('Edit') }}</span>
+              </a>
+            </ng-container>
+            <!-- 删除 -->
+            <ng-container *ngIf="isGranted('Pages.YSLogVisualizeObject.Delete')">
+              <nz-divider nzType="vertical"></nz-divider>
+              <a
+                nz-popconfirm
+                [nzPopconfirmTitle]="l('ConfirmDeleteWarningMessage')"
+                (nzOnConfirm)="delete(item)"
+                [nzOkText]="l('Ok')"
+                [nzCancelText]="l('Cancel')"
+              >
+                <i class="iconfont icon-delete mr-sm"></i>
+                <span>{{ l('Delete') }}</span>
+              </a>
+            </ng-container>
+
+            <!-- <ng-container>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a nz-dropdown [nzDropdownMenu]="menu">
+                                {{ l('Actions') }}
+                                <i class="iconfont icon-down"></i>
+                            </a>
+                            <nz-dropdown-menu #menu="nzDropdownMenu">
+                                <ul nz-menu>
+                                    <li nz-menu-item *ngIf="isGranted('Pages.YSLogVisualizeObject.ChangeTexts')">
+                                        <a (click)="changeTexts(item)">{{ l('ChangeTexts') }}</a>
+                                    </li>
+                                    <li nz-menu-item *ngIf="isGranted('Pages.YSLogVisualizeObject.Edit')">
+                                        <a (click)="setAsDefaultLanguage(item)">{{ l('SetAsDefaultLanguage') }}</a>
+                                    </li>
+                                </ul>
+                            </nz-dropdown-menu>
+                        </ng-container> -->
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-row>
+</nz-card>

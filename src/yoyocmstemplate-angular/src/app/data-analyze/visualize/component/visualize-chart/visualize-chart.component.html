@@ -1,0 +1,54 @@
+<!-- <page-header [title]="isEdit ? l('EditVisualize') : l('CreateVisualize')"></page-header> -->
+
+<nz-card class="visualize-container" [nzBordered]="false" [nzExtra]="extra"
+    [nzTitle]="isEdit ? l('EditVisualize') : l('CreateVisualize')" [nzLoading]="!showPage">
+    <ng-template #extra>
+        <app-date-time #dateTimeForm [dateTimeData]="responseData.dateTimeData" *ngIf="showPage"></app-date-time>
+        <button nz-button (click)="showSaveModal(isGranted('Pages.YSLogSearchObject.Edit'))"
+            [disabled]="isGranted('Pages.YSLogSearchObject.Edit') ? false : true">
+            <i class="iconfont icon-save"></i>
+            <span>&nbsp;{{ l('Save') }}</span>
+        </button>
+        <button nz-button (click)="backVisualizeList()" [nzType]="'primary'">
+            <i class="iconfont icon-rollback"></i>
+            <span>&nbsp;{{ l('Back') }}</span>
+        </button>
+    </ng-template>
+    <nz-modal [(nzVisible)]="isVisible" [nzTitle]="l('SaveVisualize')" (nzOnCancel)="handleCancel()" (nzOnOk)="save()">
+        <form nz-form [formGroup]="saveChartForm">
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">图表名称</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                    <input nz-input formControlName="name" id="name" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="desc">描述</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                    <textarea rows="4" nz-input formControlName="desc" style="resize:none;"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-modal>
+    <ng-container *ngIf="showPage">
+        <app-query-module [keywordsMap]="keywordsMap" [queryData]="responseData.queryData" [chartSetting]="chartSetting"
+            (querySearch)="search($event)" #query *ngIf="!loading">
+        </app-query-module>
+        <nz-card class="view-setting-box">
+            <div nz-row nzGutter="18" *ngIf="!loading">
+                <div nz-col [nzSpan]="!aggregation.isCollapsed ? 6 : 0">
+                    <app-agg-module [keywordsMapTransFormLabelAndValue]="keywordsMapTransFormLabelAndValue"
+                        [aggData]="responseData.aggData" [chartSetting]="chartSetting" #aggregation>
+                    </app-agg-module>
+                </div>
+                <div nz-col [nzSpan]="!aggregation.isCollapsed ? 0 : 1" class="collapsed-icon">
+                    <i class="trigger" nz-icon [nzType]="aggregation.isCollapsed ? 'menu-unfold' : 'menu-fold'"
+                        (click)="aggregation.isCollapsed = !aggregation.isCollapsed"></i>
+                </div>
+                <div nz-col [nzSpan]="!aggregation.isCollapsed ? 18 : 23" class="chart-box">
+                    <app-chart-module [chartSetting]="chartSetting"></app-chart-module>
+                </div>
+            </div>
+        </nz-card>
+    </ng-container>
+</nz-card>

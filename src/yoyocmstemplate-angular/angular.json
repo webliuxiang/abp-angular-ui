@@ -52,9 +52,12 @@
             ],
             "scripts": [
               "node_modules/ajv/dist/ajv.bundle.js",
-               "node_modules/qrious/dist/qrious.min.js",
+              "node_modules/qrious/dist/qrious.min.js",
               "node_modules/moment/min/moment-with-locales.js",
               "node_modules/moment-timezone/builds/moment-timezone-with-data.js",
+              "node_modules/@antv/g2/dist/g2.min.js",
+              "node_modules/@antv/data-set/dist/data-set.js",
+              "node_modules/@antv/g2-plugin-slider/dist/g2-plugin-slider.min.js",
               "src/assets/aliyunlib/aliyunuploadsdk/aliyunuploadsdk.min.js",
               "src/assets/aliyunlib/aliyunuploadsdk/lib/es6promise.min.js",
               "src/assets/aliyunlib/aliyunuploadsdk/lib/aliyunosssdk.min.js",

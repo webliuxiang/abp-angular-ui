@@ -1,0 +1,74 @@
+<nz-card [nzTitle]="keywordbucketsTitle" nzBordered="true" nzSize="small">
+    <ng-template #keywordbucketsTitle>
+        <span style="font-size: 14px; font-weight: 500;">Buckets</span>
+    </ng-template>
+    <div>
+        <nz-collapse [nzBordered]="false">
+            <nz-collapse-panel *ngFor="let item of buckets_items" [nzHeader]="collapseHeaderTemplate" nzActive="false"
+                [nzExtra]="bucketsExtraTpl">
+                <ng-template #bucketsExtraTpl>
+                    <!-- You can use stopPropagation if you don't want the panel to toggle -->
+                    <i class="iconfont icon-close" (click)="removebucketFun($event,item)"></i>
+                </ng-template>
+                <ng-template #collapseHeaderTemplate>
+                    <div
+                        style="display: inline-block; max-width: 175px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                        {{ item.seriesType }} {{ item.bucketsAggregation.label }}
+                        <span *ngIf="item.bucketsSetting !== undefined">
+                            {{ item.bucketsAggregation.value === 'filters' ? '' : item.bucketsSetting.fields.value }}
+                        </span>
+                    </div>
+                </ng-template>
+                <nz-radio-group [(ngModel)]="item.chartRadioValue" nzButtonStyle="solid" *ngIf="item.isChart"
+                    nzSize="small" style="width: 100%; text-align: center;">
+                    <label nz-radio-button nzValue="rows" style="width: 50%;">Rows</label>
+                    <label nz-radio-button nzValue="columns" style="width: 50%;">Columns</label>
+                </nz-radio-group>
+                <div class="buckets-item">
+                    <div style="margin-bottom: 3px; font-weight: 500;">聚合方式</div>
+                    <nz-select [(ngModel)]="item.bucketsAggregation" nzAllowClear nzPlaceHolder="请选择" nzShowSearch
+                        (ngModelChange)="bucketsTypeChange($event, item)">
+                        <nz-option *ngFor="let bucketsTypeItem of bucketsType" [nzValue]="bucketsTypeItem"
+                            [nzLabel]="bucketsTypeItem.label">
+                        </nz-option>
+                    </nz-select>
+                </div>
+
+                <app-config-module-bucket [bucketData]="item" #bucketConfigFun [metric]="metric">
+                </app-config-module-bucket>
+
+                <nz-collapse [nzBordered]="false" class="buckets-item">
+                    <nz-collapse-panel nzHeader="高级配置" nzActive="false">
+                        <div style="margin-bottom: 3px; font-weight: 500;">自定义 JSON
+                        </div>
+                        <!-- <textarea rows="2" nz-input [(ngModel)]="item.bucketsAdvanced"></textarea> -->
+                        <ace-editor #editor [(text)]="item.bucketsAdvanced" [autoUpdateContent]="true"
+                            [readOnly]="false" [options]="{ maxLines: 5, printMargin: false, wrap: true }"
+                            style="min-height: 60px;">
+                        </ace-editor>
+                    </nz-collapse-panel>
+                </nz-collapse>
+            </nz-collapse-panel>
+        </nz-collapse>
+    </div>
+    <div style="text-align: center;" *ngIf="showAddBucket">
+        <!-- <a nz-button nzType="link" (click)="addBucketFun()" [attr.disabled]="buckets_items.length > 3 ? true: null">
+            <i nz-icon nzType="plus" nzTheme="outline"></i>
+            添加 Bucket
+        </a> -->
+        <!-- TODO:根据选择的图表类型确定可以添加的内容 -->
+        <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="bucketMenu">
+            <i nz-icon nzType="plus" nzTheme="outline"></i>
+            添加 Bucket
+        </a>
+        <nz-dropdown-menu #bucketMenu="nzDropdownMenu">
+            <ul nz-menu>
+                <li *ngIf="chartSetting.chartType !== 'pieChart' && chartSetting.chartType !== 'tableChart'"
+                    nz-menu-item (click)="addBucketFun('xAxis')" [nzDisabled]="addXaXisAbled"> X 轴 </li>
+                <li *ngIf="true" nz-menu-item (click)="addBucketFun('series')" [nzDisabled]="addSeriesAbled"> 按系列拆分
+                </li>
+                <!-- <li nz-menu-item (click)="addBucketFun('chart')" [nzDisabled]="addChartAbled"> 按图表拆分 </li> -->
+            </ul>
+        </nz-dropdown-menu>
+    </div>
+</nz-card>

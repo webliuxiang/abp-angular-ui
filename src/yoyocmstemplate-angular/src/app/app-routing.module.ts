@@ -21,6 +21,11 @@ const routes: Routes = [
         data: { preload: true },
       },
       {
+        path: 'data-analyze',
+        loadChildren: () => import('./data-analyze/data-analyze.module').then(m => m.DataAnalyzeModule), // Lazy load admin module
+        data: { preload: true },
+      },
+      {
         path: 'alert-management',
         loadChildren: () => import('./alert-management/alert-management.module').then(m => m.AlertManagementModule), // Lazy load admin module
         data: { preload: true },

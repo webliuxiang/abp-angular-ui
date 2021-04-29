@@ -140,7 +140,7 @@ export class AlertRuleComponent extends PagedListingComponentBase<YSLogDataAlert
 
   // 运行
   run(id) {
-    let body: any = {
+    const body: any = {
       id: id,
     };
     this._ySLogDataAlertObjectServiceProxy.startJob(body).subscribe(() => {

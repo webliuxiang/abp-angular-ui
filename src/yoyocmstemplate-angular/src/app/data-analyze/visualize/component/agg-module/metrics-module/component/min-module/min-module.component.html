@@ -1,0 +1,27 @@
+<form nz-form [formGroup]="minForm">
+    <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="fields">聚合字段</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+            <nz-select formControlName="fields" id="fields" nzAllowClear nzPlaceHolder="请选择" nzShowSearch>
+                <nz-option-group nzLabel="日期">
+                    <nz-option *ngFor="let item of dateKeywordMap" [nzValue]="item" [nzLabel]="item.label"
+                        nzCustomContent>
+                        <span nz-tooltip [nzTooltipTitle]="item.label">{{item.label}}</span>
+                    </nz-option>
+                </nz-option-group>
+                <nz-option-group nzLabel="数字">
+                    <nz-option *ngFor="let item of numberKeywordMap" [nzValue]="item" [nzLabel]="item.label"
+                        nzCustomContent>
+                        <span nz-tooltip [nzTooltipTitle]="item.label">{{item.label}}</span>
+                    </nz-option>
+                </nz-option-group>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzFor="metricsLabel">自定义标题</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+            <input nz-input formControlName="metricsLabel" nzAllowClear placeholder="" />
+        </nz-form-control>
+    </nz-form-item>
+</form>

@@ -1,0 +1,86 @@
+<nz-card class="query-box">
+    <div nz-row [nzGutter]="16">
+        <!-- 选择数据集 -->
+        <!-- <div nz-col class="gutter-row" [nzSpan]="6">
+        <div>
+          <input nz-input [(ngModel)]="selectedDatasource.name" readonly />
+        </div>
+      </div> -->
+        <!-- 查询语句 -->
+        <div class="text-left" style="display: inline-block;width: calc(100% - 200px);margin-left: 8px;">
+            <input nz-input [(ngModel)]="queryString" [disabled]="'false'" placeholder="请输入查询语句" />
+        </div>
+        <!-- 按钮组 -->
+        <div class="text-right" style="display: inline-block;margin-left: 16px;">
+            <!-- <button nz-button (click)="testQuery()" [nzType]="'default'">
+                        测试按钮
+                    </button> -->
+            <button nz-button (click)="showInput(chartSetting.dataSource)" [nzType]="'default'" class="query-button"
+                [disabled]="chartSetting.dataSource === null">
+                <i class="iconfont icon-plus"></i>
+                <span>&nbsp; 添加</span>
+            </button>
+            <button nz-button (click)="query()" [nzType]="'default'" class="query-button"
+                [disabled]="chartSetting.dataSource === null" style="background-color: #52c41a; color:#ffffff">
+                <i class="iconfont icon-search"></i>
+                <span>&nbsp; 查询</span>
+                <!-- <i nz-icon nzType="search" nzTheme="outline"></i> -->
+            </button>
+            <!-- <nz-tag class="editable-tag" (click)="showInput(selectedDatasource)"> <i nz-icon [nzType]="'plus'"></i> 添加筛选条件
+          </nz-tag> -->
+        </div>
+        <div nz-col [nzSpan]="24" style="height: 30px;">
+            <nz-tag class="filter_tags_wrap" *ngFor="let tag of filterTags; let i = index" [nzMode]="'closeable'"
+                (nzOnClose)="handleClose(tag)" nz-tooltip [nzTooltipTitle]="toolTipTemp" nzTooltipPlacement="topLeft"
+                nzTooltipTrigger="hover">
+                <ng-template #toolTipTemp>
+                    <span
+                        *ngIf="tag.queryMethod.value !== 'range' && tag.queryMethod.value !== 'date_range' && tag.queryMethod.value !== 'exists'">
+                        {{ tag.relation }}&nbsp;{{ tag.queryField.name }}&nbsp;&nbsp;{{ tag.queryContent }}&nbsp;
+                    </span>
+                    <span *ngIf="tag.queryMethod.value === 'range' || tag.queryMethod.value === 'date_range'">
+                        {{ tag.relation }}&nbsp;{{ tag.queryField.name }}&nbsp;:&nbsp;from
+                        &nbsp;{{ tag.queryContent[0] }}
+                        &nbsp;
+                        to &nbsp; {{ tag.queryContent[1] }}
+                    </span>
+                    <span *ngIf="tag.queryMethod.value === 'exists'">
+                        {{ tag.relation }}&nbsp;{{ tag.queryField.name }}&nbsp;exists
+                    </span>
+                </ng-template>
+                <ng-container>
+                    <i *ngIf="tag.relation === 'must'" class="iconfont icon-plus-circle-fill"
+                        (click)="shiftRelation(tag, i)"></i>
+                    <i *ngIf="tag.relation === 'should'" class="iconfont icon-poweroff-circle-fill"
+                        (click)="shiftRelation(tag, i)"></i>
+                    <i *ngIf="tag.relation === 'must_not'" class="iconfont icon-minus-circle-fill"
+                        (click)="shiftRelation(tag, i)"></i>
+                    <nz-divider nzType="vertival"></nz-divider>
+                    <span class="tag-content"
+                        *ngIf="tag.queryMethod.value !== 'range' && tag.queryMethod.value !== 'date_range' && tag.queryMethod.value !== 'exists'"
+                        (click)="editorFilter(tag, i)">
+                        {{ tag.queryField.name }}&nbsp;&nbsp;{{ tag.queryContent }}&nbsp;
+                    </span>
+                    <span class="tag-content"
+                        *ngIf="tag.queryMethod.value === 'range' || tag.queryMethod.value === 'date_range'"
+                        (click)="editorFilter(tag, i)">
+                        {{ tag.queryField.name }}&nbsp;:&nbsp;from
+                        &nbsp;{{ tag.queryContent[0] }}
+                        &nbsp;
+                        to &nbsp; {{ tag.queryContent[1] }}
+                    </span>
+                    <span class="tag-content" *ngIf="tag.queryMethod.value === 'exists'" (click)="editorFilter(tag, i)">
+                        {{ tag.queryField.name }}&nbsp;exists
+                    </span>
+                    <nz-divider nzType="vertival"></nz-divider>
+                </ng-container>
+                <!-- <nz-dropdown-menu #menu="nzDropdownMenu">
+                    <ul nz-menu>
+                        <li nz-menu-item (click)="editorFilter(tag, i)">编辑</li>
+                        <li nz-menu-item (click)="excludFilter(tag, i)">取反</li>
+                    </ul>
+                </nz-dropdown-menu> -->
+            </nz-tag>
+        </div>
+    </div>
+</nz-card>

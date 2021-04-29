@@ -12,8 +12,8 @@ import { UrlHelper } from '@shared/helpers/UrlHelper';
 export class LoginCallbackComponent extends AppComponentBase implements OnInit {
 
   constructor(private _route: ActivatedRoute,
-    injector: Injector,
-    private _loginService: LoginService) {
+              injector: Injector,
+              private _loginService: LoginService) {
     super(injector);
   }
 

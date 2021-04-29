@@ -1,0 +1,71 @@
+<div class="chart-box">
+    <nz-table #nzTable [nzFooter]="tableFooter" [nzData]="resData" [nzPageSize]="50" nzSize="small"
+        [nzScroll]="{ x: '300px' }" nzHideOnSinglePage="true" nzShowSizeChanger [nzTotal]="resData.length">
+        <thead>
+            <tr>
+                <th nzLeft nzWidth="50px" nzShowExpand></th>
+                <th nzWidth="240px" *ngIf="keywordsTimeDate" style="min-width: 240px; max-width: 280px;">
+                    时间
+                </th>
+                <th *ngIf="selectedKeys.length === 0">日志内容</th>
+                <th nz-th nzWidth="200px" style="padding: 0 20px; min-width: 200px;" *ngFor="let key of selectedKeys">
+                    {{ key }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-template ngFor let-data [ngForOf]="nzTable.data">
+                <tr>
+                    <td nzLeft nzShowExpand [(nzExpand)]="data.expand"></td>
+                    <td *ngIf="keywordsTimeDate">{{ parseDate(data.timestamp) }}</td>
+                    <td *ngIf="selectedKeys.length === 0" nzBreakWord>
+                        <div class="sourceContainer">
+                            <span *ngFor="let d of data._source">
+                                <span class="resultKey">{{ d.key }} :</span> {{ d.value }}
+                            </span>
+                        </div>
+                    </td>
+                    <td *ngFor="let key of selectedKeys">
+                        {{ data._raw[key] === undefined ? '-' : data._raw[key] }}
+                    </td>
+                </tr>
+                <tr [nzExpand]="data.expand">
+                    <td></td>
+                    <td [attr.colspan]="selectedKeys.length > 0 ? selectedKeys.length + 1 : 2">
+                        <nz-tabset nzSize="small">
+                            <nz-tab nzTitle="表格">
+                                <nz-table #nzTable [nzData]="data._source" nzSize="small" [nzFrontPagination]="false"
+                                    [nzShowPagination]="false" class="sourceExpandList">
+        <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+
+                <td class="resultKeyContainer">
+                    <span class="detailResultKey">{{ data.key }}</span>
+                </td>
+                <td>
+                    <span style="white-space: pre-wrap;">{{ data.value }}</span>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    </nz-tab>
+    <!-- <nz-tab nzTitle="JSON">
+        <ace-editor #editor [(text)]="data._JSONValue" [autoUpdateContent]="true" [readOnly]="true"
+            [options]="{ maxLines: 1000, printMargin: false, wrap: true }" style="height: 600px;">
+        </ace-editor>
+    </nz-tab> -->
+    </nz-tabset>
+    </td>
+    </tr>
+    </ng-template>
+    </tbody>
+    </nz-table>
+    <ng-template #tableFooter>
+        <span class="total-box" *ngIf="dataTotal > 0">
+            合计：<b>{{ dataTotal }}</b> 条记录。
+        </span>
+        <div class="tooltip-box">
+            最多展示 500 条记录，请优化搜索查看其它记录。
+        </div>
+    </ng-template>
+</div>

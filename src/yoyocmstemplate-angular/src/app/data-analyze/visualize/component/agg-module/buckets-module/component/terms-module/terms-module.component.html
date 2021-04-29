@@ -1,0 +1,59 @@
+<form nz-form [formGroup]="termsForm">
+    <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="fields">聚合字段</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+            <nz-select formControlName="fields" nzAllowClear nzPlaceHolder="" nzShowSearch>
+                <nz-option-group nzLabel="日期">
+                    <nz-option *ngFor="let item of dateKeywordMap" [nzValue]="item" [nzLabel]="item.label"
+                        nzCustomContent>
+                        <span nz-tooltip [nzTooltipTitle]="item.label">{{item.label}}</span>
+                    </nz-option>
+                </nz-option-group>
+                <nz-option-group nzLabel="数字">
+                    <nz-option *ngFor="let item of numberKeywordMap" [nzValue]="item" [nzLabel]="item.label"
+                        nzCustomContent>
+                        <span nz-tooltip [nzTooltipTitle]="item.label">{{item.label}}</span>
+                    </nz-option>
+                </nz-option-group>
+                <nz-option-group nzLabel="字符串">
+                    <nz-option *ngFor="let item of keywordMap" [nzValue]="item" [nzLabel]="item.label" nzCustomContent>
+                        <span nz-tooltip [nzTooltipTitle]="item.label">{{item.label}}</span>
+                    </nz-option>
+                </nz-option-group>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="order_by">排序条件</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+            <nz-select formControlName="order_by" nzAllowClear nzPlaceHolder="" nzShowSearch
+                (nzOpenChange)="openSelect($event)">
+                <nz-option *ngFor="let item of metricsList" [nzValue]="item.value" [nzLabel]="item.label">
+                </nz-option>
+                <nz-option nzLabel="字段内容" nzValue="_key"></nz-option>
+                <nz-option nzLabel="文档数量" nzValue="_count"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="order">排序方式</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+            <nz-select formControlName="order" nzAllowClear nzPlaceHolder="" nzShowSearch>
+                <nz-option nzValue="desc" nzLabel="降序"></nz-option>
+                <nz-option nzValue="asc" nzLabel="升序"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzFor="size">数量</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+            <input nz-input formControlName="size" nzAllowClear placeholder="" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="24" [nzXs]="24" nzFor="bucketsLabel">自定义标题</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24">
+            <input nz-input formControlName="bucketsLabel" nzAllowClear placeholder="" />
+        </nz-form-control>
+    </nz-form-item>
+</form>

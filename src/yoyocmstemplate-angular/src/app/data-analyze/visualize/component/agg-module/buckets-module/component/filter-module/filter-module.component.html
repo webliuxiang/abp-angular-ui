@@ -1,0 +1,33 @@
+<form nz-form [formGroup]="filtersForm">
+    <ng-container *ngFor="let control of listOfControl; let i = index">
+        <nz-form-item>
+            <nz-form-label [nzXs]="24" [nzSm]="24" [nzFor]="control.filterValue">
+                <span class="filter-name">{{control.name}}</span>
+                <span class="filter-setting">
+                    <i class="iconfont icon-tag" (click)="checkShowLabel(control, $event)"></i>
+                    &nbsp;
+                    <i class="iconfont icon-close-circle" (click)="removeField(control, $event)"></i>
+                </span>
+            </nz-form-label>
+            <nz-form-control [nzXs]="24" [nzSm]="24">
+                <input class="filter-input" nz-input placeholder="请输入筛选条件" [formControlName]="control.filterValue" />
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="control.showLabel">
+            <nz-form-label [nzXs]="24" [nzSm]="24" [nzFor]="control.filterLabel">{{control.label}}
+            </nz-form-label>
+            <nz-form-control [nzXs]="24" [nzSm]="24">
+                <input class="filter-input" nz-input placeholder="请输入别名" [formControlName]="control.filterLabel" />
+            </nz-form-control>
+        </nz-form-item>
+    </ng-container>
+    <nz-form-item>
+        <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 24, offset: 0 }">
+            <button nz-button nzType="dashed" class="add-button" (click)="addField($event)">
+                <i nz-icon nzType="plus"></i>
+                添加
+            </button>
+        </nz-form-control>
+    </nz-form-item>
+</form>

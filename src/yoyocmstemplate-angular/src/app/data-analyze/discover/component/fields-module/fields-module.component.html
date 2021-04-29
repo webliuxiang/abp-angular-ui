@@ -1,0 +1,32 @@
+<nz-card class="keyword-filter" [nzTitle]="keywordFilterTitle" nzBordered="true" nzSize="small"
+    style="background-color: #fafbfd;" [nzExtra]="extraTemplate" [nzBordered]="false">
+    <ng-template #keywordFilterTitle>
+        <span style="font-size: 14px; font-weight: 500;">{{ chartSetting.dataSource.name }}</span>
+    </ng-template>
+    <ng-template #extraTemplate>
+        <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            (click)="isCollapsed = !isCollapsed"></i>
+    </ng-template>
+    <ul class="keyword-filter">
+        <li *ngFor="let key of keywordsList" class="list-item" nz-popover [nzPopoverContent]="contentTemplate"
+            [nzMouseEnterDelay]="1" [nzMouseLeaveDelay]="0" nzPopoverTrigger="click" (click)="showPopover(key)">
+            <label nz-checkbox (ngModelChange)="onSelectKey($event, key)" [(ngModel)]="key.selected">
+                <ng-template #contentTemplate>
+                    <div *ngIf="topArr.length === 0">无数据</div>
+                    <div *ngFor="let item of topArr">
+                        <div style="margin-bottom: -7px;">
+                            <span class="title-box" nz-tooltip [nzTooltipTitle]="item.key">{{ item.key }}</span>
+                            <span style="float: right;">{{ ((item.value / resData.length) * 100).toFixed(1) }}%</span>
+                        </div>
+                        <g2-mini-progress [percent]="((item.value / resData.length) * 100).toFixed(1)" strokeWidth="8"
+                            target="100" nz-tooltip [nzTooltipTitle]="item.value" nzTooltipPlacement="right">
+                        </g2-mini-progress>
+                    </div>
+                </ng-template>
+            </label>
+            <span>
+                {{ key.name }}
+            </span>
+        </li>
+    </ul>
+</nz-card>

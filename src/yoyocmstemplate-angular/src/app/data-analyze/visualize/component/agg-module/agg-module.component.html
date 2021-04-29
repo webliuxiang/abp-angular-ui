@@ -1,0 +1,23 @@
+<nz-card class="keyword-filter" [nzTitle]="keywordFilterTitle" nzBordered="true" nzSize="small"
+    style="background-color: #fafbfd;" [nzExtra]="extraTemplate" [nzBordered]="false">
+    <ng-template #keywordFilterTitle>
+        <span style="font-size: 14px; font-weight: 500;">{{ chartSetting.dataSource.name }}</span>
+    </ng-template>
+    <ng-template #extraTemplate>
+        <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            (click)="isCollapsed = !isCollapsed"></i>
+    </ng-template>
+
+    <!-- metric -->
+    <app-metrics-module [keywordsMapTransFormLabelAndValue]="keywordsMapTransFormLabelAndValue"
+        [metricsData]="metricsData" #metric [chartSetting]="chartSetting">
+    </app-metrics-module>
+    <!-- bucket -->
+    <app-buckets-module [keywordsMapTransFormLabelAndValue]="keywordsMapTransFormLabelAndValue"
+        [bucketsData]="bucketsData" #bucket (setMetricsList)="setMetricsList($event)" [metric]="metric"
+        [chartSetting]="chartSetting">
+    </app-buckets-module>
+    <!-- chartOption -->
+    <!-- <app-chart-config-module></app-chart-config-module> -->
+
+</nz-card>

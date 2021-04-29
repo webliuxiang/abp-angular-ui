@@ -66,6 +66,16 @@ export class DashboardComponent extends AppComponentBase implements OnInit {
   ];
   loading = false;
 
+  cols = 6;
+  rowHeight = 100;
+  layout: KtdGridLayout = [
+    { id: '0', x: 0, y: 0, w: 1, h: 3 },
+    { id: '1', x: 3, y: 0, w: 2, h: 2 },
+    { id: '2', x: 0, y: 3, w: 1, h: 2 },
+    { id: '3', x: 3, y: 3, w: 2, h: 1 },
+  ];
+  trackById = ktdTrackById;
+
   ngOnInit(): void {
 
   }
@@ -76,16 +86,6 @@ export class DashboardComponent extends AppComponentBase implements OnInit {
 
       });
   }
-
-  cols: number = 6;
-  rowHeight: number = 100;
-  layout: KtdGridLayout = [
-    { id: '0', x: 0, y: 0, w: 1, h: 3 },
-    { id: '1', x: 3, y: 0, w: 2, h: 2 },
-    { id: '2', x: 0, y: 3, w: 1, h: 2 },
-    { id: '3', x: 3, y: 3, w: 2, h: 1 },
-  ];
-  trackById = ktdTrackById;
   onLayoutUpdated(e) {
 
   }

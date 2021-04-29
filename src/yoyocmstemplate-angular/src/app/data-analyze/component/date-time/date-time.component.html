@@ -1,0 +1,21 @@
+<div class="datePicker-box" *ngIf="!beforeCreateChart">
+    <form nz-form [nzLayout]="'inline'" [formGroup]="dateTimeForm">
+        <nz-form-item>
+            <nz-form-label>{{ dateTimeTitle }}时间设置</nz-form-label>
+            <nz-form-control>
+                <nz-input-group>
+                    <nz-switch (ngModelChange)="dateTimeSetChange($event)" formControlName="removeDateTimeSet">
+                    </nz-switch>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control>
+                <nz-input-group>
+                    <ys-date-picker formControlName="datePicker" [disabledStatus]="disabledStatus">
+                    </ys-date-picker>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>

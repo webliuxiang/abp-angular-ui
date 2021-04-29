@@ -1,0 +1,83 @@
+<nz-card [nzTitle]="keywordmetricsTitle" nzBordered="true" nzSize="small" class="metric-content">
+  <ng-template #keywordmetricsTitle>
+    <span style="font-size: 14px; font-weight: 500;">Metrics</span>
+  </ng-template>
+  <div>
+    <nz-collapse [nzBordered]="false">
+      <nz-collapse-panel
+        *ngFor="let item of metrics_items"
+        [nzHeader]="collapseHeaderTemplate"
+        nzActive="false"
+        [nzExtra]="metricsExtraTpl"
+      >
+        <ng-template #metricsExtraTpl>
+          <!-- You can use stopPropagation if you don't want the panel to toggle -->
+          <i class="iconfont icon-close" (click)="removeMetricFun($event, item)"></i>
+        </ng-template>
+        <ng-template #collapseHeaderTemplate>
+          <div
+            style="display: inline-block; max-width: 175px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
+          >
+            {{ item.metricsAggregation.label }}
+            {{
+              item.metricsSetting !== undefined
+                ? item.metricsSetting.fields !== undefined
+                  ? item.metricsSetting.fields.value
+                  : ''
+                : ''
+            }}
+          </div>
+        </ng-template>
+
+        <div class="metrics-item">
+          <div style="margin-bottom: 3px; font-weight: 500;">聚合方式</div>
+          <nz-select
+            [(ngModel)]="item.metricsAggregation"
+            nzAllowClear
+            nzPlaceHolder="请选择"
+            nzShowSearch
+            (ngModelChange)="metricsTypeChange($event, item)"
+          >
+            <nz-option-group nzLabel="Metric Aggregations">
+              <nz-option
+                *ngFor="let metricsTypeItem of metricsType"
+                [nzValue]="metricsTypeItem"
+                [nzLabel]="metricsTypeItem.label"
+              ></nz-option>
+            </nz-option-group>
+          </nz-select>
+        </div>
+
+        <app-config-module-metric [metricData]="item" #metricConfigFun></app-config-module-metric>
+
+        <nz-collapse [nzBordered]="false" class="metrics-item">
+          <nz-collapse-panel nzHeader="高级配置" nzActive="false">
+            <div style="margin-bottom: 3px; font-weight: 500;">自定义 JSON</div>
+            <!-- <textarea rows="2" nz-input [(ngModel)]="item.metricsAdvanced"></textarea> -->
+            <ace-editor
+              #editor
+              [(text)]="item.metricsAdvanced"
+              [autoUpdateContent]="true"
+              [readOnly]="false"
+              [options]="{ maxLines: 5, printMargin: false, wrap: true }"
+              style="min-height: 60px;"
+            >
+            </ace-editor>
+          </nz-collapse-panel>
+        </nz-collapse>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </div>
+  <div style="text-align: center;" *ngIf="showAddMetric">
+    <a
+      *ngIf="chartSetting.chartType !== 'pieChart'"
+      nz-button
+      nzType="link"
+      (click)="addMetricFun()"
+      [attr.disabled]="metrics_items.length > 2 ? true : null"
+    >
+      <i nz-icon nzType="plus" nzTheme="outline"></i>
+      添加 Metric
+    </a>
+  </div>
+</nz-card>

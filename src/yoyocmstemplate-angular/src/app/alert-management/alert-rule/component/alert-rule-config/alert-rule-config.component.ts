@@ -19,11 +19,11 @@ import {
   styles: [],
 })
 export class AlertRuleConfigComponent extends AppComponentBase implements OnInit {
-  loading: boolean = false;
+  loading = false;
   isDetail: boolean = undefined;
   alertId: number = null;
-  showPage: boolean = false;
-  errorIsVisible: boolean = false;
+  showPage = false;
+  errorIsVisible = false;
   alertObject: YSLogDataAlertObjectListDto = new YSLogDataAlertObjectListDto();
   // 错误信息
   errorData = [];
@@ -66,12 +66,12 @@ export class AlertRuleConfigComponent extends AppComponentBase implements OnInit
     });
     this.dynamicForm = this.fb.group({});
     this._activatedRoute.params.subscribe((params: Params) => {
-      this.isDetail = params['isDetail'] ? (params['isDetail'] === 'true' ? true : false) : undefined;
+      this.isDetail = params.isDetail ? (params.isDetail === 'true' ? true : false) : undefined;
       if (this.isDetail) {
         this.editDataForm.get('alert_event_type').disable();
         this.editDataForm.get('schema_name').disable();
         this.editDataForm.get('related_dataset_id').disable();
-        this.alertId = params['alertId'];
+        this.alertId = params.alertId;
         // TODO: 根据ID获取告警信息
         this._ySLogDataAlertObjectServiceProxy.getById(this.alertId).subscribe(res => {
           this.alertObject = res;
@@ -152,7 +152,7 @@ export class AlertRuleConfigComponent extends AppComponentBase implements OnInit
   }
   // 保存
   save() {
-    //let formValid = this.validatorForm(this.dynamicForm, this.formTemplate);
+    // let formValid = this.validatorForm(this.dynamicForm, this.formTemplate);
     for (const i in this.editDataForm.controls) {
       this.editDataForm.controls[i].markAsDirty();
       this.editDataForm.controls[i].updateValueAndValidity();

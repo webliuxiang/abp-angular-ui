@@ -1,0 +1,13 @@
+<nz-table nzTemplateMode>
+    <thead>
+        <tr>
+            <th *ngFor="let item_h of chartData.tableHeader">
+                {{item_h.label === '' ? (item_h.field + ' ' + item_h.unit) : item_h.label}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item_r of chartData.tablerows">
+            <td *ngFor="let item_d of item_r">{{item_d.result}}</td>
+        </tr>
+    </tbody>
+</nz-table>

@@ -1,0 +1,10 @@
+<app-count-module *ngIf="metricData.metricsAggregation.value === 'count'" [metricData]="metricData" #countFun>
+</app-count-module>
+<app-sum-module *ngIf="metricData.metricsAggregation.value === 'sum'" [metricData]="metricData" #sumFun>
+</app-sum-module>
+<app-avg-module *ngIf="metricData.metricsAggregation.value === 'avg'" [metricData]="metricData" #avgFun>
+</app-avg-module>
+<app-min-module *ngIf="metricData.metricsAggregation.value === 'min'" [metricData]="metricData" #minFun>
+</app-min-module>
+<app-max-module *ngIf="metricData.metricsAggregation.value === 'max'" [metricData]="metricData" #maxFun>
+</app-max-module>

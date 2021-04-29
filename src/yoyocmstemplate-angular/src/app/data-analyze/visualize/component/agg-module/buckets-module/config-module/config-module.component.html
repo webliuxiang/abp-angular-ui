@@ -1,0 +1,8 @@
+<app-date-histogram-module *ngIf="bucketData.bucketsAggregation.value === 'date_histogram'" [bucketData]="bucketData"
+    #date_histogramFun>
+</app-date-histogram-module>
+<app-filter-module *ngIf="bucketData.bucketsAggregation.value === 'filters'" [bucketData]="bucketData" #filtersFun>
+</app-filter-module>
+<app-terms-module *ngIf="bucketData.bucketsAggregation.value === 'terms'" [bucketData]="bucketData" #termsFun
+    [metric]="metric">
+</app-terms-module>

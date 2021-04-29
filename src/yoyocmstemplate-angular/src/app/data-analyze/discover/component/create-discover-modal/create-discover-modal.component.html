@@ -1,0 +1,26 @@
+<div class="modal-header modal-header-bg">
+    {{l('CreateDiscover')}}
+</div>
+<div class="modal-container">
+    <form nz-form [formGroup]="createForm" class="login-form">
+        <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzFor="dataSource">数据来源</nz-form-label>
+            <nz-form-control nzErrorTip="请选择数据来源" [nzSpan]="14">
+                <nz-select formControlName="dataSetId" (nzOpenChange)="onOpenChange($event)">
+                    <nz-option nzCustomContent *ngFor="let item of queryResultList" [nzValue]="item.id"
+                        [nzLabel]="item.name">
+                        <i nz-icon nzType="search" nzTheme="outline"></i> {{ item.name }}
+                    </nz-option>
+                    <nz-option nzCustomContent *ngFor="let item of datasourcesList" [nzValue]="item.id"
+                        [nzLabel]="item.name">
+                        <i nz-icon nzType="database" nzTheme="outline"></i> {{ item.name }}
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </form>
+</div>
+<div class="modal-footer">
+    <button nz-button [nzType]="'default'" (click)="cancel()">取消</button>
+    <button nz-button [nzType]="'primary'" (click)="create()">创建</button>
+</div>

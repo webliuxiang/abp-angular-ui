@@ -1,0 +1,12 @@
+<nz-card class="keyword-filter" [nzTitle]="chartSetting.chartName" nzBordered="true" nzSize="small"
+    [nzExtra]="extraBtn">
+    <app-table-chart *ngIf="chartSetting.chartType === 'tableChart'"></app-table-chart>
+    <app-line-chart *ngIf="chartSetting.chartType === 'lineChart'"></app-line-chart>
+    <app-pie-chart *ngIf="chartSetting.chartType === 'pieChart'"></app-pie-chart>
+    <app-bar-chart *ngIf="chartSetting.chartType === 'barChart'" #barChart></app-bar-chart>
+    <app-area-chart *ngIf="chartSetting.chartType === 'areaChart'"></app-area-chart>
+</nz-card>
+<ng-template #extraBtn>
+    <a *ngIf="chartSetting.chartType === 'barChart'"
+        (click)="switchChartType()">{{isGroupType ? '切换到堆叠柱状图' : '切换到分组柱状图'}}</a>
+</ng-template>
